@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">MarketFree</string>
     <string name="marketfreetitlepage">MarketFreeTitlePage</string>
+    <string name="loginButton">login</string>
+    <string name="loginText">Login</string>
+    <string name="passwordText">Password</string>
+    <string name="style">Style</string>
+    <string name="samplepicture">samplePicture</string>
+
 </resources>
