@@ -2,9 +2,26 @@
     <string name="app_name">MarketFree</string>
     <string name="marketfreetitlepage">MarketFreeTitlePage</string>
     <string name="loginButton">login</string>
-    <string name="loginText">Login</string>
+    <string name="loginText">email Address</string>
     <string name="passwordText">Password</string>
     <string name="style">Style</string>
     <string name="samplepicture">samplePicture</string>
+    <string name="registerButton">Register</string>
+    <string name="title_activity_user_main_page">UserMainPage</string>
+    <string name="user_full_name_text_main">User Full Name</string>
+    <string name="user_key_text_main">Insert Key Here</string>
+    <string name="manage_subscriptions_buttonText">Manage Subscriptions</string>
+    <string name="manage_publishing_button_text">Manage Publishing</string>
+    <string name="manage_profile_button_text">Manage Profile</string>
+    <string name="order_status_button_text">Manage Order Status</string>
+    <string name="title_activity_manage_subsciptions">ManageSubsciptions</string>
+    <string name="title_activity_manage_profile">ManageProfileActivity</string>
+    <string name="title_activity_manage_publishing">ManagePublishingActivity</string>
+    <string name="title_activity_manage_order_status">ManageOrderStatusActivity</string>
+    <string name="subscription_management_text_title">Subscription Management</string>
+    <string name="add_subscription_button_text">Add Subscription</string>
+    <string name="hint_text_ManageSubs_Activity">To remove a sub just long click on the one you want to remove and select delete</string>
+    <string name="back_button_text">Back</string>
+    <string name="manage_orders_text_title">Manage Orders</string>
 
 </resources>

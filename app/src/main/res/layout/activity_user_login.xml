@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserLogin">
+    tools:context=".UserLoginActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,13 +17,14 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="611dp"
+            android:layout_width="109dp"
+            android:layout_height="101dp"
+            android:layout_marginTop="556dp"
+            android:layout_marginEnd="39dp"
             android:text="@string/loginButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/LoginText"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/loginButton" />
 
@@ -31,32 +32,34 @@
             android:id="@+id/LoginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="460dp"
+            android:layout_marginStart="16dp"
             android:autofillHints=""
             android:ems="10"
             android:inputType="textNoSuggestions|textEmailAddress"
             android:labelFor="@id/LoginText"
             android:text="@string/loginText"
-            app:layout_constraintBottom_toTopOf="@+id/button3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.429"
+            app:layout_constraintBottom_toTopOf="@+id/passWordText"
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.244"
+            app:layout_constraintTop_toBottomOf="@+id/registerButton"
+            app:layout_constraintVertical_bias="0.914"
             tools:targetApi="o" />
 
         <EditText
             android:id="@+id/passWordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="552dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="612dp"
             android:autofillHints=""
             android:ems="10"
             android:inputType="textNoSuggestions|textWebPassword"
             android:labelFor="@id/passWordText"
             android:text="@string/passwordText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.429"
+            app:layout_constraintEnd_toStartOf="@+id/button3"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="o" />
@@ -72,6 +75,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars[0]" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="274dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginBottom="340dp"
+            android:text="@string/registerButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>

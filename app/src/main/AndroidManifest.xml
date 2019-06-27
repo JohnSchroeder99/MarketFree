@@ -4,26 +4,45 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="true">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ManageOrderStatusActivity"
+            android:label="@string/title_activity_manage_order_status"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ManagePublishingActivity"
+            android:label="@string/title_activity_manage_publishing"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ManageProfileActivity"
+            android:label="@string/title_activity_manage_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ManageSubsciptionsActivity"
+            android:label="@string/title_activity_manage_subsciptions"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserMainPageActivity"
+            android:label="@string/title_activity_user_main_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".StartupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserLogin" />
+        <activity android:name=".UserLoginActivity" />
     </application>
 
 </manifest>
