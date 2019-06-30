@@ -63,18 +63,15 @@
             android:layout_width="141dp"
             android:layout_height="50dp"
             android:layout_marginTop="308dp"
-            android:autoLink="web|phone|none|map|email"
             android:autofillHints=""
             android:ems="10"
-            android:foregroundGravity="center"
-            android:inputType="textShortMessage|textPersonName"
+            android:inputType="textPersonName"
             android:labelFor="@id/FirstNameEditText"
             android:text="@string/first_name_text_field"
             app:layout_constraintEnd_toStartOf="@+id/LastNameEditText"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/LastNameEditText"
@@ -89,8 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/FirstNameEditText"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/EmailEditText"
@@ -105,8 +101,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.113"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button13"
@@ -182,12 +177,11 @@
             android:layout_marginTop="428dp"
             android:autofillHints=""
             android:ems="10"
-            android:inputType="textPersonName|numberPassword"
+            android:inputType="textPersonName|textPassword"
             android:labelFor="@id/PasswordInput"
             android:text="@string/password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button14"

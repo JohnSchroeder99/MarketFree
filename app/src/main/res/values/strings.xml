@@ -14,14 +14,30 @@
     <string name="manage_publishing_button_text">Manage Publishing</string>
     <string name="manage_profile_button_text">Manage Profile</string>
     <string name="order_status_button_text">Manage Order Status</string>
-    <string name="title_activity_manage_subsciptions">ManageSubsciptions</string>
+    <string name="title_activity_manage_subsciptions">Manage Subscriptions</string>
     <string name="title_activity_manage_profile">ManageProfileActivity</string>
-    <string name="title_activity_manage_publishing">ManagePublishingActivity</string>
+    <string name="title_activity_manage_publishing">Manage Publishing</string>
     <string name="title_activity_manage_order_status">ManageOrderStatusActivity</string>
     <string name="subscription_management_text_title">Subscription Management</string>
     <string name="add_subscription_button_text">Add Subscription</string>
     <string name="hint_text_ManageSubs_Activity">To remove a sub just long click on the one you want to remove and select delete</string>
     <string name="back_button_text">Back</string>
     <string name="manage_orders_text_title">Manage Orders</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="add_new_publishing_buttonText">Add new publishing</string>
+    <string name="remove_publishing_ButtonText">Remove Publishing</string>
+    <string name="Back">Button</string>
+    <string name="mange_profile_text">Mange Profile</string>
+    <string name="first_name_text_field">First Name</string>
+    <string name="last_name_textField">Last Name</string>
+    <string name="banking_information_last_4">Banking Information Last 4</string>
+    <string name="card_type">Card Type</string>
+    <string name="expiration_date">Expiration Date</string>
+    <string name="update_banking">Update Banking</string>
+    <string name="banking">Banking</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="save">save</string>
+    <string name="profileimage">ProfileImage</string>
 
 </resources>
