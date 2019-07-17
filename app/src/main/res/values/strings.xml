@@ -39,5 +39,9 @@
     <string name="email">Email</string>
     <string name="save">save</string>
     <string name="profileimage">ProfileImage</string>
+    <string name="options">Options</string>
+    <string name="manageorderslayout">manageOrdersLayout</string>
+    <string name="numberOfCompletedOrders">0</string>
+    <string name="numberOfActiveCompletedOrders">0</string>
 
 </resources>

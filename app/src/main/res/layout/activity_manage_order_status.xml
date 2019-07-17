@@ -14,6 +14,7 @@
 
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/manageOrdersView"
             android:layout_width="384dp"
             android:layout_height="441dp"
             android:layout_marginTop="145dp"
@@ -27,6 +28,7 @@
             tools:listitem="@layout/recycler_view_manage_orders" />
 
         <android.support.v7.widget.CardView
+            android:id="@+id/manageOrdersTitleCard"
             android:layout_width="261dp"
             android:layout_height="117dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/TitleofPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -44,7 +46,7 @@
                 android:textAlignment="gravity" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/UserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -53,7 +55,7 @@
                 android:textAlignment="gravity" />
 
             <TextView
-                android:id="@+id/ManageOrderTextTitle"
+                android:id="@+id/TitleTextView"
                 android:layout_width="261dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="88dp"
@@ -63,7 +65,7 @@
         </android.support.v7.widget.CardView>
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/manageOrdersBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="622dp"

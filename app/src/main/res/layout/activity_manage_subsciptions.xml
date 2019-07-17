@@ -13,21 +13,21 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/manageSubscriptionsView"
             android:layout_width="380dp"
             android:layout_height="391dp"
             android:layout_marginTop="117dp"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionsHintTextField"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.483"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionscardView"
             app:layout_constraintVertical_bias="1.0"
             tools:listitem="@layout/recycler_view_item_1" />
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/manageSubscriptionscardView"
             android:layout_width="261dp"
             android:layout_height="117dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/TitleofPage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -45,7 +45,7 @@
                 android:textAlignment="gravity" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/UserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -54,44 +54,44 @@
                 android:textAlignment="gravity" />
 
             <TextView
-                android:id="@+id/ManageOrderTextTitle"
+                android:id="@+id/TitleTextView"
                 android:layout_width="261dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="88dp"
-                android:text="@string/subscription_management_text_title"
+                android:text="@string/manage_subscriptions_buttonText"
                 android:textAlignment="center" />
 
         </android.support.v7.widget.CardView>
 
         <Button
-            android:id="@+id/button8"
+            android:id="@+id/manageSubscriptionsaddButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="601dp"
             android:text="@string/add_subscription_button_text"
-            app:layout_constraintEnd_toStartOf="@+id/keyInsertTextView"
+            app:layout_constraintEnd_toStartOf="@+id/manageSubscriptionskeyInsertTextView"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/keyInsertTextView"
+            android:id="@+id/manageSubscriptionskeyInsertTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="601dp"
             android:autofillHints=""
             android:ems="10"
             android:inputType="textNoSuggestions"
-            android:labelFor="@id/keyInsertTextView"
+            android:labelFor="@id/manageSubscriptionskeyInsertTextView"
             android:text="@string/user_key_text_main"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button8"
+            app:layout_constraintStart_toEndOf="@+id/manageSubscriptionsaddButton"
             app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="o" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/manageSubscriptionsHintTextField"
             android:layout_width="373dp"
             android:layout_height="65dp"
             android:layout_marginTop="528dp"
@@ -101,7 +101,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/manageSubscriptionsBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="664dp"
