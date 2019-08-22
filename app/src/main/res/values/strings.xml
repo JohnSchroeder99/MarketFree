@@ -48,5 +48,6 @@
     <string name="RegisterScreenCardViewText">Register</string>
     <string name="EmailInputRegister">Email</string>
     <string name="PhoneInputRegister">Phone</string>
+    <string name="ConnectedImage">ImageForConnected</string>
 
 </resources>
