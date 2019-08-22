@@ -43,5 +43,10 @@
     <string name="manageorderslayout">manageOrdersLayout</string>
     <string name="numberOfCompletedOrders">0</string>
     <string name="numberOfActiveCompletedOrders">0</string>
+    <string name="firstNameRegister">First</string>
+    <string name="LastNameRegisterInput">Last</string>
+    <string name="RegisterScreenCardViewText">Register</string>
+    <string name="EmailInputRegister">Email</string>
+    <string name="PhoneInputRegister">Phone</string>
 
 </resources>
