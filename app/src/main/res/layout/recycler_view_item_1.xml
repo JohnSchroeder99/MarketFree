@@ -5,12 +5,13 @@
               android:padding="8dp"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
+
   <ImageView
       android:id="@+id/ConnectPeoplePicture"
       android:layout_width="50dp"
       android:layout_height="50dp"
-      tools:src="@tools:sample/avatars"
-      android:contentDescription="@string/ConnectedImage" />
+      android:contentDescription="@string/image_for_connected_people"
+      tools:src="@tools:sample/avatars" />
   <TextView
       android:id="@+id/ConnectedPeopleFirstName"
       android:layout_width="wrap_content"

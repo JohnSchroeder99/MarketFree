@@ -49,5 +49,6 @@
     <string name="EmailInputRegister">Email</string>
     <string name="PhoneInputRegister">Phone</string>
     <string name="ConnectedImage">ImageForConnected</string>
+    <string name="image_for_connected_people">Image for Connected People</string>
 
 </resources>
