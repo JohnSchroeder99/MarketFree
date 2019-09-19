@@ -7,6 +7,7 @@
     tools:context=".UserLoginActivity">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,47 +20,49 @@
             android:id="@+id/loginPageLoginButton"
             android:layout_width="109dp"
             android:layout_height="101dp"
+            android:layout_marginStart="256dp"
             android:layout_marginTop="556dp"
-            android:layout_marginEnd="39dp"
             android:text="@string/loginButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/loginPageEmailAddress"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/loginButton" />
+
+        <Button
+            android:id="@+id/loginPageregisterButton"
+            android:layout_width="274dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="400dp"
+            android:text="@string/registerButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/loginPageEmailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="567dp"
             android:autofillHints=""
             android:ems="10"
             android:inputType="textNoSuggestions|textEmailAddress"
             android:labelFor="@id/loginPageEmailAddress"
             android:text="@string/loginText"
-            app:layout_constraintBottom_toTopOf="@+id/loginPagepassWordText"
-            app:layout_constraintEnd_toStartOf="@id/loginPageLoginButton"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginPageregisterButton"
-            app:layout_constraintVertical_bias="0.914"
+            app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="o" />
 
         <EditText
             android:id="@+id/loginPagepassWordText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="29dp"
             android:layout_marginTop="612dp"
             android:autofillHints=""
             android:ems="10"
             android:inputType="textNoSuggestions|textWebPassword"
             android:labelFor="@id/loginPagepassWordText"
             android:text="@string/passwordText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/loginPageLoginButton"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:targetApi="o" />
@@ -68,23 +71,15 @@
             android:id="@+id/loginPageMarketFreeIcon"
             android:layout_width="213dp"
             android:layout_height="193dp"
-            android:layout_marginTop="133dp"
+            android:layout_marginStart="99dp"
+            android:layout_marginTop="142dp"
+            android:layout_marginBottom="511dp"
             android:contentDescription="@string/samplepicture"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars[0]" />
 
-        <Button
-            android:id="@+id/loginPageregisterButton"
-            android:layout_width="274dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="68dp"
-            android:layout_marginBottom="340dp"
-            android:text="@string/registerButton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
     </android.support.constraint.ConstraintLayout>
+
 </android.support.design.widget.CoordinatorLayout>

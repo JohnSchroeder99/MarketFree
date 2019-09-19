@@ -1,18 +1,50 @@
 package johnschroederregis.marketfree;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class ManagePublishingActivity extends AppCompatActivity {
+Button addPublishingButton = null;
+Button removePublishings = null;
+Button managePublishingBackButton = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_publishing);
+
+        addPublishingButton = findViewById(R.id.managePublishingAddnewButton);
+        removePublishings = findViewById(R.id.managePublishingRemovePublishing);
+        managePublishingBackButton  = findViewById(R.id.managePublishingBackButton);
+
+
+        addPublishingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getApplicationContext(), "moving to add publishings fragment", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
+        removePublishings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(getApplicationContext(), "moving to remove publishings fragment", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
+        managePublishingBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), UserMainPageActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
