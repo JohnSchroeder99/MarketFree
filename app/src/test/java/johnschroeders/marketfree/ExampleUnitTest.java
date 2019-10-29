@@ -1,4 +1,4 @@
-package johnschroederregis.marketfree;
+package johnschroeders.marketfree;
 
 import org.junit.Test;
 

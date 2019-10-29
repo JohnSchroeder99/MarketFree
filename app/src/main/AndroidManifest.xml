@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="johnschroederregis.marketfree">
+    package="johnschroeders.marketfree"
+
+    >
 
     <application
         android:allowBackup="true"
@@ -9,32 +11,33 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+       >
         <activity
-            android:name=".RegisterActivity"
+            android:name="johnschroeders.marketfree.RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ManageOrderStatusActivity"
+            android:name="johnschroeders.marketfree.ManageOrderStatusActivity"
             android:label="@string/title_activity_manage_order_status"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ManagePublishingActivity"
+            android:name="johnschroeders.marketfree.ManagePublishingActivity"
             android:label="@string/title_activity_manage_publishing"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ManageProfileActivity"
+            android:name="johnschroeders.marketfree.ManageProfileActivity"
             android:label="@string/title_activity_manage_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ManageSubsciptionsActivity"
+            android:name="johnschroeders.marketfree.ManageSubsciptionsActivity"
             android:label="@string/title_activity_manage_subsciptions"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UserMainPageActivity"
+            android:name="johnschroeders.marketfree.UserMainPageActivity"
             android:label="@string/title_activity_user_main_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".StartupActivity">
+        <activity android:name="johnschroeders.marketfree.StartupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserLoginActivity" />
+        <activity android:name="johnschroeders.marketfree.UserLoginActivity" />
     </application>
 
 </manifest>
