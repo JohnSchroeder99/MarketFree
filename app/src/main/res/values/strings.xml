@@ -2,8 +2,8 @@
     <string name="app_name">MarketFree</string>
     <string name="marketfreetitlepage">MarketFreeTitlePage</string>
     <string name="loginButton">login</string>
-    <string name="loginText">J</string>
-    <string name="passwordText">J</string>
+    <string name="loginText">Email</string>
+    <string name="passwordText">Password</string>
     <string name="style">Style</string>
     <string name="samplepicture">samplePicture</string>
     <string name="registerButton">Register</string>
@@ -50,5 +50,6 @@
     <string name="PhoneInputRegister">Phone</string>
     <string name="ConnectedImage">ImageForConnected</string>
     <string name="image_for_connected_people">Image for Connected People</string>
+    <string name="clientToken">373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com</string>
 
 </resources>

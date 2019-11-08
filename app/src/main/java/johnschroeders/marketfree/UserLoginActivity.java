@@ -26,49 +26,47 @@ import com.google.android.gms.auth.api.credentials.CredentialsOptions;
 import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.auth.api.credentials.IdentityProviders;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 
-public class UserLoginActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<CredentialRequestResult> {
+public class UserLoginActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        ResultCallback<CredentialRequestResult> {
 
     Button registerButton = null;
     Button loginButton = null;
-
     CredentialsClient mCredentialsApiClient;
     CredentialRequest mCredentialRequest;
-    public static final String TAG = "API123";
     private static final int RC_READ = 3;
     private static final int RC_SAVE = 1;
     private static final int RC_HINT = 2;
+    private static final int RC_SIGN_IN = 5;
     boolean isResolving;
     private GoogleApiClient mGoogleApiClient = null;
-    private TextView tempLogin = null;
-    private TextView tempPaSS = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
-        tempLogin = (EditText)findViewById(R.id.loginPageEmailAddress);
-        tempPaSS = (EditText)findViewById(R.id.loginPagepassWordText);
-
+        TextView tempLogin = (EditText) findViewById(R.id.loginPageEmailAddress);
+        TextView tempPaSS = (EditText) findViewById(R.id.loginPagepassWordText);
         registerButton = findViewById(R.id.loginPageregisterButton);
         loginButton = findViewById(R.id.loginPageLoginButton);
+        tempPaSS.setText(R.string.passwordText);
+        tempLogin.setText(R.string.loginText);
 
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .addApi(Auth.CREDENTIALS_API)
                 .enableAutoManage(this, this)
                 .build();
@@ -83,18 +81,10 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
         createCredentialRequest();
 
 
-
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tempLogin.setText(R.string.loginText);
-                tempPaSS.setText(R.string.passwordText);
-                Credential credential = new Credential.Builder(tempLogin.getText().toString())
-                        .setPassword(tempPaSS.getText().toString())
-                        .build();
-                saveCredentials(credential);
-
+                requestCredentials();
             }
         });
 
@@ -112,6 +102,8 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
         mCredentialRequest = new CredentialRequest.Builder()
                 .setPasswordLoginSupported(true)
                 .setAccountTypes(IdentityProviders.GOOGLE)
+                .setAccountTypes(IdentityProviders.FACEBOOK)
+                .setAccountTypes(IdentityProviders.TWITTER)
                 .build();
     }
 
@@ -121,41 +113,25 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
 
 
     private void onCredentialRetrieved(Credential credential) {
+        Log.d("Creds", "Credentials retrieved testing values of creds");
         String accountType = credential.getAccountType();
-        if (accountType == null) {
-            // Sign the user in with information from the Credential.
-            gotoNext();
-        } else if (accountType.equals(IdentityProviders.GOOGLE)) {
+        if (accountType != null) {
+            if (accountType.equals(IdentityProviders.GOOGLE)) {
+                Log.d("Creds", "Account type = Google");
 
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .setAccountName("test")
+                        .build();
 
-            GoogleSignInClient signInClient = GoogleSignIn.getClient(this, gso);
-            Task<GoogleSignInAccount> task = signInClient.silentSignIn();
-
-            task.addOnCompleteListener(new OnCompleteListener<GoogleSignInAccount>() {
-                @Override
-                public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                    if (task.isSuccessful()) {
-                        Log.d("Creds", "Retrieve successful");
-                        Intent intent = new Intent(getApplicationContext(), UserLoginActivity.class);
-                        startActivity(intent);
-                    } else {
-                        if (task.getException() != null) {
-                            Log.d("Creds", "Retrieve not successful" + task.getException().getMessage());
-                        }
-                        showToast("Unable to do a google sign in");
-                    }
-                }
-            });
+                Log.d("Creds", "Created GSO " + gso.getAccount());
+                GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+                Intent signInIntent = googleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        } else {
+            Log.d("Creds", "Account type is null");
         }
-    }
-
-
-    public void gotoNext() {
-        startActivity(new Intent(this, UserMainPageActivity.class));
-        finish();
     }
 
 
@@ -165,9 +141,8 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d("Creds", "onConnected");
+        Log.d("Creds", "onConnected signing in automatically");
         requestCredentials();
-
     }
 
     @Override
@@ -188,20 +163,24 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
 
     @Override
     public void onResult(@NonNull CredentialRequestResult credentialRequestResult) {
-
+        Log.d("Creds", "Creds on result()");
         Status status = credentialRequestResult.getStatus();
         if (status.isSuccess()) {
+            Log.d("Creds", "successfully retrieved creds");
             onCredentialRetrieved(credentialRequestResult.getCredential());
         } else {
             if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
                 try {
+                    Log.d("Creds", "is resolving" + RC_READ);
                     isResolving = true;
                     status.startResolutionForResult(this, RC_READ);
+
+
                 } catch (IntentSender.SendIntentException e) {
                     Log.d("Creds", e.toString());
                 }
             } else {
-
+                Log.d("Creds", "Creds not accepted");
                 showHintDialog();
             }
         }
@@ -211,25 +190,29 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d(TAG, "onActivityResult");
+        Log.d("Creds", "onActivityResult()");
         if (requestCode == RC_READ) {
             if (resultCode == RESULT_OK) {
+                Log.d("Creds", "onActivityResult good RC Read and Result");
                 Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-                if(credential!=null){
+                if (credential != null) {
 
                     onCredentialRetrieved(credential);
                 }
             } else {
-                Log.d(TAG, "Request failed");
+                Log.d("Creds", "Request failed");
             }
             isResolving = false;
         }
 
         if (requestCode == RC_HINT) {
+            Log.d("Creds", "onActivityResult RC HInt " + RC_HINT);
             if (resultCode == RESULT_OK) {
+                Log.d("Creds", "onActivityResult RC Hint result okay");
                 Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-                if(credential!=null){
-                    populateLoginFields(credential.getId(), credential.getPassword());
+                if (credential != null) {
+                    //  populateLoginFields(credential.getId(), credential.getPassword());
+                    onCredentialRetrieved(credential);
                 }
             } else {
                 showToast("Hint dialog closed");
@@ -239,17 +222,25 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
         if (requestCode == RC_SAVE) {
             if (resultCode == RESULT_OK) {
                 Log.d("Creds", "SAVE: OK");
-                gotoNext();
                 showToast("Credentials saved");
             }
         }
 
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Log.d("Creds", "in activity before sign in attempt");
+            try {
+                Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+                Intent intent = new Intent(getApplicationContext(), UserMainPageActivity.class);
+                startActivity(intent);
+                Log.d("Creds", "in activity sign in successful");
+            } catch (Exception e) {
 
-    }
-
-    public void populateLoginFields(String email, String password) {
-        tempLogin.setText(email);
-        tempPaSS.setText(password);
+                Log.d("Creds", "silent sign in fail" + e.getCause() + e.getLocalizedMessage() + e.getMessage());
+                e.printStackTrace();
+            }
+        }
     }
 
     public void showHintDialog() {
@@ -269,38 +260,6 @@ public class UserLoginActivity extends AppCompatActivity implements GoogleApiCli
         }
     }
 
-    public void saveCredentials(Credential credential) {
-
-
-        mCredentialsApiClient.save(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "SAVE: OK");
-                    showToast("Credentials saved");
-                    return;
-                }
-
-                Exception e = task.getException();
-                if (e instanceof ResolvableApiException) {
-                    // Try to resolve the save request. This will prompt the user if
-                    // the credential is new.
-                    ResolvableApiException rae = (ResolvableApiException) e;
-                    try {
-                        rae.startResolutionForResult(UserLoginActivity.this, RC_SAVE);
-                    } catch (IntentSender.SendIntentException f) {
-                        // Could not resolve the request
-                        Log.e(TAG, "Failed to send resolution.", f);
-                        showToast("Saved failed");
-                    }
-                } else {
-                    // Request has no resolution
-                    showToast("Saved failed");
-                }
-            }
-        });
-
-    }
 
 }
 
