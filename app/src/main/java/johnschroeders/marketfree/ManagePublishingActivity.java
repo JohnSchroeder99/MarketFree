@@ -2,15 +2,17 @@ package johnschroeders.marketfree;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 public class ManagePublishingActivity extends AppCompatActivity {
-Button addPublishingButton = null;
-Button removePublishings = null;
-Button managePublishingBackButton = null;
+    private Button removePublishings = null;
+    private Button managePublishingBackButton = null;
+    private Button addPublishingButton = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +21,7 @@ Button managePublishingBackButton = null;
 
         addPublishingButton = findViewById(R.id.managePublishingAddnewButton);
         removePublishings = findViewById(R.id.managePublishingRemovePublishing);
-        managePublishingBackButton  = findViewById(R.id.managePublishingBackButton);
+        managePublishingBackButton = findViewById(R.id.managePublishingBackButton);
 
 
         addPublishingButton.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +47,6 @@ Button managePublishingBackButton = null;
                 startActivity(intent);
             }
         });
-
 
 
     }

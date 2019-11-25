@@ -2,24 +2,20 @@ package johnschroeders.marketfree;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.jar.Attributes;
 
 public class ManageSubsciptionsActivity extends AppCompatActivity {
-    Button subscriptionsBackButton = null;
-    Button addSubScriptionsButton = null;
+    private Button subscriptionsBackButton = null;
+    private Button addSubScriptionsButton = null;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -45,17 +41,13 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
 
         Log.d("Manage", "after arraylist made");
 
-        RecyclerView recyclerView = findViewById(R.id.manageSubscriptionsView);
+        recyclerView = findViewById(R.id.manageSubscriptionsView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Log.d("Manage", "recyclerlayout set");
-        mAdapter = new MyRecyclerViewAdapter(this, names);
+        mAdapter = new MyRecyclerViewAdapterforSubscriptions(this, names);
         Log.d("Manage", "adapter initialized");
         recyclerView.setAdapter(mAdapter);
         Log.d("Manage", "adapter made");
-
-
-
-
 
 
         subscriptionsBackButton.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +68,6 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
         });
 
     }
-
-
-
 
 
 }

@@ -47,9 +47,20 @@
     <string name="LastNameRegisterInput">Last</string>
     <string name="RegisterScreenCardViewText">Register</string>
     <string name="EmailInputRegister">Email</string>
+    <string name="OrderStatus">Order Status is: </string>
+    <string name="OrderStatusApproved">Approved</string>
+    <string name="OrderStatusInProgress">Good</string>
+    <string name="OrderStatusPending">Order Pending</string>
+    <string name="OrderNumber">12345123523</string>
+    <string name="OrderStatusReadyForPickup">Ready For Pickup</string>
+    <string name="OrderStatusDisapproved">Disapproved</string>
+    <string name="OrderFromName">Brandon</string>
     <string name="PhoneInputRegister">Phone</string>
     <string name="ConnectedImage">ImageForConnected</string>
     <string name="image_for_connected_people">Image for Connected People</string>
     <string name="clientToken">373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com</string>
+    <string name="imagesfororders">ImagesForOrders</string>
+    <string name="imagefororders">imageForOrders</string>
+    <string name="imageview">imageView</string>
 
 </resources>

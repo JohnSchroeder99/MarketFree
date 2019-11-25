@@ -8,11 +8,11 @@ import android.widget.Button;
 
 public class UserMainPageActivity extends AppCompatActivity {
 
-    Button manageSubscriptionsButton = null;
-    Button managePublishingButton = null;
-    Button manageOrderStatusButton = null;
-    Button manageProfileButton = null;
-    Intent intent = null;
+    private Button manageSubscriptionsButton = null;
+    private Button managePublishingButton = null;
+    private Button manageOrderStatusButton = null;
+    private Button manageProfileButton = null;
+    private Intent intent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

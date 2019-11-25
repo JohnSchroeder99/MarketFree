@@ -19,9 +19,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class RegisterActivity extends AppCompatActivity {
-    Button registerButton = null;
-    Button registerBackButton = null;
-    CredentialsClient mCredentialsApiClient;
+    private Button registerButton = null;
+    private Button registerBackButton = null;
+    private CredentialsClient mCredentialsApiClient;
     private static final int RC_SAVE = 1;
 
 
@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void saveCredentials(Credential credential) {
+    private void saveCredentials(Credential credential) {
         mCredentialsApiClient.save(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    public void showToast(String s) {
+    private void showToast(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
 

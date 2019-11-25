@@ -40,15 +40,15 @@ public class UserLoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         ResultCallback<CredentialRequestResult> {
 
-    Button registerButton = null;
-    Button loginButton = null;
-    CredentialsClient mCredentialsApiClient;
-    CredentialRequest mCredentialRequest;
+    private Button registerButton = null;
+    private Button loginButton = null;
+    private CredentialsClient mCredentialsApiClient;
+    private CredentialRequest mCredentialRequest;
     private static final int RC_READ = 3;
     private static final int RC_SAVE = 1;
     private static final int RC_HINT = 2;
     private static final int RC_SIGN_IN = 5;
-    boolean isResolving;
+    private boolean isResolving;
     private GoogleApiClient mGoogleApiClient = null;
 
 
@@ -98,7 +98,7 @@ public class UserLoginActivity extends AppCompatActivity implements
     }
 
 
-    public void createCredentialRequest() {
+    private void createCredentialRequest() {
         mCredentialRequest = new CredentialRequest.Builder()
                 .setPasswordLoginSupported(true)
                 .setAccountTypes(IdentityProviders.GOOGLE)
@@ -135,7 +135,7 @@ public class UserLoginActivity extends AppCompatActivity implements
     }
 
 
-    public void showToast(String s) {
+    private void showToast(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
 
@@ -243,7 +243,7 @@ public class UserLoginActivity extends AppCompatActivity implements
         }
     }
 
-    public void showHintDialog() {
+    private void showHintDialog() {
         HintRequest hintRequest = new HintRequest.Builder()
                 .setHintPickerConfig(new CredentialPickerConfig.Builder()
                         .setShowCancelButton(true)

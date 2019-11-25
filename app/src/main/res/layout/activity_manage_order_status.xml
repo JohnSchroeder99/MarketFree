@@ -15,8 +15,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/manageOrdersView"
-            android:layout_width="384dp"
-            android:layout_height="441dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="145dp"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_conversion_absoluteHeight="603dp"
             tools:layout_conversion_absoluteWidth="411dp"
-            tools:listitem="@layout/recycler_view_item_1" />
+            tools:listitem="@layout/recycler_view_item_2" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/manageOrdersTitleCard"

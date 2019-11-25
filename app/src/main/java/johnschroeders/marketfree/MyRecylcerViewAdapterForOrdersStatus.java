@@ -7,40 +7,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.List;
 
-import johnschroeders.marketfree.R;
-
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
+public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<MyRecylcerViewAdapterForOrdersStatus.ViewHolder> {
 
     private ArrayList<String> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    MyRecyclerViewAdapter(Context context, ArrayList<String> data) {
+    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
 
     // inflates the row layout from xml when needed
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("Manage", "on create view holder recyclerview class");
-        View view = mInflater.inflate(R.layout.recycler_view_item_1, parent, false);
+        View view = mInflater.inflate(R.layout.recycler_view_item_2, parent, false);
         return new ViewHolder(view);
     }
+
 
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d("Manage", "on bind myrecylcer");
         String name = mData.get(position);
-        holder.myTextView.setText(name);
 
+        holder.myTextView.setText(name);
+        holder.statusTextView.setText(R.string.OrderStatusApproved);
     }
 
     // total number of rows
@@ -53,10 +56,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
+        TextView statusTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.ConnectedPeopleFirstName);
+            statusTextView = itemView.findViewById(R.id.orderStatus);
+            myTextView = itemView.findViewById(R.id.OrderStatusName);
             itemView.setOnClickListener(this);
         }
 
@@ -78,7 +83,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
+    interface ItemClickListener {
         void onItemClick(View view, int position);
     }
 }
