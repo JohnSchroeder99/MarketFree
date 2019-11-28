@@ -10,18 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<MyRecylcerViewAdapterForOrdersStatus.ViewHolder> {
 
-    private ArrayList<String> mData;
+    private ArrayList<Order> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<String> data) {
+    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -40,9 +38,9 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.d("Manage", "on bind myrecylcer");
-        String name = mData.get(position);
 
-        holder.myTextView.setText(name);
+
+        holder.myTextView.setText(mData.get(1).getProducerKey());
         holder.statusTextView.setText(R.string.OrderStatusApproved);
     }
 
@@ -73,7 +71,8 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     // convenience method for getting data at click position
     String getItem(int id) {
-        return mData.get(id);
+        //TODO need to return data on click.
+        return null;
     }
 
     // allows clicks events to be caught

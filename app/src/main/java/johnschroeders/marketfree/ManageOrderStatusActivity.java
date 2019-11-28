@@ -12,8 +12,12 @@ import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class ManageOrderStatusActivity extends AppCompatActivity {
+
+
     private Button manageOrdersBackButton = null;
     private RecyclerView recyclerView = null;
     private RecyclerView.Adapter mAdapter;
@@ -26,6 +30,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity {
         manageOrdersBackButton = findViewById(R.id.manageOrdersBackButton);
 
         manageOrdersBackButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), UserMainPageActivity.class);
@@ -33,43 +38,34 @@ public class ManageOrderStatusActivity extends AppCompatActivity {
             }
         });
 
+        ArrayList<Order> orders = new ArrayList<>();
+        orders.add(createOrder());
+        orders.add(createOrder());
+        orders.add(createOrder());
 
-        ArrayList<String> names = new ArrayList<>();
-        names.add("John");
-        names.add("Deborah");
-        names.add("Useless");
-        names.add(" Brandumb");
-        names.add("Richard");
-        names.add("Idiot");
-        names.add("John");
-        names.add("Deborah");
-        names.add("Useless");
-        names.add(" Brandumb");
-        names.add("Richard");
-        names.add("Idiot");
-        names.add("John");
-        names.add("Deborah");
-        names.add("Useless");
-        names.add(" Brandumb");
-        names.add("Richard");
-        names.add("Idiot"); names.add("John");
-        names.add("Deborah");
-        names.add("Useless");
-        names.add(" Brandumb");
-        names.add("Richard");
-        names.add("Idiot");
-
-
-        Log.d("Creds", "before recyclerlayout set");
+        Log.d("OrderStatus", "before recyclerlayout set");
         recyclerView = findViewById(R.id.manageOrdersView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d("Creds", "recyclerlayout set");
-        mAdapter = new MyRecylcerViewAdapterForOrdersStatus(this, names);
-        Log.d("Creds", "adapter initialized");
+        Log.d("OrderStatus", "recyclerlayout set");
+        mAdapter = new MyRecylcerViewAdapterForOrdersStatus(this, orders);
+        Log.d("OrderStatus", "adapter initialized");
         recyclerView.setAdapter(mAdapter);
-        Log.d("Creds", "adapter made");
+        Log.d("OrderStatus", "adapter made");
 
 
     }
+
+    //TODO this will be generated using firebase calls
+    public Order createOrder() {
+        Order order1 = new Order();
+        order1.setProducerKey("a;lksdjfla;ksjdf");
+        order1.setAmountPaid(12.00);
+        order1.setDateDelivered(new Date());
+        order1.setOrderDescriptionAndQuantity(new HashMap<String, Integer>());
+        order1.putOrderDescriptionAndQuantity("nails", 1);
+
+        return order1;
+    }
+
 
 }

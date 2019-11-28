@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "373985215969",
+    "firebase_url": "https://marketfree-67cb9.firebaseio.com",
+    "project_id": "marketfree-67cb9",
+    "storage_bucket": "marketfree-67cb9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373985215969:android:16bf2fea208f7088be3ea0",
+        "android_client_info": {
+          "package_name": "JohnSchroeder.marketfree"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373985215969-m9eagqep1qt16s76ahstko6ln674kpt4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "JohnSchroeder.marketfree",
+            "certificate_hash": "70b9040051adc44fd4bd0c6008a31e0f4f8ac0a5"
+          }
+        },
+        {
+          "client_id": "373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyaqncTP76DpGKTTnUYmH5teQnYw_K3YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
