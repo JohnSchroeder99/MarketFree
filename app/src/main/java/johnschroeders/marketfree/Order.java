@@ -1,9 +1,14 @@
 package johnschroeders.marketfree;
 
+
+
+import android.util.Log;
+
 import java.util.Date;
 import java.util.HashMap;
 
 public class Order {
+
     private double orderID;
     private String producerKey;
     private String customerKey;
@@ -17,6 +22,8 @@ public class Order {
 
     public void setOrderDescriptionAndQuantity(HashMap<String, Integer> orderDescriptionAndQuantity) {
         this.orderDescriptionAndQuantity = orderDescriptionAndQuantity;
+        Log.d("Order", "new order description and quantity");
+
     }
 
     public double getOrderID() {
@@ -28,6 +35,7 @@ public class Order {
     }
 
     public HashMap<String, Integer> getOrderDescriptionAndQuantity() {
+        Log.d("Order", "order description and quantity requested");
         return orderDescriptionAndQuantity;
     }
 
@@ -96,4 +104,6 @@ public class Order {
     public double getAmountPaid() {
         return amountPaid;
     }
+
+
 }
