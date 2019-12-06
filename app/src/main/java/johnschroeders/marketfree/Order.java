@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Order {
 
-    private double orderID;
+    private String orderID;
     private String producerKey;
     private String customerKey;
     private String productID;
@@ -26,11 +26,11 @@ public class Order {
 
     }
 
-    public double getOrderID() {
+    public String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(double orderID) {
+    public void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
