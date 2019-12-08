@@ -1,6 +1,7 @@
 package johnschroeders.marketfree;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,28 +12,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class ManageOrderStatusActivity extends AppCompatActivity {
+public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener {
 
 
     private Button manageOrdersBackButton = null;
     private RecyclerView recyclerView = null;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private FirebaseFirestore db;
+    static final String TAG = "OrderStatus";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,28 +47,25 @@ public class ManageOrderStatusActivity extends AppCompatActivity {
             }
         });
 
+        // Creating a mock list to populate order list and stuff into adapter
         ArrayList<Order> orders = new ArrayList<>();
         orders.add(createOrder());
         orders.add(createOrder());
         orders.add(createOrder());
 
 
-
-
         db = FirebaseFirestore.getInstance();
         db.collection("Orders").document(createOrder().getOrderID()).set(createOrder());
 
 
-
-
-        Log.d("OrderStatus", "before recyclerlayout set");
+        Log.d(TAG, "setting recycler layout");
         recyclerView = findViewById(R.id.manageOrdersView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d("OrderStatus", "recyclerlayout set");
+        Log.d(TAG, "recycler layout set");
         mAdapter = new MyRecylcerViewAdapterForOrdersStatus(this, orders);
-        Log.d("OrderStatus", "adapter initialized");
+        Log.d(TAG, "adapter successfully initialized");
         recyclerView.setAdapter(mAdapter);
-        Log.d("OrderStatus", "adapter made");
+        Log.d(TAG, "adapter successfully created");
 
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance("https://marketfree-67cb9.firebaseio.com/");
@@ -85,32 +80,23 @@ public class ManageOrderStatusActivity extends AppCompatActivity {
         databaseReference.child("OrderID").push().setValue(order.getOrderID());
 
 
-
-
-
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-              for(DataSnapshot d :dataSnapshot.getChildren()){
-                  Log.d("Order", "value of data snapshot is "+d.getValue());
-              }
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "getting children from datasnapshot for order: " + d.getValue());
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Order", "Values changed on listener "+databaseError.getDetails()+ databaseError
-                +databaseError.getMessage()+ databaseError.getCode());
+                Log.d(TAG, "Values changed on listener " + databaseError.getDetails() + databaseError
+                        + databaseError.getMessage() + databaseError.getCode());
             }
         });
-
-
-
-
-
-
     }
 
-    //TODO this will be generated using firebase calls
+    //TODO create orders from actual input from the user and store them in firestore
     public Order createOrder() {
 
         Order order1 = new Order();
@@ -121,9 +107,13 @@ public class ManageOrderStatusActivity extends AppCompatActivity {
         order1.setDateDelivered(new Date());
         order1.setOrderDescriptionAndQuantity(new HashMap<String, Integer>());
         order1.putOrderDescriptionAndQuantity("nails", 1);
+        Log.d(TAG, "Order created: " + order1.getOrderID());
         return order1;
     }
 
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
+    }
 }

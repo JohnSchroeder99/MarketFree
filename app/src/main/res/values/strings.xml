@@ -62,5 +62,24 @@
     <string name="imagesfororders">ImagesForOrders</string>
     <string name="imagefororders">imageForOrders</string>
     <string name="imageview">imageView</string>
+    <string name="NA">N/A</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="orderidplaceholder">OrderID :</string>
+    <string name="producer_keyplaceholder">Producer Key:</string>
+    <string name="customer_keyplaceholder">Customer Key:</string>
+    <string name="product_idplaceholder">Product ID:</string>
+    <string name="order_statusplaceholder">Order Status:</string>
+    <string name="order_descriptionplaceholder">Order Description:</string>
+    <string name="order_quantityplaceholder">Order Quantity:</string>
+    <string name="date_orderedplaceholder">Date Ordered:</string>
+    <string name="date_completedplaceholder">Date Completed:</string>
+    <string name="date_canceledplaceholder">Date Canceled:</string>
+    <string name="amount_paidplaceholder">Amount Paid:</string>
+    <string name="order_detailsFragementTitle">Order Details</string>
+    <string name="xbuttonName">X</string>
+
 
 </resources>

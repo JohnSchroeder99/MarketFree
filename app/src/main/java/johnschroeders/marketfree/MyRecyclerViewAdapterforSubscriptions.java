@@ -39,7 +39,6 @@ public class MyRecyclerViewAdapterforSubscriptions extends RecyclerView.Adapter<
         Log.d("Manage", "on bind myrecylcer");
         String name = mData.get(position);
         holder.myTextView.setText(name);
-
     }
 
     // total number of rows
