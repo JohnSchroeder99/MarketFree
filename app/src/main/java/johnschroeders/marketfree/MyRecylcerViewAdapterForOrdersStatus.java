@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,24 +20,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<MyRecylcerViewAdapterForOrdersStatus.ViewHolder> {
 
     private ArrayList<Order> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
     private FirebaseFirestore db;
     private Order ordertemp;
-    ViewGroup viewgroup;
-    Context context;
 
-    static final String TAG = "OrderStatus";
+    private static final String TAG = "OrderStatusActivity";
 
     // data is passed into the constructor
     MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
-        this.context = context;
 
     }
 
@@ -47,7 +43,6 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d(TAG, "on create view holder recyclerview class");
-        viewgroup = parent;
 
 
         View view = mInflater.inflate(R.layout.recycler_view_item_2, parent, false);
@@ -57,11 +52,11 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "setting text values in adapterview for orders");
         //TODO need to set text values to correct data for each order
-       // holder.myTextView.setText(mData.get(1).getProducerKey());
-       // holder.statusTextView.setText(R.string.OrderStatusApproved);
+        // holder.myTextView.setText(mData.get(1).getProducerKey());
+        // holder.statusTextView.setText(R.string.OrderStatusApproved);
     }
 
     // total number of rows
@@ -86,11 +81,15 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
         @Override
         public void onClick(View view) {
-          //  if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            //  if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
 
             //TODO get ID of order that was clicked to return the correct order (adapterPosition
             // fix and change getOrderParameter)
-            getOrder("19283asdfsa74");
+            try {
+                getOrder("19283asdfsa74");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             Log.d(TAG, "before order fragment inflation");
             //TODO pass on values of onclicked object to properly display fragment
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
@@ -108,7 +107,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     //Get the order from the position that was clicked that has a populated OrderID
     //TODO need to add more (like a composite key with customerkey and orderID) for clicked order
-    public Order getOrder(String orderID) {
+    private Order getOrder(String orderID){
         Log.d(TAG, "ItemClicked with orderID 19283asdfsa74");
         db = FirebaseFirestore.getInstance();
         Query query = db.collection("Orders").whereEqualTo("Orders", orderID);
@@ -116,7 +115,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Order orderReturned2 = document.toObject(Order.class);
                         copyOutOrder(orderReturned2);
                         Log.d(TAG, document.getId() + " => " + document.getData());

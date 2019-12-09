@@ -2,12 +2,14 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/PublishingFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ManagePublishingActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/PublishingContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

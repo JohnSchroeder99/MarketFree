@@ -9,7 +9,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/OrderFrame"
+        android:id="@+id/ManageSubscriptionsContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -52,7 +52,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/manageSubscriptionsView"
+            android:id="@+id/manageSubscriptionsRecyclerView"
             android:layout_width="380dp"
             android:layout_height="391dp"
             android:layout_marginTop="117dp"

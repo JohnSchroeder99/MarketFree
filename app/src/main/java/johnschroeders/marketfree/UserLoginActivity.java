@@ -10,30 +10,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.auth.api.credentials.CredentialRequest;
-import com.google.android.gms.auth.api.credentials.CredentialsClient;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 
-import org.json.JSONException;
-
 
 public class UserLoginActivity extends AppCompatActivity {
 
-    private Button registerButton = null;
-    private Button loginButton = null;
-    private CredentialsClient mCredentialsApiClient;
-    private CredentialRequest mCredentialRequest;
-    private static final int RC_READ = 3;
-    private static final int RC_SAVE = 1;
-    private static final int RC_HINT = 2;
     private static final int RC_SIGN_IN = 9001;
-    private boolean isResolving;
     private GoogleSignInClient mSignInClient;
-    private GoogleSignInAccount acct;
+    static final String TAG = "LoginActivity";
 
 
     @Override
@@ -42,18 +30,22 @@ public class UserLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_login);
         TextView tempLogin = (EditText) findViewById(R.id.loginPageEmailAddress);
         TextView tempPaSS = (EditText) findViewById(R.id.loginPagepassWordText);
-        registerButton = findViewById(R.id.loginPageregisterButton);
-        loginButton = findViewById(R.id.loginPageLoginButton);
+        Button registerButton = findViewById(R.id.loginPageregisterButton);
+        Button loginButton = findViewById(R.id.loginPageLoginButton);
         tempPaSS.setText(R.string.passwordText);
         tempLogin.setText(R.string.loginText);
 
-
+        // handle login procedure for signing into the device
+        //TODO add information from successful signin in to a bundle so it can be added to the
+        // correct Key to properly identify the current user and their subs, orders, and profile.
+        // Also need to handle various user profiles or sign ins
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, " Logging in and setting up Google sign-in options");
                 GoogleSignInOptions options =
                         new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
-                        .build();
+                                .build();
                 mSignInClient = GoogleSignIn.getClient(getApplicationContext(), options);
                 signIn();
             }
@@ -82,19 +74,17 @@ public class UserLoginActivity extends AppCompatActivity {
                     GoogleSignIn.getSignedInAccountFromIntent(data);
             if (task.isSuccessful()) {
                 // Sign in succeeded, proceed with account
-                acct = task.getResult();
-                Log.d("Creds", "successful results for account: "
-                        + acct.getEmail() + acct.getDisplayName());
+                GoogleSignInAccount acct = task.getResult();
+                assert acct != null;
+                Log.d(TAG, "successful results for account: " + acct.getEmail() + " for " + acct.getDisplayName());
                 Intent intent = new Intent(getApplicationContext(), UserMainPageActivity.class);
                 startActivity(intent);
 
             } else {
-                Log.d("Creds", "failed to login" + task.getException());
+                Log.d(TAG, "failed to login" + task.getException());
             }
         }
     }
-
-
 }
 
 

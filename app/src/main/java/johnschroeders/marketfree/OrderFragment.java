@@ -3,14 +3,16 @@ package johnschroeders.marketfree;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import java.util.Objects;
 
 
 /**
@@ -26,10 +28,8 @@ public class OrderFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    Button fragmentXbutton;
-
-
-    // TODO: Rename and change types of parameters
+    private Button fragmentXbutton;
+    static final String TAG = "OrderStatusActivity";
     private String mParam1;
     private String mParam2;
 
@@ -48,7 +48,7 @@ public class OrderFragment extends Fragment {
      * @return A new instance of fragment OrderFragment.
      */
     // TODO: match parameters of fragment class to populate data from adapter bundle
-    public static OrderFragment newInstance(String param1, String param2) {
+    private static OrderFragment newInstance(String param1, String param2) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -71,24 +71,29 @@ public class OrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order, container, false);
-        fragmentXbutton = (Button) view.findViewById(R.id.exitOrderFragmentButton);
+        fragmentXbutton = view.findViewById(R.id.exitOrderFragmentButton);
         fragmentXbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeSelf();
-                Log.d("FragOrder", "clicked frag");
             }
         });
         return view;
     }
 
     // allow the fragment to remove itself from the view
-    public void removeSelf() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+    private void removeSelf() {
+        Log.d(TAG, "Order fragment removing");
+        try {
+            Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+        } catch (Exception e) {
+            Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -114,8 +119,8 @@ public class OrderFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+    //Not exactly sure what the proper way to use this interface is
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

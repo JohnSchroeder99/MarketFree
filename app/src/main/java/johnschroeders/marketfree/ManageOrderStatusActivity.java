@@ -24,19 +24,13 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener {
-
-
-    private Button manageOrdersBackButton = null;
-    private RecyclerView recyclerView = null;
-    private RecyclerView.Adapter mAdapter;
-    private FirebaseFirestore db;
-    static final String TAG = "OrderStatus";
+    static final String TAG = "OrderStatusActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_order_status);
-        manageOrdersBackButton = findViewById(R.id.manageOrdersBackButton);
+        Button manageOrdersBackButton = findViewById(R.id.manageOrdersBackButton);
 
         manageOrdersBackButton.setOnClickListener(new View.OnClickListener() {
 
@@ -48,37 +42,42 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         });
 
         // Creating a mock list to populate order list and stuff into adapter
+        //TODO retrieve actual firestore orders and populate the array list full of orders
+        Log.d(TAG, "Loading arraylist with orders");
         ArrayList<Order> orders = new ArrayList<>();
         orders.add(createOrder());
         orders.add(createOrder());
         orders.add(createOrder());
+        Log.d(TAG, "Orders loaded into arraylist");
 
-
-        db = FirebaseFirestore.getInstance();
+        //get collections from firestore and add them
+        //TODO find a clean way for using firestore for orders instead of firebase database
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Orders").document(createOrder().getOrderID()).set(createOrder());
 
 
         Log.d(TAG, "setting recycler layout");
-        recyclerView = findViewById(R.id.manageOrdersView);
+        RecyclerView recyclerView = findViewById(R.id.manageOrdersView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Log.d(TAG, "recycler layout set");
-        mAdapter = new MyRecylcerViewAdapterForOrdersStatus(this, orders);
+        RecyclerView.Adapter mAdapter = new MyRecylcerViewAdapterForOrdersStatus(this, orders);
         Log.d(TAG, "adapter successfully initialized");
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "adapter successfully created");
 
-
+        // setting up firebase references to the firebase storage
         final FirebaseDatabase database = FirebaseDatabase.getInstance("https://marketfree-67cb9.firebaseio.com/");
         final DatabaseReference databaseReference = database.getReference();
 
+
+        // TODO create dynamic orders and push to firestore
         Order order = createOrder();
-        databaseReference.child("OrderID").setValue("193198237412394");
+        databaseReference.child("OrderID").setValue(order.getOrderID());
         databaseReference.child("ProducerKey").setValue(order.getProducerKey());
         databaseReference.child("CustomerKey").setValue(order.getCustomerKey());
         databaseReference.child("CustomerKey").push().setValue(order.getCustomerKey());
         databaseReference.child("ProducerKey").push().setValue(order.getCustomerKey());
         databaseReference.child("OrderID").push().setValue(order.getOrderID());
-
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -111,7 +110,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         return order1;
     }
 
-
+    // TODO need to understand how to use this interface for the fragment
     @Override
     public void onFragmentInteraction(Uri uri) {
 

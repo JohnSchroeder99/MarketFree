@@ -10,18 +10,17 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class ManageProfileActivity extends AppCompatActivity {
-    private Button manageProfileSaveButton = null;
-    private Button manageProfileUpdateBankingButton = null;
-    private Button manageProfileBackButton = null;
+    static final String TAG = "ProfileActivty";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_profile);
 
-        manageProfileSaveButton = findViewById(R.id.manageProfileSaveButton);
-        manageProfileUpdateBankingButton = findViewById(R.id.manageProfileUpdateBankingButton);
-        manageProfileBackButton = findViewById(R.id.manageProfileBackButton);
+        // ManageProfile button referenceing and onclicks for future use
+        Button manageProfileSaveButton = findViewById(R.id.manageProfileSaveButton);
+        Button manageProfileUpdateBankingButton = findViewById(R.id.manageProfileUpdateBankingButton);
+        Button manageProfileBackButton = findViewById(R.id.manageProfileBackButton);
 
         manageProfileBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,11 +45,7 @@ public class ManageProfileActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-
-
     }
-
-
 }
 
 

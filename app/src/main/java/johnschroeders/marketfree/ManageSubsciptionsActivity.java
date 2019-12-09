@@ -14,41 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ManageSubsciptionsActivity extends AppCompatActivity {
-    private Button subscriptionsBackButton = null;
-    private Button addSubScriptionsButton = null;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private static final String TAG = "SubscriptionsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_subsciptions);
-
-        subscriptionsBackButton = findViewById(R.id.manageSubscriptionsBackButton);
-        addSubScriptionsButton = findViewById(R.id.manageSubscriptionsaddButton);
-
-        Log.d("Manage", "before arraylist made");
-
-
-        ArrayList<String> names = new ArrayList<>();
-        names.add("John");
-        names.add("Deborah");
-        names.add("Useless");
-        names.add("Brandumb");
-        names.add("Richard");
-        names.add("Idiot");
-
-        Log.d("Manage", "after arraylist made");
-
-        recyclerView = findViewById(R.id.manageSubscriptionsView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d("Manage", "recyclerlayout set");
-        mAdapter = new MyRecyclerViewAdapterforSubscriptions(this, names);
-        Log.d("Manage", "adapter initialized");
-        recyclerView.setAdapter(mAdapter);
-        Log.d("Manage", "adapter made");
-
+        //button referencing for managing subscriptions activity/view/layout
+        Button subscriptionsBackButton = findViewById(R.id.manageSubscriptionsBackButton);
+        Button addSubScriptionsButton = findViewById(R.id.manageSubscriptionsaddButton);
 
         subscriptionsBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +32,7 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
             }
         });
 
-
+        //TODO add functionality to adding subcriptions to firestore
         addSubScriptionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +41,25 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
             }
         });
 
+        Log.d(TAG, "loading data for subscriptions");
+        //TODO need to load true subscriptions for each person from firestore
+        ArrayList<String> names = new ArrayList<>();
+        names.add("John");
+        names.add("Deborah");
+        names.add("Useless");
+        names.add("Brandumb");
+        names.add("Richard");
+        names.add("Idiot");
+        Log.d(TAG, "loading data for subscriptions completed successfully");
+
+        //
+        Log.d(TAG, "creating recyclerview for the subscriptions view");
+        RecyclerView recyclerView = findViewById(R.id.manageSubscriptionsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        Log.d(TAG, "recyclerview created for subscriptions and recyclerlayout set to " + this);
+        RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapterforSubscriptions(this, names);
+        Log.d(TAG, "adapter initialized for orders");
+        recyclerView.setAdapter(mAdapter);
+        Log.d(TAG, "adapter successfully setup");
     }
-
-
 }

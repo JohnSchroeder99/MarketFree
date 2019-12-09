@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+//recycler view for subscription views
 public class MyRecyclerViewAdapterforSubscriptions extends RecyclerView.Adapter<MyRecyclerViewAdapterforSubscriptions.ViewHolder> {
 
     private ArrayList<String> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private static final String TAG = "SubscriptionsActivity";
 
     // data is passed into the constructor
     MyRecyclerViewAdapterforSubscriptions(Context context, ArrayList<String> data) {
@@ -28,15 +30,17 @@ public class MyRecyclerViewAdapterforSubscriptions extends RecyclerView.Adapter<
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("Manage", "on create view holder recyclerview class");
+        Log.d(TAG, "on create view holder for subscriptions recyclerview class");
         View view = mInflater.inflate(R.layout.recycler_view_item_1, parent, false);
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
+    //TODO bind data from actual firestore data for subscriptions
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Log.d("Manage", "on bind myrecylcer");
+        Log.d(TAG, "bindin views to positions and texts");
         String name = mData.get(position);
         holder.myTextView.setText(name);
     }
@@ -70,8 +74,9 @@ public class MyRecyclerViewAdapterforSubscriptions extends RecyclerView.Adapter<
     }
 
     // allows clicks events to be caught
+    //TODO retrieve actual firestore data when a subscription is clicked for subscription fragment
     void setClickListener(ItemClickListener itemClickListener) {
-        Log.d("Manage", "in on click for recyclerview class");
+        Log.d(TAG, "in on click for recyclerview class");
         this.mClickListener = itemClickListener;
     }
 

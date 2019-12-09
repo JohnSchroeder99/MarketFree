@@ -1,11 +1,11 @@
 package johnschroeders.marketfree;
 
 
-
 import android.util.Log;
 
 import java.util.Date;
 import java.util.HashMap;
+
 
 public class Order {
 
@@ -19,27 +19,28 @@ public class Order {
     private Date dateDelivered;
     private Date dateCanceled;
     private double amountPaid;
+    static final String TAG = "OrderStatusActivity";
 
-    public void setOrderDescriptionAndQuantity(HashMap<String, Integer> orderDescriptionAndQuantity) {
+    void setOrderDescriptionAndQuantity(HashMap<String, Integer> orderDescriptionAndQuantity) {
         this.orderDescriptionAndQuantity = orderDescriptionAndQuantity;
-        Log.d("Order", "new order description and quantity");
+        Log.d(TAG, "new order description and quantity");
 
     }
 
-    public String getOrderID() {
+    String getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(String orderID) {
+    void setOrderID(String orderID) {
         this.orderID = orderID;
     }
 
     public HashMap<String, Integer> getOrderDescriptionAndQuantity() {
-        Log.d("Order", "order description and quantity requested");
+        Log.d(TAG, "order description and quantity requested ");
         return orderDescriptionAndQuantity;
     }
 
-    public void putOrderDescriptionAndQuantity(String description, Integer amount) {
+    void putOrderDescriptionAndQuantity(String description, Integer amount) {
         this.orderDescriptionAndQuantity.put(description, amount);
     }
 
@@ -47,15 +48,13 @@ public class Order {
         this.orderDescriptionAndQuantity.remove(description);
     }
 
-
-    public void setProducerKey(String producerKey) {
+    void setProducerKey(String producerKey) {
         this.producerKey = producerKey;
     }
 
-    public void setCustomerKey(String customerKey) {
+    void setCustomerKey(String customerKey) {
         this.customerKey = customerKey;
     }
-
 
     public void setProductID(String productID) {
         this.productID = productID;
@@ -69,19 +68,19 @@ public class Order {
         this.dateOrdered = dateOrdered;
     }
 
-    public void setDateDelivered(Date dateDelivered) {
+    void setDateDelivered(Date dateDelivered) {
         this.dateDelivered = dateDelivered;
     }
 
-    public void setAmountPaid(double amountPaid) {
+    void setAmountPaid(double amountPaid) {
         this.amountPaid = amountPaid;
     }
 
-    public String getProducerKey() {
+    String getProducerKey() {
         return producerKey;
     }
 
-    public String getCustomerKey() {
+    String getCustomerKey() {
         return customerKey;
     }
 
@@ -105,5 +104,12 @@ public class Order {
         return amountPaid;
     }
 
+    public Date getDateCanceled() {
+        return dateCanceled;
+    }
+
+    public void setDateCanceled(Date dateCanceled) {
+        this.dateCanceled = dateCanceled;
+    }
 
 }

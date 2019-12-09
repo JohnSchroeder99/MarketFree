@@ -57,7 +57,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/manageSubscriptionsView"
+                android:id="@+id/manageSubscriptionsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/recycler_view_item_1" />

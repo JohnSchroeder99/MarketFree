@@ -2,16 +2,15 @@ package johnschroeders.marketfree;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 
+// this class is the main layout for the application. This might be a good place to start
+// grabbing data for the client- perhaps not if we want to limit calls for only user usage.
 public class UserMainPageActivity extends AppCompatActivity {
-
-    private Button manageSubscriptionsButton = null;
-    private Button managePublishingButton = null;
-    private Button manageOrderStatusButton = null;
-    private Button manageProfileButton = null;
     private Intent intent = null;
 
     @Override
@@ -19,10 +18,10 @@ public class UserMainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main_page);
 
-        manageSubscriptionsButton = findViewById(R.id.manageSubscriptionsButton);
-        managePublishingButton = findViewById(R.id.managePublishingButton);
-        manageOrderStatusButton = findViewById(R.id.manageOrderStatusButton);
-        manageProfileButton = findViewById(R.id.manageProfileButton);
+        Button manageSubscriptionsButton = findViewById(R.id.manageSubscriptionsButton);
+        Button managePublishingButton = findViewById(R.id.managePublishingButton);
+        Button manageOrderStatusButton = findViewById(R.id.manageOrderStatusButton);
+        Button manageProfileButton = findViewById(R.id.manageProfileButton);
 
 
         // create listeners for each button select that is tied to specific activities

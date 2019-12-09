@@ -10,19 +10,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class ManagePublishingActivity extends AppCompatActivity {
-    private Button removePublishings = null;
-    private Button managePublishingBackButton = null;
-    private Button addPublishingButton = null;
+    static final String TAG = "PublishingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_publishing);
 
-        addPublishingButton = findViewById(R.id.managePublishingAddnewButton);
-        removePublishings = findViewById(R.id.managePublishingRemovePublishing);
-        managePublishingBackButton = findViewById(R.id.managePublishingBackButton);
-
+        Button addPublishingButton = findViewById(R.id.managePublishingAddnewButton);
+        Button removePublishings = findViewById(R.id.managePublishingRemovePublishing);
+        Button managePublishingBackButton = findViewById(R.id.managePublishingBackButton);
 
         addPublishingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,8 +44,5 @@ public class ManagePublishingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
-
 }
