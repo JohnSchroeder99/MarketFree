@@ -1,6 +1,8 @@
 package johnschroeders.marketfree;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +15,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -54,8 +59,16 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "setting text values in adapterview for orders");
-        //TODO need to set text values to correct data for each order
-        // holder.myTextView.setText(mData.get(1).getProducerKey());
+        // TODO need to fix when the user rotates the device so it doesnt add 3 more items to the
+        //  database and need to dynamically change colors based off of the order status.
+        for (Order o : this.mData){
+            Log.d(TAG, o.getOrderID());
+            holder.orderIDpopulate.setText(o.getOrderID());
+            if(o.getOrderStatus().equals("Pending")){
+                holder.orderStatusImage.
+                        setCompoundDrawables(holder.imageYellow, null, null, null);
+            }
+        }
         // holder.statusTextView.setText(R.string.OrderStatusApproved);
     }
 
@@ -68,32 +81,41 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
-        TextView statusTextView;
+        //these members reflect the two fields in the reclerview
+        TextView orderIDpopulate;
+        TextView orderStatusImage;
+        Drawable imageYellow;
 
         ViewHolder(View itemView) {
             super(itemView);
-            //TODO change these text values to be values of the actual orders
-            statusTextView = itemView.findViewById(R.id.orderStatus);
-            myTextView = itemView.findViewById(R.id.orderIDResult);
+            Log.d(TAG, "setting text values viewHolder");
+            //Get references to the items in the recyclerview2 layout
+            //TODO get drawables for each color or find a way to dynamically change which one to
+            // populate based off of order status.
+
+            orderIDpopulate = itemView.findViewById(R.id.OrderIDPopulate);
+            orderStatusImage = itemView.findViewById(R.id.OrderStatusIconPopulate);
+            imageYellow = itemView.getContext().getResources().getDrawable( R.drawable.yellowbutton);
+            int h = imageYellow.getIntrinsicHeight();
+            int w = imageYellow.getIntrinsicWidth();
+            imageYellow.setBounds( 5, 5, w, h );
+
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            //  if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-
-            //TODO get ID of order that was clicked to return the correct order (adapterPosition
-            // fix and change getOrderParameter)
-            try {
-                getOrder("19283asdfsa74");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             Log.d(TAG, "before order fragment inflation");
-            //TODO pass on values of onclicked object to properly display fragment
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
             Fragment myFragment = new OrderFragment();
+            Order order = new Order();
+            order.setOrderID(orderIDpopulate.getText().toString());
+
+            //Adding data to bundle to pass on to the fragment class for population.
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("OrderClicked", order);
+            myFragment.setArguments(bundle);
+
             activity.getSupportFragmentManager().beginTransaction().add(R.id.OrderStatusFrame,
                     myFragment).commit();
             Log.d(TAG, "after order fragment inflation");
@@ -107,29 +129,38 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     //Get the order from the position that was clicked that has a populated OrderID
     //TODO need to add more (like a composite key with customerkey and orderID) for clicked order
-    private Order getOrder(String orderID){
-        Log.d(TAG, "ItemClicked with orderID 19283asdfsa74");
+    private Order getOrder(String orderID) {
+        Log.d(TAG, "ItemClicked with orderID 19283aererterrtdfsa74");
         db = FirebaseFirestore.getInstance();
-        Query query = db.collection("Orders").whereEqualTo("Orders", orderID);
+        CollectionReference collectionReference = db.collection("Orders");
+        final Query query =collectionReference.whereEqualTo("Orders", orderID );
+        Log.d(TAG, "Getting query now");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    Log.d(TAG, "task was successful");
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Order orderReturned2 = document.toObject(Order.class);
                         copyOutOrder(orderReturned2);
-                        Log.d(TAG, document.getId() + " => " + document.getData());
                     }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Task failed "+e.getCause());
             }
         });
         return this.ordertemp;
     }
 
     private void copyOutOrder(Order order) {
+
+        Log.d(TAG, "Order Copied out to "+new Gson().toJson(order));
         this.ordertemp = order;
+
     }
 
 }
