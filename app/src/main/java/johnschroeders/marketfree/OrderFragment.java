@@ -13,8 +13,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.gson.Gson;
-
 import java.util.Objects;
 
 
@@ -35,6 +33,7 @@ public class OrderFragment extends Fragment {
     static final String TAG = "OrderStatusActivity";
     private String mParam1;
     private String mParam2;
+    Bundle bundle;
     Order tempOrder = new Order();
 
     private OnFragmentInteractionListener mListener;
@@ -53,9 +52,8 @@ public class OrderFragment extends Fragment {
      */
     // TODO: match parameters of fragment class to populate data from adapter bundle
     private static OrderFragment newInstance(String param1, String param2) {
-        OrderFragment fragment = new OrderFragment();
 
-        return fragment;
+        return new OrderFragment();
     }
 
     @Override
@@ -65,19 +63,12 @@ public class OrderFragment extends Fragment {
 
             //Inflating View with proper items from saved bundle
             Log.d(TAG, "before bundle grab " + getArguments());
-
-            Bundle bundle = this.getArguments();
+            bundle = this.getArguments();
             if (bundle != null) {
                 tempOrder = bundle.getParcelable("OrderClicked");
             }
-
-
-
-                Log.d(TAG, "Temp order ID = "+tempOrder.getOrderID());
-
-
-
-
+            Log.d(TAG,
+                    "Temp order ID = " + Objects.requireNonNull(tempOrder).getOrderID() + "Temp Producer Key is = " + tempOrder.getProducerKey());
         }
     }
 
@@ -95,33 +86,32 @@ public class OrderFragment extends Fragment {
         });
         //TODO finish mapping out the rest of this to the order class passed in and erase from
         // the bundle after pushing the X button
-        TextView orderID = view.findViewById(R.id.orderIDResult);
-        orderID.setText(tempOrder.getOrderID());
         try {
-            TextView producerKey = getView().findViewById(R.id.productIDResult);
-            producerKey.setText(tempOrder.getProducerKey());
-            TextView customerKey = getView().findViewById(R.id.customerKeyResult);
-            customerKey.setText(tempOrder.getCustomerKey());
-            TextView productID = getView().findViewById(R.id.productIDResult);
+            TextView orderID = view.findViewById(R.id.orderIDResult);
+            orderID.setText(tempOrder.getOrderID());
+            TextView productKey = view.findViewById(R.id.producerKeyResult);
+            productKey.setText(tempOrder.getProductID());
+            TextView productID = view.findViewById(R.id.productIDResult);
             productID.setText(tempOrder.getProductID());
-            TextView orderdescription = getView().findViewById(R.id.orderDescriptionResult);
+            TextView customerKey = view.findViewById(R.id.customerKeyResult);
+            customerKey.setText(tempOrder.getCustomerKey());
+            TextView orderdescription = view.findViewById(R.id.orderDescriptionResult);
             orderdescription.setText(tempOrder.getProductDescription());
-            TextView orderQUantity = getView().findViewById(R.id.orderQuantityResult);
-            orderQUantity.setText(tempOrder.getProductQuantity());
-            TextView dateOrder = getView().findViewById(R.id.dateOrderedResult);
+            TextView orderQUantity = view.findViewById(R.id.orderQuantityResult);
+            orderQUantity.setText(String.valueOf(tempOrder.getProductQuantity()));
+            TextView dateOrder = view.findViewById(R.id.dateOrderedResult);
             dateOrder.setText(tempOrder.getDateOrdered().toString());
-            TextView dateCompleted = getView().findViewById(R.id.dateCompletedResult);
+            TextView dateCompleted = view.findViewById(R.id.dateCompletedResult);
             dateCompleted.setText(tempOrder.getDateDelivered().toString());
-            TextView dateCanceled = getView().findViewById(R.id.dateCanceledResult);
+            TextView dateCanceled = view.findViewById(R.id.dateCanceledResult);
             dateCanceled.setText(tempOrder.getDateCanceled().toString());
-            TextView amountPaid = getView().findViewById(R.id.amountPaidResult);
+            TextView amountPaid = view.findViewById(R.id.amountPaidResult);
             amountPaid.setText(String.valueOf(tempOrder.getAmountPaid()));
-            TextView orderStatus = getView().findViewById(R.id.orderStatusResult);
+            TextView orderStatus = view.findViewById(R.id.orderStatusResult);
             orderStatus.setText(tempOrder.getOrderStatus());
         } catch (Exception e) {
             Log.d(TAG, "One of the values are null");
         }
-
 
 
         return view;
@@ -131,6 +121,7 @@ public class OrderFragment extends Fragment {
     private void removeSelf() {
         Log.d(TAG, "Order fragment removing");
         try {
+            bundle.clear();
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
         } catch (Exception e) {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());

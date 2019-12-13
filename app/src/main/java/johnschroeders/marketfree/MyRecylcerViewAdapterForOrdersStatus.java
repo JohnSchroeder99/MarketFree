@@ -14,25 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<MyRecylcerViewAdapterForOrdersStatus.ViewHolder> {
 
     private ArrayList<Order> mData;
     private LayoutInflater mInflater;
-    private FirebaseFirestore db;
-    private Order ordertemp;
+
 
     private static final String TAG = "OrderStatusActivity";
 
@@ -61,21 +49,42 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         Log.d(TAG, "setting text values in adapterview for orders");
         // TODO need to fix when the user rotates the device so it doesnt add 3 more items to the
         //  database and need to dynamically change colors based off of the order status.
-        for (Order o : this.mData){
-            Log.d(TAG, o.getOrderID());
-            holder.orderIDpopulate.setText(o.getOrderID());
-            if(o.getOrderStatus().equals("Pending")){
+        holder.orderIDpopulate.setText(this.mData.get(position).getOrderID());
+
+        Log.d(TAG, "populated with an order id: " + this.mData.get(position).getOrderID()
+        +" with order status "+this.mData.get(position).getOrderStatus());
+
+        switch (this.mData.get(position).getOrderStatus()) {
+            case "Pending":
                 holder.orderStatusImage.
                         setCompoundDrawables(holder.imageYellow, null, null, null);
-            }
+                break;
+            case "Approved":
+                holder.orderStatusImage.
+                        setCompoundDrawables(holder.imageBlue, null, null, null);
+                break;
+            case "Canceled":
+                holder.orderStatusImage.
+                        setCompoundDrawables(holder.imageRed, null, null, null);
+                break;
+            case "Complete":
+                holder.orderStatusImage.
+                        setCompoundDrawables(holder.imageGreen, null, null, null);
+                break;
         }
-        // holder.statusTextView.setText(R.string.OrderStatusApproved);
+
+        Log.d(TAG, "finished setting text values in adapterview for orders");
+
     }
 
     // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        try{
+            return this.mData.size();
+        }catch (Exception e){
+            return 0;
+        }
     }
 
 
@@ -84,7 +93,11 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         //these members reflect the two fields in the reclerview
         TextView orderIDpopulate;
         TextView orderStatusImage;
+
         Drawable imageYellow;
+        Drawable imageGreen;
+        Drawable imageBlue;
+        Drawable imageRed;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -95,27 +108,45 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
             orderIDpopulate = itemView.findViewById(R.id.OrderIDPopulate);
             orderStatusImage = itemView.findViewById(R.id.OrderStatusIconPopulate);
-            imageYellow = itemView.getContext().getResources().getDrawable( R.drawable.yellowbutton);
-            int h = imageYellow.getIntrinsicHeight();
+
+            imageYellow = itemView.getContext().getResources().getDrawable(R.drawable.yellowbutton);
+            int h = imageYellow.getIntrinsicWidth();
             int w = imageYellow.getIntrinsicWidth();
-            imageYellow.setBounds( 5, 5, w, h );
+            imageYellow.setBounds(1, 1, w, h);
+
+            imageGreen = itemView.getContext().getResources().getDrawable(R.drawable.greenbutton);
+            int he = imageGreen.getIntrinsicWidth();
+            int wi = imageGreen.getIntrinsicWidth();
+            imageGreen.setBounds(1, 1, he, wi);
+
+            imageBlue = itemView.getContext().getResources().getDrawable(R.drawable.bluebutton);
+            int hei = imageBlue.getIntrinsicWidth();
+            int wid = imageBlue.getIntrinsicWidth();
+            imageBlue.setBounds(1, 1, hei, wid);
+
+            imageRed = itemView.getContext().getResources().getDrawable(R.drawable.redbutton);
+            int heigh = imageRed.getIntrinsicWidth();
+            int widt = imageRed.getIntrinsicWidth();
+            imageRed.setBounds(1, 1, heigh, widt);
+
 
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG, "before order fragment inflation");
+
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
             Fragment myFragment = new OrderFragment();
-            Order order = new Order();
-            order.setOrderID(orderIDpopulate.getText().toString());
+            Order order = mData.get(this.getAdapterPosition());
+            Log.d(TAG, "In ONCLICK with Order ID clicked: " +
+                    mData.get(this.getAdapterPosition()).getOrderID() +
+                    " and order ID" + order.getOrderID());
 
             //Adding data to bundle to pass on to the fragment class for population.
             Bundle bundle = new Bundle();
             bundle.putParcelable("OrderClicked", order);
             myFragment.setArguments(bundle);
-
             activity.getSupportFragmentManager().beginTransaction().add(R.id.OrderStatusFrame,
                     myFragment).commit();
             Log.d(TAG, "after order fragment inflation");
@@ -126,7 +157,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-
+/*
     //Get the order from the position that was clicked that has a populated OrderID
     //TODO need to add more (like a composite key with customerkey and orderID) for clicked order
     private Order getOrder(String orderID) {
@@ -155,12 +186,6 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         });
         return this.ordertemp;
     }
-
-    private void copyOutOrder(Order order) {
-
-        Log.d(TAG, "Order Copied out to "+new Gson().toJson(order));
-        this.ordertemp = order;
-
-    }
+*/
 
 }
