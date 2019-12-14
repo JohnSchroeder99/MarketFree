@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,14 +50,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         getListItems();
 
 
-        Log.d(TAG, "setting recycler layout");
-        RecyclerView recyclerView = findViewById(R.id.manageOrdersView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d(TAG, "recycler layout set");
-        RecyclerView.Adapter mAdapter = new MyRecylcerViewAdapterForOrdersStatus(this, orders);
-        Log.d(TAG, "adapter successfully initialized");
-        recyclerView.setAdapter(mAdapter);
-        Log.d(TAG, "adapter successfully created");
+
 
 
     }
@@ -107,6 +99,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
     private void getListItems() {
     //TODO finish retrieving objects from firestore and converting correctly.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        orders = new ArrayList<>();
         Log.d(TAG, "Getting all orders from firestore");
         db.collection("Orders")
                 .get()
@@ -115,9 +108,19 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                orders.add(document.toObject(Order.class));
                                 Log.d(TAG, document.getId() + " => " + document.getData());
-
                             }
+
+                            Log.d(TAG, "setting recycler layout");
+                            RecyclerView recyclerView = findViewById(R.id.manageOrdersView);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            Log.d(TAG, "recycler layout set");
+                            RecyclerView.Adapter mAdapter =
+                                    new MyRecylcerViewAdapterForOrdersStatus(getApplicationContext(), orders);
+                            Log.d(TAG, "adapter successfully initialized");
+                            recyclerView.setAdapter(mAdapter);
+                            Log.d(TAG, "adapter successfully created");
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +27,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+
 
     }
 
@@ -52,26 +52,34 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         holder.orderIDpopulate.setText(this.mData.get(position).getOrderID());
 
         Log.d(TAG, "populated with an order id: " + this.mData.get(position).getOrderID()
-        +" with order status "+this.mData.get(position).getOrderStatus());
+                + " with order status " + this.mData.get(position).getOrderStatus());
 
-        switch (this.mData.get(position).getOrderStatus()) {
-            case "Pending":
-                holder.orderStatusImage.
-                        setCompoundDrawables(holder.imageYellow, null, null, null);
-                break;
-            case "Approved":
-                holder.orderStatusImage.
-                        setCompoundDrawables(holder.imageBlue, null, null, null);
-                break;
-            case "Canceled":
-                holder.orderStatusImage.
-                        setCompoundDrawables(holder.imageRed, null, null, null);
-                break;
-            case "Complete":
-                holder.orderStatusImage.
-                        setCompoundDrawables(holder.imageGreen, null, null, null);
-                break;
+        try {
+
+            switch (this.mData.get(position).getOrderStatus()) {
+                case "Pending":
+                    holder.orderStatusImage.
+                            setCompoundDrawables(holder.imageYellow, null, null, null);
+                    break;
+                case "Approved":
+                    holder.orderStatusImage.
+                            setCompoundDrawables(holder.imageBlue, null, null, null);
+                    break;
+                case "Canceled":
+                    holder.orderStatusImage.
+                            setCompoundDrawables(holder.imageRed, null, null, null);
+                    break;
+                case "Complete":
+                    holder.orderStatusImage.
+                            setCompoundDrawables(holder.imageGreen, null, null, null);
+                    break;
+            }
+
+        } catch (Exception e) {
+            holder.orderStatusImage.
+                    setCompoundDrawables(holder.imageYellow, null, null, null);
         }
+
 
         Log.d(TAG, "finished setting text values in adapterview for orders");
 
@@ -80,9 +88,9 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     // total number of rows
     @Override
     public int getItemCount() {
-        try{
+        try {
             return this.mData.size();
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }
@@ -136,8 +144,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         @Override
         public void onClick(View view) {
 
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            Fragment myFragment = new OrderFragment();
+            Fragment orderFragment = new OrderFragment();
             Order order = mData.get(this.getAdapterPosition());
             Log.d(TAG, "In ONCLICK with Order ID clicked: " +
                     mData.get(this.getAdapterPosition()).getOrderID() +
@@ -146,9 +153,14 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
             //Adding data to bundle to pass on to the fragment class for population.
             Bundle bundle = new Bundle();
             bundle.putParcelable("OrderClicked", order);
-            myFragment.setArguments(bundle);
-            activity.getSupportFragmentManager().beginTransaction().add(R.id.OrderStatusFrame,
-                    myFragment).commit();
+            orderFragment.setArguments(bundle);
+
+
+
+
+
+
+
             Log.d(TAG, "after order fragment inflation");
         }
     }
