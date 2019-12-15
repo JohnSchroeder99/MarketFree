@@ -1,172 +1,142 @@
-#!/usr/bin/env sh
+package johnschroeders.marketfree;
 
-##############################################################################
-##
-##  Gradle start up script for UN*X
-##
-##############################################################################
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-# Attempt to set APP_HOME
-# Resolve links: $0 may be a link
-PRG="$0"
-# Need this for relative symlinks.
-while [ -h "$PRG" ] ; do
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '/.*' > /dev/null; then
-        PRG="$link"
-    else
-        PRG=`dirname "$PRG"`"/$link"
-    fi
-done
-SAVED="`pwd`"
-cd "`dirname \"$PRG\"`/" >/dev/null
-APP_HOME="`pwd -P`"
-cd "$SAVED" >/dev/null
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
-APP_NAME="Gradle"
-APP_BASE_NAME=`basename "$0"`
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
-# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
-DEFAULT_JVM_OPTS=""
+import java.util.ArrayList;
+import java.util.Objects;
 
-# Use the maximum available, or set MAX_FD != -1 to use that value.
-MAX_FD="maximum"
+public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<MyRecylcerViewAdapterForOrdersStatus.ViewHolder> {
 
-warn () {
-    echo "$*"
-}
+    private ArrayList<Order> mData;
+    private LayoutInflater mInflater;
+    private FirebaseFirestore db;
+    private Order ordertemp;
+    public ViewHolder holder;
 
-die () {
-    echo
-    echo "$*"
-    echo
-    exit 1
-}
+    private static final String TAG = "OrderStatusActivity";
 
-# OS specific support (must be 'true' or 'false').
-cygwin=false
-msys=false
-darwin=false
-nonstop=false
-case "`uname`" in
-  CYGWIN* )
-    cygwin=true
-    ;;
-  Darwin* )
-    darwin=true
-    ;;
-  MINGW* )
-    msys=true
-    ;;
-  NONSTOP* )
-    nonstop=true
-    ;;
-esac
+    // data is passed into the constructor
+    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data) {
+        this.mInflater = LayoutInflater.from(context);
+        this.mData = data;
 
-CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+    }
 
-# Determine the Java command to use to start the JVM.
-if [ -n "$JAVA_HOME" ] ; then
-    if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
-        # IBM's JDK on AIX uses strange locations for the executables
-        JAVACMD="$JAVA_HOME/jre/sh/java"
-    else
-        JAVACMD="$JAVA_HOME/bin/java"
-    fi
-    if [ ! -x "$JAVACMD" ] ; then
-        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
+    // inflates the row layout from xml when needed
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "on create view holder recyclerview class");
 
-Please set the JAVA_HOME variable in your environment to match the
-location of your Java installation."
-    fi
-else
-    JAVACMD="java"
-    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
 
-Please set the JAVA_HOME variable in your environment to match the
-location of your Java installation."
-fi
+        View view = mInflater.inflate(R.layout.recycler_view_item_2, parent, false);
+        return new ViewHolder(view);
+    }
 
-# Increase the maximum file descriptors if we can.
-if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
-    MAX_FD_LIMIT=`ulimit -H -n`
-    if [ $? -eq 0 ] ; then
-        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ] ; then
-            MAX_FD="$MAX_FD_LIMIT"
-        fi
-        ulimit -n $MAX_FD
-        if [ $? -ne 0 ] ; then
-            warn "Could not set maximum file descriptor limit: $MAX_FD"
-        fi
-    else
-        warn "Could not query maximum file descriptor limit: $MAX_FD_LIMIT"
-    fi
-fi
 
-# For Darwin, add options to specify how the application appears in the dock
-if $darwin; then
-    GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
-fi
+    // binds the data to the TextView in each row
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Log.d(TAG, "setting text values in adapterview for orders");
 
-# For Cygwin, switch paths to Windows format before running java
-if $cygwin ; then
-    APP_HOME=`cygpath --path --mixed "$APP_HOME"`
-    CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
-    JAVACMD=`cygpath --unix "$JAVACMD"`
+            this.holder = holder;
 
-    # We build the pattern for arguments to be converted via cygpath
-    ROOTDIRSRAW=`find -L / -maxdepth 1 -mindepth 1 -type d 2>/dev/null`
-    SEP=""
-    for dir in $ROOTDIRSRAW ; do
-        ROOTDIRS="$ROOTDIRS$SEP$dir"
-        SEP="|"
-    done
-    OURCYGPATTERN="(^($ROOTDIRS))"
-    # Add a user-defined pattern to the cygpath arguments
-    if [ "$GRADLE_CYGPATTERN" != "" ] ; then
-        OURCYGPATTERN="$OURCYGPATTERN|($GRADLE_CYGPATTERN)"
-    fi
-    # Now convert the arguments - kludge to limit ourselves to /bin/sh
-    i=0
-    for arg in "$@" ; do
-        CHECK=`echo "$arg"|egrep -c "$OURCYGPATTERN" -`
-        CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### Determine if an option
+            holder.orderIDpopulate.setText(this.mData.get(position).getOrderID());
 
-        if [ $CHECK -ne 0 ] && [ $CHECK2 -eq 0 ] ; then                    ### Added a condition
-            eval `echo args$i`=`cygpath --path --ignore --mixed "$arg"`
-        else
-            eval `echo args$i`="\"$arg\""
-        fi
-        i=$((i+1))
-    done
-    case $i in
-        (0) set -- ;;
-        (1) set -- "$args0" ;;
-        (2) set -- "$args0" "$args1" ;;
-        (3) set -- "$args0" "$args1" "$args2" ;;
-        (4) set -- "$args0" "$args1" "$args2" "$args3" ;;
-        (5) set -- "$args0" "$args1" "$args2" "$args3" "$args4" ;;
-        (6) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" ;;
-        (7) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" ;;
-        (8) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" "$args7" ;;
-        (9) set -- "$args0" "$args1" "$args2" "$args3" "$args4" "$args5" "$args6" "$args7" "$args8" ;;
-    esac
-fi
+            if(this.mData.get(position).equals("Pending")){
+                holder.orderStatusImage.
+                        setCompoundDrawables(holder.imageYellow, null, null, null);
+            }if(this.mData.get(position).equals("Approved")){
+            holder.orderStatusImage.
+                    setCompoundDrawables(holder.imageYellow, null, null, null);
+            }
 
-# Escape application args
-save () {
-    for i do printf %s\\n "$i" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/' \\\\/" ; done
-    echo " "
-}
-APP_ARGS=$(save "$@")
 
-# Collect all arguments for the java command, following the shell quoting and substitution rules
-eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "\"-Dorg.gradle.appname=$APP_BASE_NAME\"" -classpath "\"$CLASSPATH\"" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
+    }
 
-# by default we should be in the correct project dir, but when run from Finder on Mac, the cwd is wrong
-if [ "$(uname)" = "Darwin" ] && [ "$HOME" = "$PWD" ]; then
-  cd "$(dirname "$0")"
-fi
+    // total number of rows
+    @Override
+    public int getItemCount() {
+        return mData.size();
+    }
 
-exec "$JAVACMD" "$@"
+
+    // stores and recycles views as they are scrolled off screen
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        //these members reflect the two fields in the reclerview
+        TextView orderIDpopulate;
+        TextView orderStatusImage;
+        Drawable imageYellow;
+        Drawable imageGreen;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            Log.d(TAG, "setting text values viewHolder");
+            //Get references to the items in the recyclerview2 layout
+
+
+            orderIDpopulate = itemView.findViewById(R.id.OrderIDPopulate);
+            orderStatusImage = itemView.findViewById(R.id.OrderStatusIconPopulate);
+
+
+            imageYellow = itemView.getContext().getResources().getDrawable( R.drawable.yellowbutton);
+            int h = imageYellow.getIntrinsicWidth();
+            int w = imageYellow.getIntrinsicWidth();
+            imageYellow.setBounds( 1, 1, w, h );
+
+            imageYellow = itemView.getContext().getResources().getDrawable( R.drawable.greenbutton);
+            h = imageGreen.getIntrinsicWidth();
+            w = imageGreen.getIntrinsicWidth();
+            imageGreen.setBounds( 1, 1, w, h );
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Log.d(TAG, "before order fragment inflation");
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            Fragment myFragment = new OrderFragment();
+            Order order = new Order();
+
+            order.setOrderID(holder.orderIDpopulate.getText().toString());
+
+            //Adding data to bundle to pass on to the fragment class for population.
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("OrderClicked", order);
+            myFragment.setArguments(bundle);
+
+            activity.getSupportFragmentManager().beginTransaction().add(R.id.OrderStatusFrame,
+                    myFragment).commit();
+            Log.d(TAG, "after order fragment inflation");
+        }
+    }
+
+    // parent activity will implement this method to respond to click events
+    interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    /

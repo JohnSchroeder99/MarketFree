@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
@@ -31,6 +34,10 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
 
     // added just for mock data randomization for order properties
     public static int count = 6;
+
+    // uses the data that was saved on instance state in order to populate the orders arraylist
+    // without going out to firestore again. If the data is not passed into the savedinstance state then
+    // we go out to firestore to retrieve the data and then populate the adapter view.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +54,28 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
             }
         });
 
-       //Getting the order documents from firestore and then adding to OrdersArraylist and
-        // inflating the recycler view with added orders upon completion.
-        getListItems();
+
+        if (savedInstanceState != null) {
+            try {
+                orders = new ArrayList<>();
+                orders = savedInstanceState.getParcelableArrayList("SavedOrders");
+                populateAdapterAndDisplay();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            //go out to firestore and retrieve the data
+            getListItems();
+        }
 
 
     }
 
 
-    //TODO create orders from actual input from the user and store them in firestore
+    //TODO create orders from input from the publisher instead of mocking it. Will be done in
+    // publishing make sure that the firestore orders created are unique and attatched to a
+    // unique customer key
+
     public Order createOrder() {
         //just added for mock data
 
@@ -103,16 +123,13 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         orders = new ArrayList<>();
         Log.d(TAG, "Getting all orders from firestore");
-        db.collection("Orders")
-                .get()
+        db.collection("Orders").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-
                                 orders.add(document.toObject(Order.class));
-                               // Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -121,25 +138,21 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
                     }
 
                 });
-
     }
 
-    // Create the adapter, load it, and pass in the correct activity
+    // Create the adapter, load it with the orders arraylist, and pass in the correct activity
     // (ManageOrderStatusAcitivty.this) so the fragment can initialize correctly.
     public void populateAdapterAndDisplay() {
 
 
-        Log.d(TAG, "setting recycler layout");
+        Log.d(TAG, "setting recycler layout and adapter");
         RecyclerView recyclerView = findViewById(R.id.manageOrdersView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ManageOrderStatusActivity.this));
-        Log.d(TAG, "recycler layout set");
         RecyclerView.Adapter mAdapter =
                 new MyRecylcerViewAdapterForOrdersStatus(ManageOrderStatusActivity.this,
                         orders);
-        Log.d(TAG, "adapter successfully initialized");
         recyclerView.setAdapter(mAdapter);
-
-        Log.d(TAG, "adapter successfully created");
+        Log.d(TAG, "recyclerview and adapter successfully created and initialized");
     }
 
     // implement this method if you want to load up mock data to firestore and then remove it again
@@ -152,18 +165,16 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
 
     }
 
-    // TODO need to understand how to use this interface for the fragment right now not used but
-    //  is requri
+    //Not currently using this but it needs to be instantiated to inflate the fragment
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
 
+    // save the order to a bundle and use that information to populate the information on create.
+    // If the information is not available then we go out to firestore to retrieve it.
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("SavedOrders", orders);
     }
-
-
 }

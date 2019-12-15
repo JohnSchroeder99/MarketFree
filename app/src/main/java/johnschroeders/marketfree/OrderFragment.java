@@ -25,16 +25,11 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class OrderFragment extends Fragment{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
     private Button fragmentXbutton;
     static final String TAG = "OrderStatusActivity";
-    private String mParam1;
-    private String mParam2;
     Bundle bundle;
-    Order tempOrder = new Order();
+    private Order tempOrder = new Order();
 
     private OnFragmentInteractionListener mListener;
 
@@ -50,9 +45,7 @@ public class OrderFragment extends Fragment{
      * @param param2 Parameter 2.
      * @return A new instance of fragment OrderFragment.
      */
-    // TODO: match parameters of fragment class to populate data from adapter bundle
     private static OrderFragment newInstance(String param1, String param2) {
-
         return new OrderFragment();
     }
 
@@ -84,8 +77,7 @@ public class OrderFragment extends Fragment{
                 removeSelf();
             }
         });
-        //TODO finish mapping out the rest of this to the order class passed in and erase from
-        // the bundle after pushing the X button
+
         try {
             TextView orderID = view.findViewById(R.id.orderIDResult);
             orderID.setText(tempOrder.getOrderID());

@@ -36,9 +36,9 @@ public class UserLoginActivity extends AppCompatActivity {
         tempLogin.setText(R.string.loginText);
 
         // handle login procedure for signing into the device
-        //TODO add information from successful signin in to a bundle so it can be added to the
-        // correct Key to properly identify the current user and their subs, orders, and profile.
-        // Also need to handle various user profiles or sign ins
+        //TODO add information from successful signin (UserEmail and name) in to a bundle so it can
+        // be added to the correct customer Key to properly identify the current user and their
+        // subs, orders, and profile. Also need to handle various user profiles or sign ins
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

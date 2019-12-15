@@ -14,10 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 
-//TODO manage rotation for the recylcer view (save data to a bundle for screen rotation and change
-// layout for screen roation so card does not cause problems)
+
 public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<MyRecylcerViewAdapterForOrdersStatus.ViewHolder> {
 
     private ArrayList<Order> passedInArrayList;
@@ -27,6 +27,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     // data is passed into the constructor
     MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data) {
+        Log.d(TAG, "RecyclerviewApapter Created ");
         this.mInflater = LayoutInflater.from(context);
         this.passedInArrayList = data;
     }
@@ -35,9 +36,6 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "on create view holder recyclerview class");
-
-
         View view = mInflater.inflate(R.layout.recycler_view_item_2, parent, false);
         return new ViewHolder(view);
     }
@@ -46,7 +44,8 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     // binds the data to the TextView in each row for each member in the passedInArraylist member
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d(TAG, "setting text values in adapterview for orders");
+        Log.d(TAG,
+                "setting text values in adapterview for order "+this.passedInArrayList.get(position).getOrderID());
 
         holder.orderIDpopulate.setText(this.passedInArrayList.get(position).getOrderID());
 
@@ -100,9 +99,10 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         Drawable imageBlue;
         Drawable imageRed;
 
+        // Individually creates the rows and then ties up the onclick listener to all of the rows
+        // after all of them have been created and resources have been referenced
         ViewHolder(View itemView) {
             super(itemView);
-            Log.d(TAG, "setting text values viewHolder");
 
             orderIDpopulate = itemView.findViewById(R.id.OrderIDPopulate);
             orderStatusImage = itemView.findViewById(R.id.OrderStatusIconPopulate);
@@ -132,8 +132,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
         @Override
         public void onClick(View view) {
-            // create the fragment and load it as a replacement to the activitys frame to cover
-            // all aspects
+            // create the fragment and display it according to the order that was clicked.
             Fragment orderFragment = new OrderFragment();
             Order order = passedInArrayList.get(this.getAdapterPosition());
             Log.d(TAG, "In ONCLICK with Order ID clicked: " +
@@ -159,7 +158,6 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     }
 /*
     //Get the order from the position that was clicked that has a populated OrderID
-    //TODO need to add more (like a composite key with customerkey and orderID) for clicked order
     private Order getOrder(String orderID) {
         Log.d(TAG, "ItemClicked with orderID 19283aererterrtdfsa74");
         db = FirebaseFirestore.getInstance();

@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-//TODO handle this error for implementing parcelable
+
 public class Order implements Parcelable {
 
     private String orderID;
@@ -50,7 +50,7 @@ public class Order implements Parcelable {
 
     }
 
-    //TODO return this from the firestore according to orderID
+
     public String getOrderID() {
         return orderID;
     }
