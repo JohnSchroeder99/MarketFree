@@ -11,21 +11,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/OrderStatusContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/OrderStatusContainer"
+        app:layout_anchorGravity="center">
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/manageOrdersView"
-            android:layout_width="360dp"
-            android:layout_height="461dp"
-            android:layout_marginTop="145dp"
+            android:layout_width="329dp"
+            android:layout_height="476dp"
             android:layout_marginBottom="125dp"
             android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manageOrdersTitleCard"
+            app:layout_constraintVertical_bias="0.0"
             tools:layout_conversion_absoluteHeight="603dp"
             tools:layout_conversion_absoluteWidth="411dp"
             tools:listitem="@layout/recycler_view_item_2" />
@@ -34,8 +35,8 @@
             android:id="@+id/manageOrdersTitleCard"
             android:layout_width="261dp"
             android:layout_height="117dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 

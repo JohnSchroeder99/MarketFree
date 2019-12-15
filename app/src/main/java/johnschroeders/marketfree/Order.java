@@ -23,7 +23,32 @@ public class Order implements Parcelable {
     static final String TAG = "OrderStatusActivity";
 
 
+    private Order(Parcel in) {
+        orderID = in.readString();
+        producerKey = in.readString();
+        customerKey = in.readString();
+        productID = in.readString();
+        productDescription = in.readString();
+        productQuantity = in.readInt();
+        orderStatus = in.readString();
+        amountPaid = in.readDouble();
+    }
 
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel in) {
+            return new Order(in);
+        }
+
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
+
+    public Order() {
+
+    }
 
     //TODO return this from the firestore according to orderID
     public String getOrderID() {
@@ -122,6 +147,13 @@ public class Order implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(orderID);
+        dest.writeString(producerKey);
+        dest.writeString(customerKey);
+        dest.writeString(productID);
+        dest.writeString(productDescription);
+        dest.writeInt(productQuantity);
+        dest.writeString(orderStatus);
+        dest.writeDouble(amountPaid);
     }
 }

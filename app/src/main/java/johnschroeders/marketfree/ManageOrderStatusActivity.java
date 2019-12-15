@@ -1,5 +1,7 @@
 package johnschroeders.marketfree;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,16 +27,17 @@ import java.util.Objects;
 
 public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener {
     static final String TAG = "OrderStatusActivity";
-    public static int count = 6;
     ArrayList<Order> orders;
 
+    // added just for mock data randomization for order properties
+    public static int count = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_order_status);
+        //you can use the create mock data method here to load up mock data to the firestore
         Button manageOrdersBackButton = findViewById(R.id.manageOrdersBackButton);
-
         manageOrdersBackButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -43,14 +47,9 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
             }
         });
 
-        // Creating a mock list to populate order list and stuff into adapter
-        //TODO retrieve actual firestore orders and populate the array list full of orders
-
-        //Retreiving mock data from firestore
+       //Getting the order documents from firestore and then adding to OrdersArraylist and
+        // inflating the recycler view with added orders upon completion.
         getListItems();
-
-
-
 
 
     }
@@ -58,6 +57,8 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
 
     //TODO create orders from actual input from the user and store them in firestore
     public Order createOrder() {
+        //just added for mock data
+
 
         Order order1 = new Order();
         order1.setOrderID("19283aererterrtdfsa74" + count++);
@@ -96,8 +97,9 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         return order1;
     }
 
+    //Right now goes out to FIrestore and pulls down entire collection of Orders documents,
+    // converts them to an Order object and then adds them to the OrdersArraylist
     private void getListItems() {
-    //TODO finish retrieving objects from firestore and converting correctly.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         orders = new ArrayList<>();
         Log.d(TAG, "Getting all orders from firestore");
@@ -108,32 +110,60 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                orders.add(document.toObject(Order.class));
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
 
-                            Log.d(TAG, "setting recycler layout");
-                            RecyclerView recyclerView = findViewById(R.id.manageOrdersView);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                            Log.d(TAG, "recycler layout set");
-                            RecyclerView.Adapter mAdapter =
-                                    new MyRecylcerViewAdapterForOrdersStatus(getApplicationContext(), orders);
-                            Log.d(TAG, "adapter successfully initialized");
-                            recyclerView.setAdapter(mAdapter);
-                            Log.d(TAG, "adapter successfully created");
+                                orders.add(document.toObject(Order.class));
+                               // Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
+                        populateAdapterAndDisplay();
                     }
-                });
 
+                });
 
     }
 
+    // Create the adapter, load it, and pass in the correct activity
+    // (ManageOrderStatusAcitivty.this) so the fragment can initialize correctly.
+    public void populateAdapterAndDisplay() {
 
-    // TODO need to understand how to use this interface for the fragment
+
+        Log.d(TAG, "setting recycler layout");
+        RecyclerView recyclerView = findViewById(R.id.manageOrdersView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ManageOrderStatusActivity.this));
+        Log.d(TAG, "recycler layout set");
+        RecyclerView.Adapter mAdapter =
+                new MyRecylcerViewAdapterForOrdersStatus(ManageOrderStatusActivity.this,
+                        orders);
+        Log.d(TAG, "adapter successfully initialized");
+        recyclerView.setAdapter(mAdapter);
+
+        Log.d(TAG, "adapter successfully created");
+    }
+
+    // implement this method if you want to load up mock data to firestore and then remove it again
+    // after enough orders have been uploaded.
+    public void createMockData() {
+        for (int i = 0; i < 20; i++) {
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+            firebaseFirestore.collection("Orders").add(createOrder());
+        }
+
+    }
+
+    // TODO need to understand how to use this interface for the fragment right now not used but
+    //  is requri
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+
 }
