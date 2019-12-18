@@ -17,69 +17,84 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/loginPageLoginButton"
-            android:layout_width="109dp"
-            android:layout_height="101dp"
-            android:layout_marginStart="256dp"
-            android:layout_marginTop="556dp"
-            android:text="@string/loginButton"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/loginButton" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/loginPageregisterButton"
-            android:layout_width="274dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="400dp"
-            android:text="@string/registerButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/loginPageMarketFreeIcon"
+                android:layout_width="213dp"
+                android:layout_height="193dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/samplepicture"
+                tools:srcCompat="@tools:sample/avatars[0]" />
 
-        <EditText
-            android:id="@+id/loginPageEmailAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="567dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textNoSuggestions|textEmailAddress"
-            android:labelFor="@id/loginPageEmailAddress"
-            android:text="@string/loginText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
 
-        <EditText
-            android:id="@+id/loginPagepassWordText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="29dp"
-            android:layout_marginTop="612dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textNoSuggestions|textWebPassword"
-            android:labelFor="@id/loginPagepassWordText"
-            android:text="@string/passwordText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            <Button
+                android:id="@+id/loginPageregisterButton"
+                android:layout_width="274dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/registerButton" />
 
-        <ImageView
-            android:id="@+id/loginPageMarketFreeIcon"
-            android:layout_width="213dp"
-            android:layout_height="193dp"
-            android:layout_marginStart="99dp"
-            android:layout_marginTop="142dp"
-            android:layout_marginBottom="511dp"
-            android:contentDescription="@string/samplepicture"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars[0]" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/loginPageEmailAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:ems="10"
+                        android:inputType="textNoSuggestions|textEmailAddress"
+                        android:labelFor="@id/loginPageEmailAddress"
+                        android:text="@string/loginText"
+                        tools:targetApi="o" />
+
+                    <EditText
+                        android:id="@+id/loginPagepassWordText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autofillHints=""
+                        android:ems="10"
+                        android:inputType="textNoSuggestions|textWebPassword"
+                        android:labelFor="@id/loginPagepassWordText"
+                        android:text="@string/passwordText"
+                        tools:targetApi="o" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/loginPageLoginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="101dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/loginButton"
+                    tools:text="@string/loginButton" />
+            </LinearLayout>
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
