@@ -12,81 +12,145 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/manageSubscriptionsButton"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="163dp"
-            android:text="@string/manage_subscriptions_buttonText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/managePublishingButton"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="385dp"
-            android:text="@string/manage_publishing_button_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/manageOrderStatusButton"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="163dp"
-            android:layout_marginEnd="44dp"
-            android:text="@string/order_status_button_text"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/manageProfileButton"
-            android:layout_width="140dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="392dp"
-            android:layout_marginEnd="44dp"
-            android:text="@string/manage_profile_button_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/manageOrdersTitleCard"
-            android:layout_width="261dp"
-            android:layout_height="117dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/TitleofPage"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="53dp"
-                android:text="@string/user_key_text_main"
-                android:textAlignment="gravity" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/UserName"
-                android:layout_width="wrap_content"
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/manageOrdersTitleCard"
+                    android:layout_width="261dp"
+                    android:layout_height="117dp">
+
+                    <TextView
+                        android:id="@+id/TitleofPage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="53dp"
+                        android:text="@string/user_key_text_main"
+                        android:textAlignment="gravity" />
+
+                    <TextView
+                        android:id="@+id/UserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="26dp"
+                        android:text="@string/user_full_name_text_main"
+                        android:textAlignment="gravity" />
+
+                    <TextView
+                        android:id="@+id/TitleTextView"
+                        android:layout_width="261dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="88dp"
+                        android:text="@string/options"
+                        android:textAlignment="center" />
+
+                </androidx.cardview.widget.CardView>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_gravity="fill_vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="26dp"
-                android:text="@string/user_full_name_text_main"
-                android:textAlignment="gravity" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/TitleTextView"
-                android:layout_width="261dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="88dp"
-                android:text="@string/options"
-                android:textAlignment="center" />
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
-        </androidx.cardview.widget.CardView>
+                <Button
+                    android:id="@+id/manageProfileButton"
+                    android:layout_width="140dp"
+                    android:layout_height="150dp"
+                    android:text="@string/manage_profile_button_text" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/manageOrderStatusButton"
+                    android:layout_width="140dp"
+                    android:layout_height="150dp"
+                    android:text="@string/order_status_button_text" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/manageSubscriptionsButton"
+                    android:layout_width="140dp"
+                    android:layout_height="150dp"
+                    android:text="@string/manage_subscriptions_buttonText" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/managePublishingButton"
+                    android:layout_width="140dp"
+                    android:layout_height="150dp"
+                    android:text="@string/manage_publishing_button_text" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

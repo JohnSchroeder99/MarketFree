@@ -12,122 +12,137 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/RegisterButton"
-            android:layout_width="225dp"
-            android:layout_height="53dp"
-            android:layout_marginTop="549dp"
-            android:layout_marginEnd="111dp"
-            android:text="@string/registerButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/RegisterBackButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="640dp"
-            android:layout_marginEnd="179dp"
-            android:text="@string/back_button_text"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/EmailRegisterInput"
-            android:layout_width="353dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="211dp"
-            android:layout_marginEnd="41dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/EmailInputRegister"
-            android:inputType="textEmailAddress"
-            android:text="@string/EmailInputRegister"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
-
-
-        <EditText
-            android:id="@+id/FirstNameInputRegister"
-            android:layout_width="127dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="140dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/firstNameRegister"
-            android:inputType="textPersonName"
-            android:text="@string/firstNameRegister"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
-
-        <EditText
-            android:id="@+id/LastNameInputRegister"
-            android:layout_width="213dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="140dp"
-            android:layout_marginEnd="43dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/LastNameRegisterInput"
-            android:inputType="textPersonName"
-            android:text="@string/LastNameRegisterInput"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
-
-        <EditText
-            android:id="@+id/PhoneInputRegister"
-            android:layout_width="232dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="291dp"
-            android:layout_marginEnd="161dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/PhoneInputRegister"
-            android:inputType="phone"
-            android:text="@string/PhoneInputRegister"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/manageOrdersTitleCard"
-            android:layout_width="261dp"
-            android:layout_height="117dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/TitleofPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="53dp"
-                android:text="@string/user_key_text_main"
-                android:textAlignment="gravity" />
-
-            <TextView
-                android:id="@+id/UserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="26dp"
-                android:text="@string/user_full_name_text_main"
-                android:textAlignment="gravity" />
-
-            <TextView
-                android:id="@+id/TitleTextView"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/manageOrdersTitleCard"
                 android:layout_width="261dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="88dp"
-                android:text="@string/RegisterScreenCardViewText"
-                android:textAlignment="center" />
+                android:layout_height="117dp"
+                android:layout_gravity="center_horizontal">
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/TitleofPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="53dp"
+                    android:text="@string/user_key_text_main"
+                    android:textAlignment="gravity" />
+
+                <TextView
+                    android:id="@+id/UserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="26dp"
+                    android:text="@string/user_full_name_text_main"
+                    android:textAlignment="gravity" />
+
+                <TextView
+                    android:id="@+id/TitleTextView"
+                    android:layout_width="261dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="88dp"
+                    android:text="@string/RegisterScreenCardViewText"
+                    android:textAlignment="center" />
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/FirstNameInputRegister"
+                    android:layout_width="127dp"
+                    android:layout_height="40dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/firstNameRegister"
+                    android:inputType="textPersonName"
+                    android:text="@string/firstNameRegister"
+                    tools:targetApi="o" />
+
+                <EditText
+                    android:id="@+id/LastNameInputRegister"
+                    android:layout_width="213dp"
+                    android:layout_height="40dp"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:hint="@string/LastNameRegisterInput"
+                    android:inputType="textPersonName"
+                    android:text="@string/LastNameRegisterInput"
+                    tools:targetApi="o" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/EmailRegisterInput"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/EmailInputRegister"
+                android:inputType="textEmailAddress"
+                android:text="@string/EmailInputRegister"
+                tools:targetApi="o" />
+
+            <EditText
+                android:id="@+id/PhoneInputRegister"
+                android:layout_width="232dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/PhoneInputRegister"
+                android:inputType="phone"
+                android:text="@string/PhoneInputRegister"
+                tools:targetApi="o" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/RegisterButton"
+                    android:layout_width="225dp"
+                    android:layout_height="53dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/registerButton" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
+
+                <Button
+                    android:id="@+id/RegisterBackButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/back_button_text" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
