@@ -1,6 +1,7 @@
 package johnschroeders.marketfree;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,23 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Transaction;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -24,9 +42,8 @@ import java.util.Objects;
  * Use the {@link OrderFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OrderFragment extends Fragment{
+public class OrderFragment extends Fragment {
 
-    private Button fragmentXbutton;
     static final String TAG = "OrderStatusActivity";
     Bundle bundle;
     private Order tempOrder = new Order();
@@ -70,7 +87,40 @@ public class OrderFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order, container, false);
-        fragmentXbutton = view.findViewById(R.id.exitOrderFragmentButton);
+        Button fragmentXbutton = view.findViewById(R.id.exitOrderFragmentButton);
+        Button fragmentCancelOrderButton = view.findViewById(R.id.CancelButtonForOrderFrag);
+        if (tempOrder.getOrderStatus().equals("Pending")) {
+            fragmentCancelOrderButton.setVisibility(View.VISIBLE);
+            fragmentCancelOrderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+                    final CollectionReference collectionReference = rootRef.collection("Orders");
+                    collectionReference.whereEqualTo("orderID", tempOrder.getOrderID()).
+                            get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    Map<Object, String> map = new HashMap<>();
+                                    map.put("orderStatus", "Canceled");
+                                    collectionReference.document(document.getId()).set(map,
+                                            SetOptions.merge());
+
+                                }
+                                Intent intent = new Intent(getContext(), ManageOrderStatusActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+
+                    });
+                    Log.d(TAG, " new order status set for order: " + tempOrder.getOrderID());
+                }
+            });
+        } else {
+            fragmentCancelOrderButton.setVisibility(View.INVISIBLE);
+        }
+
         fragmentXbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -80,6 +80,7 @@
     <string name="amount_paidplaceholder">Amount Paid:</string>
     <string name="order_detailsFragementTitle">Order Details</string>
     <string name="xbuttonName">X</string>
+    <string name="CancelButtonForOrders">Cancel Order</string>
 
 
 </resources>

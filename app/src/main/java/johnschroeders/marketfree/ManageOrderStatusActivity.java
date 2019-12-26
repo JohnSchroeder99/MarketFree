@@ -44,6 +44,9 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_order_status);
         //you can use the create mock data method here to load up mock data to the firestore
+
+        //createMockData();
+
         Button manageOrdersBackButton = findViewById(R.id.manageOrdersBackButton);
         manageOrdersBackButton.setOnClickListener(new View.OnClickListener() {
 
@@ -67,8 +70,6 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
             //go out to firestore and retrieve the data
             getListItems();
         }
-
-
     }
 
 
