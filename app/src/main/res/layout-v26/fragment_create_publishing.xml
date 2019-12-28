@@ -1,0 +1,172 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CreatePublishFragmentFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="johnschroeders.marketfree.CreatePublishingFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CreatePublishFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/ProductImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="129dp"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="56dp"
+            android:layout_marginBottom="7dp"
+            android:contentDescription="@string/productimagebutton"
+            android:src="@drawable/woman"
+            app:layout_constraintBottom_toTopOf="@+id/productImageButtonLabel"
+            app:layout_constraintEnd_toStartOf="@+id/CreatePubFragExitButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars[3]" />
+
+        <TextView
+            android:id="@+id/productImageButtonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="184dp"
+            android:text="@string/click_the_picture_to_upload"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/productTitleInput"
+            android:layout_width="269dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="254dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/title_hint"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/productDescriptionInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/productTitleLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/productTitleLabel"
+            android:layout_width="95dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="272dp"
+            android:text="@string/product_title_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/quantityInput"
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="536dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/quantityHint"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/quantityLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/productDescriptionLabel"
+            android:layout_width="108dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="405dp"
+            android:text="@string/product_description_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/productCostLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="552dp"
+            android:text="@string/cost_label"
+            app:layout_constraintEnd_toStartOf="@+id/quantityLabel"
+            app:layout_constraintHorizontal_bias="0.048"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/quantityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="552dp"
+            android:text="@string/quantity_label"
+            app:layout_constraintEnd_toStartOf="@+id/quantityInput"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/costInput"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/costInput"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="531dp"
+            android:ems="10"
+            android:hint="@string/cost_hint"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            app:layout_constraintEnd_toStartOf="@+id/quantityLabel"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/productCostLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/productDescriptionInput"
+            android:layout_width="251dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="340dp"
+            android:layout_marginBottom="36dp"
+            android:ems="10"
+            android:hint="@string/description_text"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences|textMultiLine"
+            android:scrollHorizontally="false"
+            app:layout_constraintBottom_toTopOf="@+id/costInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.281"
+            app:layout_constraintStart_toEndOf="@+id/productDescriptionLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/CreateProductFragCreateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="632dp"
+            android:text="@string/publish_new_product_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/CreatePubFragExitButton"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="337dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/xbuttonName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

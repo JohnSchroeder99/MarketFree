@@ -11,12 +11,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/PublishingContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="849dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/managePublishingCardView"
             android:layout_width="261dp"
             android:layout_height="117dp"
+            android:layout_marginStart="292dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="292dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,20 +55,20 @@
 
         <Button
             android:id="@+id/managePublishingAddnewButton"
-            android:layout_width="273dp"
-            android:layout_height="63dp"
-            android:layout_marginStart="67dp"
-            android:layout_marginTop="468dp"
+            android:layout_width="224dp"
+            android:layout_height="69dp"
+            android:layout_marginTop="153dp"
+            android:layout_marginEnd="11dp"
             android:text="@string/add_new_publishing_buttonText"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/managePublishingRemovePublishing"
-            android:layout_width="277dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="549dp"
-            android:layout_marginEnd="67dp"
+            android:layout_width="223dp"
+            android:layout_height="66dp"
+            android:layout_marginTop="264dp"
+            android:layout_marginEnd="11dp"
             android:text="@string/remove_publishing_ButtonText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -74,19 +77,18 @@
             android:id="@+id/managePublishingBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="628dp"
+            android:layout_marginTop="348dp"
+            android:layout_marginEnd="82dp"
             android:text="@string/back_button_text"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/publishingProductRecylcerView"
-            android:layout_width="409dp"
-            android:layout_height="337dp"
-            android:layout_marginTop="124dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="475dp"
+            android:layout_height="257dp"
+            android:layout_marginTop="139dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

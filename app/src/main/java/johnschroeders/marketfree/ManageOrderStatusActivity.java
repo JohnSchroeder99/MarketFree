@@ -1,33 +1,31 @@
 package johnschroeders.marketfree;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.multidex.MultiDex;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
+
+// TODO update the orders page to ask the user if they want to view their own orders that they
+//  have put in for other people or the orders that have been put in from people who ordered from
+//  them
 public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener {
     static final String TAG = "OrderStatusActivity";
     ArrayList<Order> orders;
@@ -35,16 +33,13 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
     // added just for mock data randomization for order properties
     public static int count = 6;
 
-    // uses the data that was saved on instance state in order to populate the orders arraylist
-    // without going out to firestore again. If the data is not passed into the savedinstance state then
-    // we go out to firestore to retrieve the data and then populate the adapter view.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_order_status);
-        //you can use the create mock data method here to load up mock data to the firestore
 
+        //you can use the create mock data method here to load up mock data to firestore
         //createMockData();
 
         Button manageOrdersBackButton = findViewById(R.id.manageOrdersBackButton);
@@ -57,7 +52,8 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
             }
         });
 
-
+        //checking if there are items in the savedInstance because of rotation of the device. If
+        // there is then do not go out to firestore to retrieve data.
         if (savedInstanceState != null) {
             try {
                 orders = new ArrayList<>();

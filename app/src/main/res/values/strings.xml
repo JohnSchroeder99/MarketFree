@@ -65,7 +65,6 @@
     <string name="NA">N/A</string>
 
 
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="orderidplaceholder">OrderID :</string>
     <string name="producer_keyplaceholder">Producer Key:</string>
@@ -81,6 +80,18 @@
     <string name="order_detailsFragementTitle">Order Details</string>
     <string name="xbuttonName">X</string>
     <string name="CancelButtonForOrders">Cancel Order</string>
+    <string name="click_the_picture_to_upload">Click the picture to upload</string>
+    <string name="product_title_label">Product Title:</string>
+    <string name="product_description_label">Product Description:</string>
+    <string name="title_hint">Title</string>
+    <string name="quantity_label">Quantity:</string>
+    <string name="cost_label">Cost:</string>
+    <string name="quantity_hint">0.0</string>
+    <string name="cost_hint">0.0</string>
+    <string name="description_text">Description</string>
+    <string name="publish_new_product_button">Publish New Product</string>
+    <string name="quantityHint">0</string>
+    <string name="productimagebutton">productImageButton</string>
 
 
 </resources>

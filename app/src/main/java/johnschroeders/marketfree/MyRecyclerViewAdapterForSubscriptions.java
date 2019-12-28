@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 //recycler view for subscription views
-public class MyRecyclerViewAdapterforSubscriptions extends RecyclerView.Adapter<MyRecyclerViewAdapterforSubscriptions.ViewHolder> {
+public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<MyRecyclerViewAdapterForSubscriptions.ViewHolder> {
 
     private ArrayList<String> mData;
     private LayoutInflater mInflater;
@@ -21,7 +21,7 @@ public class MyRecyclerViewAdapterforSubscriptions extends RecyclerView.Adapter<
     private static final String TAG = "SubscriptionsActivity";
 
     // data is passed into the constructor
-    MyRecyclerViewAdapterforSubscriptions(Context context, ArrayList<String> data) {
+    MyRecyclerViewAdapterForSubscriptions(Context context, ArrayList<String> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }

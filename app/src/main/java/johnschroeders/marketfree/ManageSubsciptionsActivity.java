@@ -20,6 +20,7 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_subsciptions);
+
         //button referencing for managing subscriptions activity/view/layout
         Button subscriptionsBackButton = findViewById(R.id.manageSubscriptionsBackButton);
         Button addSubScriptionsButton = findViewById(R.id.manageSubscriptionsaddButton);
@@ -57,7 +58,7 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.manageSubscriptionsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Log.d(TAG, "recyclerview created for subscriptions and recyclerlayout set to " + this);
-        RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapterforSubscriptions(this, names);
+        RecyclerView.Adapter mAdapter = new MyRecyclerViewAdapterForSubscriptions(this, names);
         Log.d(TAG, "adapter initialized for orders");
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "adapter successfully setup");
