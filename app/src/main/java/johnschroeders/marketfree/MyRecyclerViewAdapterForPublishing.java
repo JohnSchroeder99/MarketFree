@@ -21,6 +21,7 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
     private LayoutInflater mInflater;
     private ArrayList<Product> productList;
     public final static String TAG = "PublishingActivity";
+
     MyRecyclerViewAdapterForPublishing(Context context, ArrayList<Product> passedInProductList) {
         Log.d(TAG, "Publishing RecylcerView Created ");
         this.mInflater = LayoutInflater.from(context);
@@ -40,9 +41,17 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
     // users phone if possible.
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewAdapterForPublishing.ViewHolder holder, int position) {
-        Log.d(TAG,"setting text values in adapterview for order "+this.productList.get(position).getProductID());
-      holder.productID.setText(this.productList.get(position).getProductID());
-      holder.productImage.setCompoundDrawables(holder.imageBlue, null, null, null);
+        Log.d(TAG, "setting text values in adapterview for order " + this.productList.get(position).getProductID());
+
+        //TODO set the text to be the value of the product that is pulled down.
+
+        holder.productID.setText(this.productList.get(position).getProductID());
+
+
+        // TODO change this image to be one pulled down from Firebase firestorage
+
+        holder.productImage.setCompoundDrawables(holder.imageBlue, null, null, null);
+
     }
 
     @Override
@@ -62,7 +71,7 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            productID= itemView.findViewById(R.id.ProductIDRecycler);
+            productID = itemView.findViewById(R.id.ProductIDRecycler);
             productImage = itemView.findViewById(R.id.ProductListingIconPopulate);
 
             imageBlue = itemView.getContext().getResources().getDrawable(R.drawable.bluebutton);

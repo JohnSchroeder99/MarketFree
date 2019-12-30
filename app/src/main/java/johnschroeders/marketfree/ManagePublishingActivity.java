@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -77,7 +81,6 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
         //Create the recycler view and load up the adapter
         setupTheRecyclerView();
 
-
     }
 
     @Override
@@ -92,8 +95,7 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
             product.setCost(1.00 * count);
             product.setCustomerKey("a;lsdkjf" + count);
             product.setDateCreated(currentTime);
-            product.setImage(null);
-            product.setImageURL(null);
+            product.setUri(null);
             product.setProductDescription("nails or some crap");
             product.setProductID("askl;djfh" + count);
             product.setQuantity(12);

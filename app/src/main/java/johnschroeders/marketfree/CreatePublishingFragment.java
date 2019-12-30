@@ -3,34 +3,70 @@ package johnschroeders.marketfree;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 
 
 // this fragment is to create a new published product that people can order from the publisher
-//TODO update the layout for this so it can handle all functionality in landscape mode for all
-// versions.
+//TODO handle rules for firstorage so not everyone can read and write but only people that are
+// authorized.
+
+//TODO handle errors for screen rotation during upload or download of images.
 
 public class CreatePublishingFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "PublishingActivity";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
+    // Fields that we are using here.
     private ImageButton imageButton = null;
+    private Bitmap scaled = null;
+    private ProgressBar progressBar = null;
+    private SimpleDateFormat dateFormat = null;
+    private EditText prodTitleInput = null;
+    private EditText prodquantityInput = null;
+    private EditText prodDescriptionInput = null;
+    private EditText prodcostInput = null;
+    private String currentTimeStamp = null;
+    private Toast toast = null;
+    private final Product tempProduct = new Product();
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -38,6 +74,7 @@ public class CreatePublishingFragment extends Fragment {
     public CreatePublishingFragment() {
     }
 
+    // this is currently not used
     public static CreatePublishingFragment newInstance(String param1, String param2) {
         CreatePublishingFragment fragment = new CreatePublishingFragment();
         Bundle args = new Bundle();
@@ -57,10 +94,21 @@ public class CreatePublishingFragment extends Fragment {
                              Bundle savedInstanceState) {
         //this is the layout that the fragment inflates (fragment_create_publishing)
         View view = inflater.inflate(R.layout.fragment_create_publishing, container, false);
+        //checking if image was there before rotate.
+        if (savedInstanceState != null) {
+            Bitmap bitmap = savedInstanceState.getParcelable("image");
+            imageButton = view.findViewById(R.id.ProductImageButton);
+            imageButton.setImageBitmap(bitmap);
+        }
+        //references for buttons, progressbar, product info and creating onlcick listeners.
 
+        prodcostInput = view.findViewById(R.id.productcostInput);
+        prodDescriptionInput = view.findViewById(R.id.productDescriptionInput);
+        prodquantityInput = view.findViewById(R.id.productquantityInput);
+        prodTitleInput = view.findViewById(R.id.productTitleInput);
 
-        // Getting references to the button layouts and creating the onlcick listeners for them
-        // with there functionality.
+        progressBar = view.findViewById(R.id.publishingProgressBar);
+        progressBar.setVisibility(View.GONE);
 
         Button xButton = view.findViewById(R.id.CreatePubFragExitButton);
         xButton.setOnClickListener(new View.OnClickListener() {
@@ -75,8 +123,7 @@ public class CreatePublishingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Ready to publish product");
-                Intent intent = new Intent(getActivity(), ManagePublishingActivity.class);
-                startActivity(intent);
+                publishProductImageToFirebase();
             }
         });
 
@@ -117,6 +164,14 @@ public class CreatePublishingFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        BitmapDrawable drawable = (BitmapDrawable) imageButton.getDrawable();
+        scaled = drawable.getBitmap();
+        outState.putParcelable("image", scaled);
+        super.onSaveInstanceState(outState);
+    }
+
     // a method for having the fragment remove itself if the x button in the corner of the layout
     // is clicked.
     private void removeSelf() {
@@ -142,21 +197,135 @@ public class CreatePublishingFragment extends Fragment {
         }
     }
 
-    // set the bit map to the size that we want for publishing and use it as the image for the
-    // product
-    //TODO need to save the image to a file so it can be retrieved or deleted in the future and
-    // also to find a way to save it to a server or something bigger for sharing purposes to
-    // other people who are subscribed right now it is being saved to a bundle
-
+    // sets the bit map to the size that we want for publishing and set it as the image for the
+    // product to be saved
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) Objects.requireNonNull(extras).get("data");
-            Bitmap scaled = Bitmap.createScaledBitmap(Objects.requireNonNull(imageBitmap), 300, 300, true);
+            scaled = Bitmap.createScaledBitmap(Objects.requireNonNull(imageBitmap), 300, 300, true);
             scaled.setHeight(300);
             scaled.setWidth(300);
             imageButton.setImageBitmap(scaled);
         }
+    }
+
+    //publishes the product image to firebase  firestorage
+    public void publishProductImageToFirebase() {
+
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(true);
+
+        // check if any of the fields are null, if they are then return because we cannot upload
+        // this image
+        Log.d(TAG, "checking for null values");
+        try {
+            tempProduct.setCost(Integer.valueOf(prodcostInput.getText().toString()));
+            tempProduct.setQuantity(Integer.valueOf(prodquantityInput.getText().toString()));
+            tempProduct.setProductDescription(prodDescriptionInput.getText().toString());
+            tempProduct.setProductTitle(prodTitleInput.getText().toString());
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "You need to fill out all the information before this " +
+                            "can be published",
+                    Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+            Log.d(TAG, "Product failed to publish because all the parameters are not filled out");
+            return;
+        }
+
+        Log.d(TAG, "setting up the datetime and location");
+        Locale current = getResources().getConfiguration().locale;
+        dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss", current);
+        this.currentTimeStamp = dateFormat.format(new Date());
+
+        Log.d(TAG, "Setting up firestorage to handle bringing in the data");
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        //TODO replace USER1 with the actual user of the program that will be passed around as
+        // a compositekey consisting of the (customerkey + the USERNAME) ie
+        // (129asdf83746MattSucks)
+        StorageReference storageReference =
+                storageRef.child("ProductImages/").child("USER1").child(currentTimeStamp);
+
+        //TODO update metadata to reflect data from the producer with their customer key or
+        // composite key that uniquely identifies them. We have some metadata already which may
+        // be good enough
+        StorageMetadata metadata = new StorageMetadata.Builder()
+                .setContentType("image/jpg")
+                .setCustomMetadata("ProductID", "USER1" + currentTimeStamp)
+                .setCustomMetadata("CustomerKey", "USER1")
+                .build();
+
+        // converting image to byte array so it can be loaded to firestorage bucket
+        Log.d(TAG, "Setting up imageButton and bitmap for compression and byte Array conversion");
+        imageButton.setDrawingCacheEnabled(true);
+        imageButton.buildDrawingCache();
+        scaled = ((BitmapDrawable) imageButton.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        scaled.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] byteData = baos.toByteArray();
+
+        //beginning the task of uploading to firebase firestorage
+        Log.d(TAG, "uploading product Image to firebase firstorage");
+        UploadTask uploadTask = storageReference.putBytes(byteData, metadata);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                tempProduct.setUri(Objects.requireNonNull(taskSnapshot.getUploadSessionUri()).toString());
+                toast = Toast.makeText(getContext(),
+                        "Your product is publishing",
+                        Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                toast.show();
+                publishProductDataToFireStorage();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG,
+                        "failed to load to firestore:  " + exception.getMessage() + exception.getCause());
+                Toast toast = Toast.makeText(getContext(),
+                        "Your product failed to publish, try again in the future",
+                        Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                toast.show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    //publishes the data that is associated with the product image to firestore database
+    public void publishProductDataToFireStorage() {
+        //setting up temporary product with fields that are already available
+        //TODO update the product ID to involve the customerkey value before being published.
+        tempProduct.setProductID("USER1" + this.currentTimeStamp);
+        tempProduct.setQuantity(Integer.valueOf(prodquantityInput.getText().toString()));
+        tempProduct.setProductDescription(prodDescriptionInput.getText().toString());
+        Date date = new Date();
+        date.getTime();
+        tempProduct.setDateCreated(date);
+        tempProduct.setCustomerKey("USER1" + "somerandomShit");
+        tempProduct.setProductTitle(prodTitleInput.getText().toString());
+
+        //setting up firestore to add the product to the Publishings collection.
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d(TAG, "adding product to firestore collection");
+        db.collection("Publishings").add(tempProduct)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        Log.d(TAG, "Product was published to fire store " + tempProduct.getProductID());
+                        toast = Toast.makeText(getContext(), "Great! Your publishing complete!",
+                                Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                        toast.show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Failed to publish product with error " + e.getCause() + e.getMessage());
+            }
+        });
     }
 }

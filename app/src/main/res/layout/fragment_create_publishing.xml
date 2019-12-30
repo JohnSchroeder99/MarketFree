@@ -27,8 +27,8 @@
             android:layout_marginTop="29dp"
             android:layout_marginEnd="56dp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/woman"
             android:contentDescription="@string/productimagebutton"
+            android:src="@drawable/woman"
             app:layout_constraintBottom_toTopOf="@+id/productImageButtonLabel"
             app:layout_constraintEnd_toStartOf="@+id/CreatePubFragExitButton"
             app:layout_constraintHorizontal_bias="0.5"
@@ -76,7 +76,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/quantityInput"
+            android:id="@+id/productquantityInput"
             android:layout_width="85dp"
             android:layout_height="44dp"
             android:layout_marginTop="523dp"
@@ -118,13 +118,13 @@
             android:layout_height="wrap_content"
             android:text="@string/quantity_label"
             app:layout_constraintBottom_toTopOf="@+id/CreateProductFragCreateButton"
-            app:layout_constraintEnd_toStartOf="@+id/quantityInput"
+            app:layout_constraintEnd_toStartOf="@+id/productquantityInput"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/costInput"
+            app:layout_constraintStart_toEndOf="@+id/productcostInput"
             app:layout_constraintTop_toBottomOf="@+id/productDescriptionInput" />
 
         <EditText
-            android:id="@+id/costInput"
+            android:id="@+id/productcostInput"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_marginTop="527dp"
@@ -152,7 +152,7 @@
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             android:scrollHorizontally="false"
-            app:layout_constraintBottom_toTopOf="@+id/costInput"
+            app:layout_constraintBottom_toTopOf="@+id/productcostInput"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/productDescriptionLabel"
@@ -178,6 +178,17 @@
             android:text="@string/xbuttonName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/publishingProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="278dp"
+            android:layout_height="13dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/CreateProductFragCreateButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

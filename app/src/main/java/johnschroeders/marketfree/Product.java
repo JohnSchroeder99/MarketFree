@@ -1,10 +1,8 @@
 package johnschroeders.marketfree;
 
-import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.net.URL;
 import java.util.Date;
 
 
@@ -13,21 +11,21 @@ public class Product implements Parcelable {
     private String productID;
     private String customerKey;
     private String productDescription;
-    private Image image;
-    private URL imageURL;
     private int quantity;
     private double cost;
     private Date dateCreated;
     private String productTitle;
-
+    private String uri;
 
     public Product(Parcel in) {
         productID = in.readString();
         customerKey = in.readString();
         productDescription = in.readString();
         quantity = in.readInt();
+        uri = in.readString();
     }
-    public Product(){
+
+    public Product() {
 
     }
 
@@ -54,8 +52,8 @@ public class Product implements Parcelable {
         dest.writeString(customerKey);
         dest.writeString(productDescription);
         dest.writeInt(quantity);
+        dest.writeString(uri);
     }
-
 
     public String getProductID() {
         return productID;
@@ -79,22 +77,6 @@ public class Product implements Parcelable {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
-
-    public URL getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(URL imageURL) {
-        this.imageURL = imageURL;
     }
 
     public int getQuantity() {
@@ -129,4 +111,13 @@ public class Product implements Parcelable {
     public void setProductTitle(String productTitle) {
         this.productTitle = productTitle;
     }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
 }
