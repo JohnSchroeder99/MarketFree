@@ -1,15 +1,18 @@
 package johnschroeders.marketfree;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -21,11 +24,13 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
     private LayoutInflater mInflater;
     private ArrayList<Product> productList;
     public final static String TAG = "PublishingActivity";
+    public Context context;
 
     MyRecyclerViewAdapterForPublishing(Context context, ArrayList<Product> passedInProductList) {
         Log.d(TAG, "Publishing RecylcerView Created ");
         this.mInflater = LayoutInflater.from(context);
         this.productList = passedInProductList;
+        this.context = context;
     }
 
     @NonNull
@@ -36,22 +41,21 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
     }
 
     // sets the text and the image for each of the items.
-    //TODO this holder will need to set the image according to the URL image that is passed in
-    // with each product for display instead of the big blue button. Nothing will be saved to the
-    // users phone if possible.
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewAdapterForPublishing.ViewHolder holder, int position) {
         Log.d(TAG, "setting text values in adapterview for order " + this.productList.get(position).getProductID());
 
-        //TODO set the text to be the value of the product that is pulled down.
-
-        holder.productID.setText(this.productList.get(position).getProductID());
-
-
-        // TODO change this image to be one pulled down from Firebase firestorage
-
-        holder.productImage.setCompoundDrawables(holder.imageBlue, null, null, null);
-
+        try {
+            // setting the text to the passed in product title and the image for each item in the
+            // listview from firestore this required using glide which was imported  in
+            // the gradle properties file as a dependency
+            holder.productID.setText(this.productList.get(position).getProductTitle());
+            Uri myUri = Uri.parse(this.productList.get(position).getUri());
+            Glide.with(context).asBitmap().
+                    load(myUri).into(holder.productImage);
+        } catch (Exception e) {
+            Log.d(TAG, "Nothing here yet");
+        }
     }
 
     @Override
@@ -64,26 +68,21 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        Drawable imageBlue;
-        TextView productImage;
+        ImageView productImage;
         TextView productID;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            // getting references to the layout items in recycler_view_item_3
             productID = itemView.findViewById(R.id.ProductIDRecycler);
             productImage = itemView.findViewById(R.id.ProductListingIconPopulate);
-
-            imageBlue = itemView.getContext().getResources().getDrawable(R.drawable.bluebutton);
-            int h = imageBlue.getIntrinsicWidth();
-            int w = imageBlue.getIntrinsicWidth();
-            imageBlue.setBounds(1, 1, w, h);
         }
 
 
         @Override
         public void onClick(View v) {
-
+            //TODO handle onlcick for each image, probably inflate a fragment that shows a bigger
+            // version of the picture with some details and an option to remove the publishing
         }
     }
 }

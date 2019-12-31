@@ -178,6 +178,9 @@ public class CreatePublishingFragment extends Fragment {
         Log.d(TAG, "Order fragment removing");
         try {
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+            Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
+            startActivity(intent);
+
         } catch (Exception e) {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
             e.printStackTrace();
@@ -212,16 +215,15 @@ public class CreatePublishingFragment extends Fragment {
     }
 
     //publishes the product image to firebase  firestorage
-    public void publishProductImageToFirebase() {
-
+    private void publishProductImageToFirebase() {
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminate(true);
 
         // check if any of the fields are null, if they are then return because we cannot upload
-        // this image
+        // this product yet
         Log.d(TAG, "checking for null values");
         try {
-            tempProduct.setCost(Integer.valueOf(prodcostInput.getText().toString()));
+            tempProduct.setCost(Double.valueOf(prodcostInput.getText().toString()));
             tempProduct.setQuantity(Integer.valueOf(prodquantityInput.getText().toString()));
             tempProduct.setProductDescription(prodDescriptionInput.getText().toString());
             tempProduct.setProductTitle(prodTitleInput.getText().toString());
@@ -240,11 +242,11 @@ public class CreatePublishingFragment extends Fragment {
         this.currentTimeStamp = dateFormat.format(new Date());
 
         Log.d(TAG, "Setting up firestorage to handle bringing in the data");
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        final StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         //TODO replace USER1 with the actual user of the program that will be passed around as
         // a compositekey consisting of the (customerkey + the USERNAME) ie
         // (129asdf83746MattSucks)
-        StorageReference storageReference =
+        final StorageReference storageReference =
                 storageRef.child("ProductImages/").child("USER1").child(currentTimeStamp);
 
         //TODO update metadata to reflect data from the producer with their customer key or
@@ -265,13 +267,13 @@ public class CreatePublishingFragment extends Fragment {
         scaled.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteData = baos.toByteArray();
 
+        //TODO handle uploading with screen rotation incase uploading fails
         //beginning the task of uploading to firebase firestorage
         Log.d(TAG, "uploading product Image to firebase firstorage");
-        UploadTask uploadTask = storageReference.putBytes(byteData, metadata);
+        final UploadTask uploadTask = storageReference.putBytes(byteData, metadata);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                tempProduct.setUri(Objects.requireNonNull(taskSnapshot.getUploadSessionUri()).toString());
                 toast = Toast.makeText(getContext(),
                         "Your product is publishing",
                         Toast.LENGTH_SHORT);
@@ -292,9 +294,10 @@ public class CreatePublishingFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
             }
         });
+
     }
 
-    //publishes the data that is associated with the product image to firestore database
+    //set up the product data will be published to firebase firestore firestore database
     public void publishProductDataToFireStorage() {
         //setting up temporary product with fields that are already available
         //TODO update the product ID to involve the customerkey value before being published.
@@ -306,8 +309,29 @@ public class CreatePublishingFragment extends Fragment {
         tempProduct.setDateCreated(date);
         tempProduct.setCustomerKey("USER1" + "somerandomShit");
         tempProduct.setProductTitle(prodTitleInput.getText().toString());
+        finishSettingTempProd();
+    }
 
-        //setting up firestore to add the product to the Publishings collection.
+    // setting up the URI for the product so that the image can be referenced after it is
+    // published to firestorage
+    public void finishSettingTempProd() {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference.child("ProductImages/USER1/" + currentTimeStamp).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d(TAG, "Testing URL: " + uri);
+                tempProduct.setUri(uri.toString());
+                finalizeAndPublish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+            }
+        });
+    }
+
+    // after the uri for the temp product has been setup we need to finish publishing to firestore
+    public void finalizeAndPublish() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "adding product to firestore collection");
         db.collection("Publishings").add(tempProduct)
@@ -320,11 +344,16 @@ public class CreatePublishingFragment extends Fragment {
                         toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                         toast.show();
                         progressBar.setVisibility(View.GONE);
+                        // remove the fragment and start the activity again so it can display
+                        // what was just published.
+                        removeSelf();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Failed to publish product with error " + e.getCause() + e.getMessage());
+                progressBar.setVisibility(View.GONE);
+               Log.d(TAG,
+                       "Failed to publish the product with error: "+ e.getLocalizedMessage()+ e.getMessage()+ e.getCause());
             }
         });
     }

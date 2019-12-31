@@ -6,26 +6,31 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class ManagePublishingActivity extends AppCompatActivity implements CreatePublishingFragment.OnFragmentInteractionListener {
     static final String TAG = "PublishingActivity";
     public static int count = 0;
-    public ArrayList<Product> productList;
+    public ArrayList<Product> productList= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,6 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
         addPublishingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Fragment publishingFragement = new CreatePublishingFragment();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.PublishingFrame, publishingFragement);
@@ -70,24 +74,23 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
             }
         });
 
-        // Mock Data
-        //TODO create and pull actual products from firestore. This will need to reference the
-        // correct URL for the images as well to show them to each user who is subscribed and
-        // make sure that this data is only populated one time on screen rotation just like the
-        // orders activity.
-        productList = new ArrayList<>();
-        createProducts();
 
-        //Create the recycler view and load up the adapter
-        setupTheRecyclerView();
+        //TODO create and pull actual products from each user who you are subscribed too
 
+        // Initiallize this method to create mock data for testing purposes.
+        //createProducts();
+
+        //TODO hadndle the screen rotation so it does not repopulate the data from firestore and
+        // instead populates from the list that is already there.
+        // grab real data and set up view
+        getProductList();
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
 
-    // mock product object for random creation
+    // mock product object for random creation and testing purposes
     public void createProducts() {
         for (int i = 0; i < 15; i++) {
             Date currentTime = Calendar.getInstance().getTime();
@@ -101,6 +104,35 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
             product.setQuantity(12);
             productList.add(product);
         }
+    }
+
+    //Method to grab real data from FIrestore
+    public void getProductList() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d(TAG, "Getting all products from firestore");
+        productList = new ArrayList<>();
+        db.collection("Publishings").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                productList.add(document.toObject(Product.class));
+                            }
+                            //Create the recycler view and load up the adapter
+                            setupTheRecyclerView();
+                        }else{
+                            Log.d(TAG, "failed to retrieve data"+ task.getException());
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG,
+                                "failed to get documents with error: "+ e.getCause()+ e.getMessage()+e.getLocalizedMessage());
+            }
+        });
+
     }
 
     //sets up the recycler view and adapter with data put into the products list

@@ -5,17 +5,16 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-
 public class Product implements Parcelable {
 
-    private String productID;
-    private String customerKey;
-    private String productDescription;
-    private int quantity;
-    private double cost;
-    private Date dateCreated;
-    private String productTitle;
-    private String uri;
+    public String productID;
+    public String customerKey;
+    public String productDescription;
+    public int quantity;
+    public double cost;
+    public Date dateCreated;
+    public String productTitle;
+    public String uri;
 
     public Product(Parcel in) {
         productID = in.readString();
@@ -23,6 +22,8 @@ public class Product implements Parcelable {
         productDescription = in.readString();
         quantity = in.readInt();
         uri = in.readString();
+        cost = in.readDouble();
+        productTitle = in.readString();
     }
 
     public Product() {
@@ -53,6 +54,8 @@ public class Product implements Parcelable {
         dest.writeString(productDescription);
         dest.writeInt(quantity);
         dest.writeString(uri);
+        dest.writeDouble(cost);
+        dest.writeString(productTitle);
     }
 
     public String getProductID() {

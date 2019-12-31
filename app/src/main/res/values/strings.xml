@@ -92,6 +92,7 @@
     <string name="publish_new_product_button">Publish New Product</string>
     <string name="quantityHint">0</string>
     <string name="productimagebutton">productImageButton</string>
+    <string name="productimages">productImages</string>
 
 
 </resources>

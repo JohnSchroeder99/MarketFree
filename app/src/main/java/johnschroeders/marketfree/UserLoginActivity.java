@@ -37,8 +37,12 @@ public class UserLoginActivity extends AppCompatActivity {
 
         // handle login procedure for signing into the device
         //TODO add information from successful signin (UserEmail and name) in to a bundle so it can
-        // be added to the correct customer Key to properly identify the current user and their
-        // subs, orders, and profile. Also need to handle various user profiles or sign ins
+        // so the correct customer Key can be applied and properly identify the current user
+        // with their associated subscriptions, orders, publishings and profile. Label the
+        // bundleKey "CurrentUserMetaData".
+
+
+        //TODO handle various user login accounts and let them choose which one to login with
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
