@@ -178,13 +178,24 @@ public class CreatePublishingFragment extends Fragment {
         Log.d(TAG, "Order fragment removing");
         try {
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
-            Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
-            startActivity(intent);
-
         } catch (Exception e) {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
             e.printStackTrace();
         }
+    }
+
+
+    public void removeSelfAndPopulate(){
+        Log.d(TAG, "Order fragment removing and starting activity");
+        try {
+            Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+            Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
+            e.printStackTrace();
+        }
+
     }
 
     //required interface, not sure why but it is so dont remove
@@ -346,12 +357,13 @@ public class CreatePublishingFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                         // remove the fragment and start the activity again so it can display
                         // what was just published.
-                        removeSelf();
+                       removeSelfAndPopulate();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressBar.setVisibility(View.GONE);
+                removeSelfAndPopulate();
                Log.d(TAG,
                        "Failed to publish the product with error: "+ e.getLocalizedMessage()+ e.getMessage()+ e.getCause());
             }

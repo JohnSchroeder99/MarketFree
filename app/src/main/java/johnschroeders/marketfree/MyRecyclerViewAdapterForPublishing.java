@@ -2,6 +2,7 @@ package johnschroeders.marketfree;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -43,9 +46,7 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
     // sets the text and the image for each of the items.
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewAdapterForPublishing.ViewHolder holder, int position) {
-        Log.d(TAG, "setting text values in adapterview for order " + this.productList.get(position).getProductID());
 
-        try {
             // setting the text to the passed in product title and the image for each item in the
             // listview from firestore this required using glide which was imported  in
             // the gradle properties file as a dependency
@@ -53,9 +54,6 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
             Uri myUri = Uri.parse(this.productList.get(position).getUri());
             Glide.with(context).asBitmap().
                     load(myUri).into(holder.productImage);
-        } catch (Exception e) {
-            Log.d(TAG, "Nothing here yet");
-        }
     }
 
     @Override
@@ -76,13 +74,39 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
             // getting references to the layout items in recycler_view_item_3
             productID = itemView.findViewById(R.id.ProductIDRecycler);
             productImage = itemView.findViewById(R.id.ProductListingIconPopulate);
+
+            itemView.setOnClickListener(this);
         }
 
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
+            Log.d(TAG, "In ONCLICK with ProductID clicked: " +
+                    productList.get(this.getAdapterPosition()).getProductID() +
+                    " and Product URI" +  productList.get(this.getAdapterPosition()).getUri());
+
             //TODO handle onlcick for each image, probably inflate a fragment that shows a bigger
             // version of the picture with some details and an option to remove the publishing
+            Fragment productListViewClickedFragement = new RemovePublishingFragment();
+            Product productPublished = productList.get(this.getAdapterPosition());
+
+
+            //Adding data to bundle to pass on to the fragment class for population.
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("RemovePublshing", productPublished);
+            productListViewClickedFragement.setArguments(bundle);
+
+            //get reference to calling activity to utilize getsupportfragmentmanager method
+            AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.PublishingFrame,
+                    productListViewClickedFragement).commit();
         }
     }
+
+
+    interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+
 }

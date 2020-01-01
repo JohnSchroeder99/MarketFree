@@ -27,10 +27,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class ManagePublishingActivity extends AppCompatActivity implements CreatePublishingFragment.OnFragmentInteractionListener {
+//TODO refactor the product to have Images so that they can be saved for the screen rotation to
+// keep from going out to firestore again.
+
+//Must implement the listener for each of the fragments that you want to use.
+public class ManagePublishingActivity extends AppCompatActivity implements
+        CreatePublishingFragment.OnFragmentInteractionListener,
+        RemovePublishingFragment.OnFragmentInteractionListener {
     static final String TAG = "PublishingActivity";
     public static int count = 0;
-    public ArrayList<Product> productList= null;
+    public ArrayList<Product> productList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +46,6 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
 
         // Getting references to the buttons and establishing onclick methods for each of them
         Button addPublishingButton = findViewById(R.id.managePublishingAddnewButton);
-        Button removePublishings = findViewById(R.id.managePublishingRemovePublishing);
         Button managePublishingBackButton = findViewById(R.id.managePublishingBackButton);
 
         addPublishingButton.setOnClickListener(new View.OnClickListener() {
@@ -54,17 +59,6 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
             }
         });
 
-        //TODO find a clean way of removing any of the products that the publisher has published.
-        // perhaps doing so on the recycler view onclick for each item would be good just like
-        // the orders and get rid of the button click all together
-        removePublishings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast toast = Toast.makeText(getApplicationContext(), "moving to remove publishings fragment", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-
         //just go back to the main page activity
         managePublishingBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +69,22 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
         });
 
 
+        if (savedInstanceState != null) {
+            try {
+                productList = new ArrayList<>();
+                productList = savedInstanceState.getParcelableArrayList("SavedProductList");
+                setupTheRecyclerView();
+                savedInstanceState.clear();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            //go out to firestore and retrieve the data
+            getProductList();
+        }
+
+
         //TODO create and pull actual products from each user who you are subscribed too
 
         // Initiallize this method to create mock data for testing purposes.
@@ -83,7 +93,7 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
         //TODO hadndle the screen rotation so it does not repopulate the data from firestore and
         // instead populates from the list that is already there.
         // grab real data and set up view
-        getProductList();
+
     }
 
     @Override
@@ -121,15 +131,16 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
                             }
                             //Create the recycler view and load up the adapter
                             setupTheRecyclerView();
-                        }else{
-                            Log.d(TAG, "failed to retrieve data"+ task.getException());
+                        } else {
+                            Log.d(TAG, "failed to retrieve data" + task.getException());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG,
-                                "failed to get documents with error: "+ e.getCause()+ e.getMessage()+e.getLocalizedMessage());
+                Log.d(TAG,
+                        "failed to get documents with error: " + e.getCause() +
+                                e.getMessage() + e.getLocalizedMessage());
             }
         });
 
@@ -147,5 +158,9 @@ public class ManagePublishingActivity extends AppCompatActivity implements Creat
         Log.d(TAG, "recyclerview and adapter successfully created and initialized");
     }
 
-
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("SavedProductList", productList);
+    }
 }

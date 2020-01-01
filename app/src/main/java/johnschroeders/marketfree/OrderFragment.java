@@ -106,7 +106,6 @@ public class OrderFragment extends Fragment {
                                     map.put("orderStatus", "Canceled");
                                     collectionReference.document(document.getId()).set(map,
                                             SetOptions.merge());
-
                                 }
                                 Intent intent = new Intent(getContext(), ManageOrderStatusActivity.class);
                                 startActivity(intent);
@@ -120,7 +119,6 @@ public class OrderFragment extends Fragment {
         } else {
             fragmentCancelOrderButton.setVisibility(View.INVISIBLE);
         }
-
         fragmentXbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

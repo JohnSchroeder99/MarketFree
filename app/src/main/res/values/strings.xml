@@ -93,6 +93,10 @@
     <string name="quantityHint">0</string>
     <string name="productimagebutton">productImageButton</string>
     <string name="productimages">productImages</string>
+    <string name="publsihingfragonclickimageview">publsihingFragOnClickImageView</string>
+    <string name="prodDateCreated">DateCreated:</string>
+    <string name="edit_publishing">Edit Publishing</string>
+    <string name="editPubQuantityLabel">Quantity:</string>
 
 
 </resources>

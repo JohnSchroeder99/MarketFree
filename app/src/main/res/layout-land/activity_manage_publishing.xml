@@ -57,19 +57,9 @@
             android:id="@+id/managePublishingAddnewButton"
             android:layout_width="224dp"
             android:layout_height="69dp"
-            android:layout_marginTop="153dp"
-            android:layout_marginEnd="11dp"
+            android:layout_marginTop="212dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/add_new_publishing_buttonText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/managePublishingRemovePublishing"
-            android:layout_width="223dp"
-            android:layout_height="66dp"
-            android:layout_marginTop="264dp"
-            android:layout_marginEnd="11dp"
-            android:text="@string/remove_publishing_ButtonText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
