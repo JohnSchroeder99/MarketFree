@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 
 
@@ -146,7 +145,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
             //get reference to calling activity to utilize getsupportfragmentmanager method
             AppCompatActivity appCompatActivity = (AppCompatActivity) view.getContext();
-            appCompatActivity.getSupportFragmentManager().beginTransaction().add(R.id.OrderStatusFrame,
+            appCompatActivity.getSupportFragmentManager().beginTransaction().add(R.id.manageOrdersOrderStatusFrame,
                     orderFragment).commit();
             Log.d(TAG, "after order fragment inflation");
         }

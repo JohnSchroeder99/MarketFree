@@ -1,11 +1,13 @@
 package johnschroeders.marketfree;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,12 +30,19 @@ public class UserLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
-        TextView tempLogin = (EditText) findViewById(R.id.loginPageEmailAddress);
-        TextView tempPaSS = (EditText) findViewById(R.id.loginPagepassWordText);
-        Button registerButton = findViewById(R.id.loginPageregisterButton);
-        Button loginButton = findViewById(R.id.loginPageLoginButton);
+        TextView tempLogin = (EditText) findViewById(R.id.loginActivityEmailAddressInput);
+        TextView tempPaSS = (EditText) findViewById(R.id.loginActivityPagepassWordText);
+
+        Button registerButton = findViewById(R.id.loginActivityRegisterButton);
+        Button loginButton = findViewById(R.id.loginActivityLoginButton);
         tempPaSS.setText(R.string.passwordText);
         tempLogin.setText(R.string.loginText);
+
+        //setting up the image from the drawable resources.
+        ImageView marketFreeIcon = findViewById(R.id.loginActivityImageMarketFreeIcon);
+        Drawable myDrawable = this.getResources().getDrawable(R.drawable.bluebutton);
+        marketFreeIcon.setImageDrawable(myDrawable);
+
 
         // handle login procedure for signing into the device
         //TODO add information from successful signin (UserEmail and name) in to a bundle so it can

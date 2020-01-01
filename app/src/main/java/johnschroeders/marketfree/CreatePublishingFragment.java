@@ -97,7 +97,7 @@ public class CreatePublishingFragment extends Fragment {
         //checking if image was there before rotate.
         if (savedInstanceState != null) {
             Bitmap bitmap = savedInstanceState.getParcelable("image");
-            imageButton = view.findViewById(R.id.ProductImageButton);
+            imageButton = view.findViewById(R.id.productImageButton);
             imageButton.setImageBitmap(bitmap);
         }
         //references for buttons, progressbar, product info and creating onlcick listeners.
@@ -107,10 +107,10 @@ public class CreatePublishingFragment extends Fragment {
         prodquantityInput = view.findViewById(R.id.productquantityInput);
         prodTitleInput = view.findViewById(R.id.productTitleInput);
 
-        progressBar = view.findViewById(R.id.publishingProgressBar);
+        progressBar = view.findViewById(R.id.productPublishingProgressBar);
         progressBar.setVisibility(View.GONE);
 
-        Button xButton = view.findViewById(R.id.CreatePubFragExitButton);
+        Button xButton = view.findViewById(R.id.productCreatePubFragExitButton);
         xButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +118,7 @@ public class CreatePublishingFragment extends Fragment {
             }
         });
 
-        Button publishButton = view.findViewById(R.id.CreateProductFragCreateButton);
+        Button publishButton = view.findViewById(R.id.productCreateProductFragCreateButton);
         publishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +127,7 @@ public class CreatePublishingFragment extends Fragment {
             }
         });
 
-        imageButton = view.findViewById(R.id.ProductImageButton);
+        imageButton = view.findViewById(R.id.productImageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,14 +1,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/CreatePublishFragmentFrame"
+    android:id="@+id/productCreatePublishFragmentFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     tools:context="johnschroeders.marketfree.CreatePublishingFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/CreatePublishFragmentContainer"
+        android:id="@+id/productCreatePublishFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/ProductImageButton"
+            android:id="@+id/productImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="129dp"
@@ -28,7 +28,7 @@
             android:contentDescription="@string/productimagebutton"
             android:src="@drawable/woman"
             app:layout_constraintBottom_toTopOf="@+id/productImageButtonLabel"
-            app:layout_constraintEnd_toStartOf="@+id/CreatePubFragExitButton"
+            app:layout_constraintEnd_toStartOf="@+id/productCreatePubFragExitButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars[3]" />
@@ -81,7 +81,7 @@
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/quantityLabel"
+            app:layout_constraintStart_toEndOf="@+id/productquantityLabel"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -100,13 +100,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="552dp"
             android:text="@string/cost_label"
-            app:layout_constraintEnd_toStartOf="@+id/quantityLabel"
+            app:layout_constraintEnd_toStartOf="@+id/productquantityLabel"
             app:layout_constraintHorizontal_bias="0.048"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/quantityLabel"
+            android:id="@+id/productquantityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="552dp"
@@ -125,7 +125,7 @@
             android:hint="@string/cost_hint"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
-            app:layout_constraintEnd_toStartOf="@+id/quantityLabel"
+            app:layout_constraintEnd_toStartOf="@+id/productquantityLabel"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/productCostLabel"
             app:layout_constraintTop_toTopOf="parent" />
@@ -148,7 +148,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/CreateProductFragCreateButton"
+            android:id="@+id/productCreateProductFragCreateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="632dp"
@@ -159,7 +159,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/CreatePubFragExitButton"
+            android:id="@+id/productCreatePubFragExitButton"
             android:layout_width="45dp"
             android:layout_height="40dp"
             android:layout_marginStart="337dp"
@@ -169,7 +169,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
-            android:id="@+id/publishingProgressBar"
+            android:id="@+id/productPublishingProgressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="278dp"
             android:layout_height="13dp"
@@ -177,7 +177,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/CreateProductFragCreateButton" />
+            app:layout_constraintTop_toBottomOf="@+id/productCreateProductFragCreateButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

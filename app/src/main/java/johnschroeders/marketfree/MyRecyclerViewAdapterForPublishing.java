@@ -98,7 +98,7 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
 
             //get reference to calling activity to utilize getsupportfragmentmanager method
             AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.PublishingFrame,
+            appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.managePublishingsPublishingFrame,
                     productListViewClickedFragement).commit();
         }
     }

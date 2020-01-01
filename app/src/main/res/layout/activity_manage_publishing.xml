@@ -2,14 +2,14 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/PublishingFrame"
+    android:id="@+id/managePublishingsPublishingFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ManagePublishingActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/PublishingContainer"
+        android:id="@+id/managePublishingsPublishingContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -51,7 +51,7 @@
         </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/managePublishingAddnewButton"
+            android:id="@+id/managePublishingsAddnewButton"
             android:layout_width="273dp"
             android:layout_height="63dp"
             android:layout_marginStart="68dp"
@@ -61,7 +61,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/managePublishingBackButton"
+            android:id="@+id/managePublishingsBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="628dp"
@@ -72,7 +72,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/publishingProductRecylcerView"
+            android:id="@+id/managePublishingsRecylcerView"
             android:layout_width="408dp"
             android:layout_height="382dp"
             android:layout_marginTop="136dp"

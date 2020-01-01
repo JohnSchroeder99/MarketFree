@@ -2,17 +2,17 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/OrderStatusFrame"
+    android:id="@+id/manageOrdersOrderStatusFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ManageOrderStatusActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/OrderStatusContainer"
+        android:id="@+id/manageOrdersOrderStatusContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_anchor="@+id/OrderStatusContainer"
+        app:layout_anchor="@+id/manageOrdersOrderStatusContainer"
         app:layout_anchorGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +22,7 @@
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/manageOrdersTitleCard"
+            android:id="@+id/mainActivityTitleCard"
             android:layout_width="261dp"
             android:layout_height="117dp"
             app:layout_constraintBottom_toTopOf="@+id/manageOrdersView"
@@ -79,7 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manageOrdersTitleCard"
+            app:layout_constraintTop_toBottomOf="@+id/mainActivityTitleCard"
             tools:layout_conversion_absoluteHeight="603dp"
             tools:layout_conversion_absoluteWidth="411dp"
             tools:listitem="@layout/recycler_view_item_2" />

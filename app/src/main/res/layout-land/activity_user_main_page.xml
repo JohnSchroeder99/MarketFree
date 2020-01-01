@@ -73,7 +73,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
+                android:layout_height="20dp"
                 android:layout_gravity="fill_vertical" />
 
             <LinearLayout
@@ -88,8 +88,8 @@
 
                 <Button
                     android:id="@+id/mainActivityManageProfileButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="150dp"
+                    android:layout_width="242dp"
+                    android:layout_height="78dp"
                     android:text="@string/manage_profile_button_text" />
 
                 <Space
@@ -99,9 +99,8 @@
 
                 <Button
                     android:id="@+id/mainActivityManageOrderStatusButton"
-                    android:layout_width="146dp"
-                    android:layout_height="match_parent"
-                    android:scrollHorizontally="false"
+                    android:layout_width="229dp"
+                    android:layout_height="89dp"
                     android:text="@string/order_status_button_text" />
 
                 <Space
@@ -112,11 +111,11 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="32dp" />
+                android:layout_height="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <Space
@@ -126,9 +125,8 @@
 
                 <Button
                     android:id="@+id/mainActivityManageSubscriptionsButton"
-                    android:layout_width="149dp"
-                    android:layout_height="match_parent"
-                    android:scrollHorizontally="false"
+                    android:layout_width="256dp"
+                    android:layout_height="86dp"
                     android:text="@string/manage_subscriptions_buttonText" />
 
                 <Space
@@ -138,9 +136,8 @@
 
                 <Button
                     android:id="@+id/mainActivityManagePublishingButton"
-                    android:layout_width="143dp"
-                    android:layout_height="150dp"
-                    android:scrollHorizontally="false"
+                    android:layout_width="231dp"
+                    android:layout_height="82dp"
                     android:text="@string/manage_publishing_button_text" />
 
                 <Space

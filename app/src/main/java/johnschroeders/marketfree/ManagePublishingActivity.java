@@ -44,15 +44,15 @@ public class ManagePublishingActivity extends AppCompatActivity implements
 
 
         // Getting references to the buttons and establishing onclick methods for each of them
-        Button addPublishingButton = findViewById(R.id.managePublishingAddnewButton);
-        Button managePublishingBackButton = findViewById(R.id.managePublishingBackButton);
+        Button addPublishingButton = findViewById(R.id.managePublishingsAddnewButton);
+        Button managePublishingBackButton = findViewById(R.id.managePublishingsBackButton);
 
         addPublishingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Fragment publishingFragement = new CreatePublishingFragment();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.PublishingFrame, publishingFragement);
+                ft.replace(R.id.managePublishingsPublishingFrame, publishingFragement);
                 ft.commit();
                 Log.d(TAG, "after publish fragment inflation");
             }
@@ -147,7 +147,7 @@ public class ManagePublishingActivity extends AppCompatActivity implements
     //sets up the recycler view and adapter with data put into the products list
     public void setupTheRecyclerView() {
         Log.d(TAG, "setting recycler layout and adapter");
-        RecyclerView recyclerView = findViewById(R.id.publishingProductRecylcerView);
+        RecyclerView recyclerView = findViewById(R.id.managePublishingsRecylcerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ManagePublishingActivity.this));
         RecyclerView.Adapter mAdapter =
                 new MyRecyclerViewAdapterForPublishing(ManagePublishingActivity.this,
