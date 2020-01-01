@@ -203,6 +203,8 @@ public class RemovePublishingFragment extends Fragment {
     private void removeProductImage(){
         removeSelf();
         Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
         startActivity(intent);
         Log.d(TAG, "Deciding if we should actually remove the image or keep all of them");
     }

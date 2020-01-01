@@ -189,8 +189,11 @@ public class CreatePublishingFragment extends Fragment {
         Log.d(TAG, "Order fragment removing and starting activity");
         try {
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
-            Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
-            startActivity(intent);
+           Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
+           intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+           startActivity(intent);
+
         } catch (Exception e) {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
             e.printStackTrace();

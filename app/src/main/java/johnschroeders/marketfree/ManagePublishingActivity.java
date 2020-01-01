@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,7 +74,6 @@ public class ManagePublishingActivity extends AppCompatActivity implements
                 productList = savedInstanceState.getParcelableArrayList("SavedProductList");
                 setupTheRecyclerView();
                 savedInstanceState.clear();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
