@@ -10,11 +10,11 @@
     <string name="title_activity_user_main_page">UserMainPage</string>
     <string name="user_full_name_text_main">User Full Name</string>
     <string name="user_key_text_main">Insert Key Here</string>
-    <string name="manage_subscriptions_buttonText">Manage Subscriptions</string>
-    <string name="manage_publishing_button_text">Manage Publishing</string>
-    <string name="manage_profile_button_text">Manage Profile</string>
-    <string name="order_status_button_text">Manage Order Status</string>
-    <string name="title_activity_manage_subsciptions">Manage Subscriptions</string>
+    <string name="manage_subscriptions_buttonText">Add/Remove Subscriptions</string>
+    <string name="manage_publishing_button_text">Add/Remove Publishing</string>
+    <string name="manage_profile_button_text">Edit Profile</string>
+    <string name="order_status_button_text">View/Edit Orders</string>
+    <string name="title_activity_manage_subsciptions">Add/Remove Subscriptions</string>
     <string name="title_activity_manage_profile">ManageProfileActivity</string>
     <string name="title_activity_manage_publishing">Manage Publishing</string>
     <string name="title_activity_manage_order_status">ManageOrderStatusActivity</string>
@@ -27,7 +27,7 @@
     <string name="add_new_publishing_buttonText">Add new publishing</string>
     <string name="remove_publishing_ButtonText">Remove Publishing</string>
     <string name="Back">Button</string>
-    <string name="mange_profile_text">Mange Profile</string>
+    <string name="mange_profile_text">Profile</string>
     <string name="first_name_text_field">First Name</string>
     <string name="last_name_textField">Last Name</string>
     <string name="banking_information_last_4">Banking Information Last 4</string>
@@ -97,6 +97,14 @@
     <string name="prodDateCreated">DateCreated:</string>
     <string name="edit_publishing">Edit Publishing</string>
     <string name="editPubQuantityLabel">Quantity:</string>
+    <string name="manage_your_items">Manage Your Items</string>
+    <string name="see_whats_out_there">See Whats Out There</string>
+    <string name="mainAcitivty_seeWhatsNewTab">See Whats New</string>
+    <string name="mainAcitivity_ManageYourThingsTab">Manage Your Things</string>
+    <string name="new_orders_buttonText">New Orders</string>
+    <string name="new_productsButtonText">Products</string>
+    <string name="new_subscribersButtonText">New Subscribers</string>
+    <string name="new_messagesButtonText">Messaging</string>
 
 
 </resources>

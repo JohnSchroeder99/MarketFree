@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="johnschroeders.marketfree">
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
@@ -18,34 +19,31 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com" />
 
-
         <activity
-            android:name="johnschroeders.marketfree.RegisterActivity"
+            android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="johnschroeders.marketfree.ManageOrderStatusActivity"
+            android:name=".ManageOrderStatusActivity"
             android:label="@string/title_activity_manage_order_status"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="johnschroeders.marketfree.ManagePublishingActivity"
+            android:name=".ManagePublishingActivity"
             android:label="@string/title_activity_manage_publishing"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="johnschroeders.marketfree.ManageProfileActivity"
+            android:name=".ManageProfileActivity"
             android:label="@string/title_activity_manage_profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="johnschroeders.marketfree.ManageSubsciptionsActivity"
+            android:name=".ManageSubsciptionsActivity"
             android:label="@string/title_activity_manage_subsciptions"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="johnschroeders.marketfree.UserMainPageActivity"
+            android:name=".UserMainPageManagePersonalsActivity"
             android:label="@string/title_activity_user_main_page"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="johnschroeders.marketfree.StartupActivity">
+        <activity android:name=".StartupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,10 +55,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="johnschroeders.marketfree.UserLoginActivity" />
-
+        <activity android:name=".UserLoginActivity" />
     </application>
-
-    <!-- feature for the camera -->
 
 </manifest>

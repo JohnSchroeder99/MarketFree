@@ -62,7 +62,7 @@ public class ManagePublishingActivity extends AppCompatActivity implements
         managePublishingBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UserMainPageActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
                 startActivity(intent);
             }
         });

@@ -90,7 +90,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 GoogleSignInAccount acct = task.getResult();
                 assert acct != null;
                 Log.d(TAG, "successful results for account: " + acct.getEmail() + " for " + acct.getDisplayName());
-                Intent intent = new Intent(getApplicationContext(), UserMainPageActivity.class);
+                Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
                 startActivity(intent);
 
             } else {

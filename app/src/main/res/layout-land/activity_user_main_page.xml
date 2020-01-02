@@ -5,152 +5,78 @@
     android:id="@+id/mainActivityFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserMainPageActivity">
+    tools:context=".UserMainPageManagePersonalsActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainActivityContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityTabLayout" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mainActivityTabLayout"
+        android:layout_width="410dp"
+        android:layout_height="49dp"
+        app:layout_constraintBottom_toTopOf="@+id/mainActivityContainer"
+        app:layout_constraintEnd_toStartOf="@+id/mainActivityContainer"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mainActivityContainer"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityTitleCard">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/mainActivityManageYourThingsTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mainAcitivty_seeWhatsNewTab" />
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/mainActivitySeeWhatsNewTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mainAcitivity_ManageYourThingsTab" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/mainActivityTitleCard"
-                    android:layout_width="261dp"
-                    android:layout_height="117dp">
+    </com.google.android.material.tabs.TabLayout>
 
-                    <TextView
-                        android:id="@+id/TitleofPage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="53dp"
-                        android:text="@string/user_key_text_main"
-                        android:textAlignment="gravity" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mainActivityTitleCard"
+        android:layout_width="261dp"
+        android:layout_height="117dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/mainActivityContainer"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mainActivityContainer"
+        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/UserName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="26dp"
-                        android:text="@string/user_full_name_text_main"
-                        android:textAlignment="gravity" />
+        <TextView
+            android:id="@+id/TitleofPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="53dp"
+            android:text="@string/user_key_text_main"
+            android:textAlignment="gravity" />
 
-                    <TextView
-                        android:id="@+id/TitleTextView"
-                        android:layout_width="261dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="88dp"
-                        android:text="@string/options"
-                        android:textAlignment="center" />
+        <TextView
+            android:id="@+id/UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:text="@string/user_full_name_text_main"
+            android:textAlignment="gravity" />
 
-                </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/TitleTextView"
+            android:layout_width="261dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="88dp"
+            android:text="@string/options"
+            android:textAlignment="center" />
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+    </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_gravity="fill_vertical" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/mainActivityManageProfileButton"
-                    android:layout_width="242dp"
-                    android:layout_height="78dp"
-                    android:text="@string/manage_profile_button_text" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/mainActivityManageOrderStatusButton"
-                    android:layout_width="229dp"
-                    android:layout_height="89dp"
-                    android:text="@string/order_status_button_text" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/mainActivityManageSubscriptionsButton"
-                    android:layout_width="256dp"
-                    android:layout_height="86dp"
-                    android:text="@string/manage_subscriptions_buttonText" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/mainActivityManagePublishingButton"
-                    android:layout_width="231dp"
-                    android:layout_height="82dp"
-                    android:text="@string/manage_publishing_button_text" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
