@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ManageProfileFrame"
@@ -14,58 +14,133 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/manageProfileTitleCard"
-            android:layout_width="261dp"
-            android:layout_height="117dp"
+            android:id="@+id/USERINFO"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/TitleofPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="53dp"
-                android:text="@string/user_key_text_main"
-                android:textAlignment="gravity" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/UserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="26dp"
-                android:text="@string/user_full_name_text_main"
-                android:textAlignment="gravity" />
+                <TextView
+                    android:id="@+id/TitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/options"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/CardImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/CustomerKey" />
 
-            <TextView
-                android:id="@+id/TitleTextView"
-                android:layout_width="261dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="88dp"
-                android:text="@string/mange_profile_text"
-                android:textAlignment="center" />
+                <TextView
+                    android:id="@+id/CustomerKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/user_key_text_main"
+                    android:textAlignment="gravity"
+                    app:layout_constraintBottom_toTopOf="@+id/TitleTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/CardImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/UserName" />
+
+                <TextView
+                    android:id="@+id/UserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/user_full_name_text_main"
+                    android:textAlignment="gravity"
+                    app:layout_constraintBottom_toTopOf="@+id/CustomerKey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/CardImageView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/CardImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/CardImageView"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bluebutton"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:srcCompat="@tools:sample/avatars[0]" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/manageProfileSaveButton"
-            android:layout_width="139dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="368dp"
-            android:text="@string/save"
+        <TextView
+            android:id="@+id/manageProfileCareExpDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="163dp"
+            android:text="@string/expiration_date"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.915"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/manageProfileCardTypeTextView" />
+
+        <EditText
+            android:id="@+id/manageProfileEmailEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textWebEmailAddress|textPersonName"
+            android:labelFor="@id/manageProfileEmailEditText"
+            android:text="@string/email"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfilePasswordInput"
+            app:layout_constraintEnd_toStartOf="@+id/manageProfileSaveButton"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileFirstNameEditText"
+            tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/manageProfilebankingInfromationLast4TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/banking_information_last_4"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileUpdateBankingButton"
+            app:layout_constraintEnd_toStartOf="@+id/manageProfileCardTypeTextView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileBankingLabel" />
+
+        <TextView
+            android:id="@+id/manageProfileCardTypeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_type"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileUpdateBankingButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/manageProfileCareExpDateTextView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/manageProfilebankingInfromationLast4TextView"
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileBankingLabel"
+            app:layout_constraintVertical_bias="0.488" />
 
         <EditText
             android:id="@+id/manageProfileFirstNameEditText"
-            android:layout_width="141dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="308dp"
+            android:layout_width="0dp"
+            android:layout_height="49dp"
             android:autoLink="web|phone|none|map|email"
             android:autofillHints=""
             android:ems="10"
@@ -73,136 +148,101 @@
             android:inputType="textShortMessage|textPersonName"
             android:labelFor="@id/manageProfileFirstNameEditText"
             android:text="@string/first_name_text_field"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileEmailEditText"
             app:layout_constraintEnd_toStartOf="@+id/manageProfileLastNameEditText"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
-
-        <EditText
-            android:id="@+id/manageProfileLastNameEditText"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="308dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:labelFor="@id/manageProfileLastNameEditText"
-            android:text="@string/last_name_textField"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/manageProfileFirstNameEditText"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
-
-        <EditText
-            android:id="@+id/manageProfileEmailEditText"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="368dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textWebEmailAddress|textPersonName"
-            android:labelFor="@id/manageProfileEmailEditText"
-            android:text="@string/email"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.113"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileimageButton"
             tools:targetApi="o" />
 
         <Button
             android:id="@+id/manageProfileUpdateBankingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="588dp"
             android:text="@string/update_banking"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/manageProfilebankingInfromationLast4TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="556dp"
-            android:text="@string/banking_information_last_4"
-            app:layout_constraintEnd_toStartOf="@+id/manageProfileCardTypeTextView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/manageProfileCardTypeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="556dp"
-            android:text="@string/card_type"
-            app:layout_constraintEnd_toStartOf="@+id/manageProfileCareExpDateTextView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/manageProfilebankingInfromationLast4TextView"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/manageProfileCareExpDateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="556dp"
-            android:text="@string/expiration_date"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileBackButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/manageProfileCardTypeTextView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manageProfilebankingInfromationLast4TextView" />
 
         <ImageButton
             android:id="@+id/manageProfileimageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="142dp"
             android:contentDescription="@string/profileimage"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileFirstNameEditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/USERINFO"
             tools:srcCompat="@tools:sample/avatars[4]" />
 
         <TextView
             android:id="@+id/manageProfileBankingLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="524dp"
             android:text="@string/banking"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfilebankingInfromationLast4TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/manageProfilePasswordInput"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="428dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textPersonName|numberPassword"
-            android:labelFor="@id/manageProfilePasswordInput"
-            android:text="@string/password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            app:layout_constraintTop_toBottomOf="@+id/manageProfilePasswordInput" />
 
         <Button
             android:id="@+id/manageProfileBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="653dp"
             android:text="@string/back_button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileUpdateBankingButton" />
+
+        <Button
+            android:id="@+id/manageProfileSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:text="@string/save"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileCareExpDateTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/manageProfileEmailEditText"
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileLastNameEditText" />
+
+        <EditText
+            android:id="@+id/manageProfileLastNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:labelFor="@id/manageProfileLastNameEditText"
+            android:text="@string/last_name_textField"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileEmailEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/manageProfileFirstNameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileimageButton"
+            tools:targetApi="o" />
+
+        <EditText
+            android:id="@+id/manageProfilePasswordInput"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textPersonName|numberPassword"
+            android:labelFor="@id/manageProfilePasswordInput"
+            android:text="@string/password"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileBankingLabel"
+            app:layout_constraintEnd_toStartOf="@+id/manageProfileSaveButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileEmailEditText"
+            tools:targetApi="o" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,18 @@
 package johnschroeders.marketfree;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -22,7 +27,21 @@ public class UserMainPageManagePersonalsActivity extends AppCompatActivity imple
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main_page);
-        Log.d(TAG, "Setting up Main activity with Intent "+getIntent().getIntExtra("SavedTab",
+
+
+
+        TextView userName = findViewById(R.id.UserName);
+        TextView customerKey = findViewById(R.id.CustomerKey);
+        ImageView userImage = findViewById(R.id.CardImageView);
+        userName.setText( getIntent().getStringExtra("CustomerKey"));
+        customerKey.setText( getIntent().getStringExtra("UserName"));
+        Glide.with(getApplicationContext()).asBitmap().
+                load( getIntent().getStringExtra("Photo")).into(userImage);
+
+
+
+
+        Log.d(TAG, "Setting up Main activity with Intent " + getIntent().getIntExtra("SavedTab",
                 100));
         tabLayout = findViewById(R.id.mainActivityTabLayout);
         ViewPager viewPager = findViewById(R.id.mainAcitivityViewPager);
@@ -70,6 +89,9 @@ public class UserMainPageManagePersonalsActivity extends AppCompatActivity imple
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("SavedTab", tabLayout.getSelectedTabPosition());
+
+
+
     }
 
 

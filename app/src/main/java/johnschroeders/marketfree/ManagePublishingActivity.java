@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -43,6 +46,16 @@ public class ManagePublishingActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_manage_publishing);
 
 
+        TextView userName = findViewById(R.id.UserName);
+        TextView customerKey = findViewById(R.id.CustomerKey);
+        ImageView userImage = findViewById(R.id.CardImageView);
+        userName.setText( getIntent().getStringExtra("CustomerKey"));
+        customerKey.setText( getIntent().getStringExtra("UserName"));
+        Glide.with(getApplicationContext()).asBitmap().
+                load( getIntent().getStringExtra("Photo")).into(userImage);
+
+
+
         // Getting references to the buttons and establishing onclick methods for each of them
         Button addPublishingButton = findViewById(R.id.managePublishingsAddnewButton);
         Button managePublishingBackButton = findViewById(R.id.managePublishingsBackButton);
@@ -66,6 +79,17 @@ public class ManagePublishingActivity extends AppCompatActivity implements
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 intent.putExtra("SavedTab",1);
+                String customerKey =
+                        Objects.requireNonNull(getIntent().getStringExtra(
+                                "CustomerKey"));
+                String userName =   Objects.requireNonNull(getIntent().getStringExtra(
+                        "UserName"));
+                String photoURI =
+                        Objects.requireNonNull(getIntent().getStringExtra(
+                                "Photo"));
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
                 startActivity(intent);
             }
         });

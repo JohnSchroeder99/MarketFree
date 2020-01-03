@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,7 +88,17 @@ public class ManageYourThingsFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 intent.putExtra("SavedTab",1);
-
+                String customerKey =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "CustomerKey");
+                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                        "UserName");
+                String photoURI =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "Photo");
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
                 startActivity(intent);
             }
         });
@@ -97,6 +110,17 @@ public class ManageYourThingsFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 intent.putExtra("SavedTab",1);
+                String customerKey =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "CustomerKey");
+                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                        "UserName");
+                String photoURI =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "Photo");
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
                 startActivity(intent);
             }
         });
@@ -108,6 +132,17 @@ public class ManageYourThingsFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 intent.putExtra("SavedTab",1);
+                String customerKey =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "CustomerKey");
+                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                        "UserName");
+                String photoURI =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "Photo");
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
                 startActivity(intent);
             }
         });
@@ -119,6 +154,17 @@ public class ManageYourThingsFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 intent.putExtra("SavedTab",1);
+                String customerKey =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "CustomerKey");
+                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                        "UserName");
+                String photoURI =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "Photo");
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
                 startActivity(intent);
             }
         });
@@ -136,7 +182,7 @@ public class ManageYourThingsFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

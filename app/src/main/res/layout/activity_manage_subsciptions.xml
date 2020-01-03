@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ManageSubscriptionFrame"
@@ -11,107 +11,148 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ManageSubscriptionsContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/manageSubscriptionscardView"
-            android:layout_width="261dp"
-            android:layout_height="117dp"
+            android:id="@+id/USERINFO"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/TitleofPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="53dp"
-                android:text="@string/user_key_text_main"
-                android:textAlignment="gravity" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/UserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="26dp"
-                android:text="@string/user_full_name_text_main"
-                android:textAlignment="gravity" />
+                <TextView
+                    android:id="@+id/TitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/options"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/CardImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/CustomerKey" />
 
-            <TextView
-                android:id="@+id/TitleTextView"
-                android:layout_width="261dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="88dp"
-                android:text="@string/manage_subscriptions_buttonText"
-                android:textAlignment="center" />
+                <TextView
+                    android:id="@+id/CustomerKey"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/user_key_text_main"
+                    android:textAlignment="gravity"
+                    app:layout_constraintBottom_toTopOf="@+id/TitleTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/CardImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/UserName" />
+
+                <TextView
+                    android:id="@+id/UserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/user_full_name_text_main"
+                    android:textAlignment="gravity"
+                    app:layout_constraintBottom_toTopOf="@+id/CustomerKey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/CardImageView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/CardImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/CardImageView"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bluebutton"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:srcCompat="@tools:sample/avatars[0]" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/manageSubscriptionsRecyclerView"
-            android:layout_width="380dp"
-            android:layout_height="391dp"
-            android:layout_marginTop="117dp"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionsHintTextField"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.483"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionscardView"
-            app:layout_constraintVertical_bias="1.0"
-            tools:listitem="@layout/recycler_view_item_1" />
-
-        <Button
-            android:id="@+id/manageSubscriptionsaddButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="601dp"
-            android:text="@string/add_subscription_button_text"
-            app:layout_constraintEnd_toStartOf="@+id/manageSubscriptionskeyInsertTextView"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/manageSubscriptionskeyInsertTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="601dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textNoSuggestions"
-            android:labelFor="@id/manageSubscriptionskeyInsertTextView"
-            android:text="@string/user_key_text_main"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/manageSubscriptionsaddButton"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
-
-        <TextView
-            android:id="@+id/manageSubscriptionsHintTextField"
-            android:layout_width="373dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="528dp"
-            android:text="@string/hint_text_ManageSubs_Activity"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/manageSubscriptionsBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="664dp"
             android:text="@string/back_button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.411"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionskeyInsertTextView"
+            app:layout_constraintVertical_bias="0.488" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/manageSubscriptionsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="391dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionsHintTextField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/USERINFO"
+            tools:listitem="@layout/recycler_view_item_1" />
+
+        <EditText
+            android:id="@+id/manageSubscriptionskeyInsertTextView"
+            android:layout_width="219dp"
+            android:layout_height="48dp"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="textNoSuggestions"
+            android:labelFor="@id/manageSubscriptionskeyInsertTextView"
+            android:text="@string/user_key_text_main"
+            app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionsBackButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/manageSubscriptionsaddButton"
+            app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionsHintTextField"
+            tools:targetApi="o" />
+
+        <Button
+            android:id="@+id/manageSubscriptionsaddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_subscription_button_text"
+            app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionsBackButton"
+            app:layout_constraintEnd_toStartOf="@+id/manageSubscriptionskeyInsertTextView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionsHintTextField" />
+
+        <TextView
+            android:id="@+id/manageSubscriptionsHintTextField"
+            android:layout_width="373dp"
+            android:layout_height="65dp"
+            android:text="@string/hint_text_ManageSubs_Activity"
+            app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionskeyInsertTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionsRecyclerView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

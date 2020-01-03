@@ -29,12 +29,12 @@
                     android:layout_weight="1" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/mainActivityTitleCard"
+                    android:id="@+id/USERINFO"
                     android:layout_width="261dp"
                     android:layout_height="117dp">
 
                     <TextView
-                        android:id="@+id/TitleofPage"
+                        android:id="@+id/CustomerKey"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

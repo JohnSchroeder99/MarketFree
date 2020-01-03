@@ -105,8 +105,8 @@
     <string name="new_productsButtonText">Products</string>
     <string name="new_subscribersButtonText">New Subscribers</string>
     <string name="new_messagesButtonText">Messaging</string>
-    <string name="client_ID">"Go get it from OATH2"</string>
-
+    <string name="client_ID">"373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com"</string>
+    <string name="CardImageView">CardImageView</string>
 
 
 </resources>

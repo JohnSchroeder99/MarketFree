@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ManageSubsciptionsActivity extends AppCompatActivity {
     private static final String TAG = "SubscriptionsActivity";
@@ -25,6 +30,14 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
         Button subscriptionsBackButton = findViewById(R.id.manageSubscriptionsBackButton);
         Button addSubScriptionsButton = findViewById(R.id.manageSubscriptionsaddButton);
 
+        TextView userName = findViewById(R.id.UserName);
+        TextView customerKey = findViewById(R.id.CustomerKey);
+        ImageView userImage = findViewById(R.id.CardImageView);
+        userName.setText( getIntent().getStringExtra("CustomerKey"));
+        customerKey.setText( getIntent().getStringExtra("UserName"));
+        Glide.with(getApplicationContext()).asBitmap().
+                load( getIntent().getStringExtra("Photo")).into(userImage);
+
         subscriptionsBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,6 +45,17 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                 intent.putExtra("SavedTab",1);
+                String customerKey =
+                        Objects.requireNonNull(getIntent().getStringExtra(
+                                "CustomerKey"));
+                String userName =   Objects.requireNonNull(getIntent().getStringExtra(
+                        "UserName"));
+                String photoURI =
+                        Objects.requireNonNull(getIntent().getStringExtra(
+                                "Photo"));
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
                 startActivity(intent);
             }
         });

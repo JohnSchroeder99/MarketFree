@@ -2,6 +2,7 @@ package johnschroeders.marketfree;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,7 +64,6 @@ public class UserLoginActivity extends AppCompatActivity {
                 startActivity(intent);*/
                 signOut();
 
-
             }
         });
 
@@ -80,7 +80,7 @@ public class UserLoginActivity extends AppCompatActivity {
                                     .requestEmail()
                                     .requestId()
                                     .requestIdToken(getString(R.string.client_ID))
-                                    .requestProfile()
+                                    .requestServerAuthCode(getString(R.string.client_ID))                                    .requestProfile()
                                     .build();
                     mSignInClient = GoogleSignIn.getClient(getApplicationContext(), googleSignInOptions);
                     signIn();
@@ -97,7 +97,7 @@ public class UserLoginActivity extends AppCompatActivity {
                                     + account.getIdToken()
                                     + "\n"
                                     + "Account:  "
-                                    + Objects.requireNonNull(account.getAccount()).name
+                                    + Objects.requireNonNull(account.getAccount())
                                     + "\n"
                                     + "PHOTO URL:  "
                                     + account.getPhotoUrl()
@@ -111,6 +111,12 @@ public class UserLoginActivity extends AppCompatActivity {
                                     + "ID:  "
                                     + account.getId());
                     Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
+                    String customerKey = account.getId();
+                    String userName = account.getDisplayName();
+                    String photoURI = Objects.requireNonNull(account.getPhotoUrl()).toString();
+                    intent.putExtra("CustomerKey", customerKey);
+                    intent.putExtra("UserName", userName);
+                    intent.putExtra("Photo", Objects.requireNonNull(photoURI));
                     startActivity(intent);
                 }
             }
@@ -148,7 +154,7 @@ public class UserLoginActivity extends AppCompatActivity {
                                 + acct.getIdToken()
                                 + "\n"
                                 + "Account:  "
-                                + Objects.requireNonNull(acct.getAccount()).name
+                                + Objects.requireNonNull(acct.getAccount())
                                 + "\n"
                                 + "PHOTO URL:  "
                                 + acct.getPhotoUrl()
@@ -162,7 +168,13 @@ public class UserLoginActivity extends AppCompatActivity {
                                 + "ID:  "
                                 + acct.getId());
 
+                String customerKey = acct.getId();
+                String userName = acct.getDisplayName();
+                Uri photoURI = acct.getPhotoUrl();
                 Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI).toString());
                 startActivity(intent);
 
             } else {
@@ -198,6 +210,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         .requestEmail()
                         .requestId()
                         .requestIdToken(getString(R.string.client_ID))
+
                         .requestProfile()
                         .build();
         mSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
