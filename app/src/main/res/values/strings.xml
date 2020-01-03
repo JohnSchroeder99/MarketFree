@@ -105,6 +105,8 @@
     <string name="new_productsButtonText">Products</string>
     <string name="new_subscribersButtonText">New Subscribers</string>
     <string name="new_messagesButtonText">Messaging</string>
+    <string name="client_ID">"Go get it from OATH2"</string>
+
 
 
 </resources>

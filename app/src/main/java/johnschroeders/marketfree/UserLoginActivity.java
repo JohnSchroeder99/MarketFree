@@ -10,13 +10,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.Objects;
 
 
 public class UserLoginActivity extends AppCompatActivity {
@@ -24,6 +28,7 @@ public class UserLoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mSignInClient;
     static final String TAG = "LoginActivity";
+    GoogleSignInOptions googleSignInOptions;
 
 
     @Override
@@ -50,24 +55,64 @@ public class UserLoginActivity extends AppCompatActivity {
         // with their associated subscriptions, orders, publishings and profile. Label the
         // bundleKey "CurrentUserMetaData".
 
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+              /*  Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                startActivity(intent);*/
+                signOut();
+
+
+            }
+        });
 
         //TODO handle various user login accounts and let them choose which one to login with
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, " Logging in and setting up Google sign-in options");
-                GoogleSignInOptions options =
-                        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
-                                .build();
-                mSignInClient = GoogleSignIn.getClient(getApplicationContext(), options);
-                signIn();
-            }
-        });
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(intent);
+                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                if (account == null) {
+                    googleSignInOptions =
+                            new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    .requestEmail()
+                                    .requestId()
+                                    .requestIdToken(getString(R.string.client_ID))
+                                    .requestProfile()
+                                    .build();
+                    mSignInClient = GoogleSignIn.getClient(getApplicationContext(), googleSignInOptions);
+                    signIn();
+                } else {
+                    Log.d(TAG,
+                            "successfully already signed in before with \n"
+                                    + "account email: "
+                                    + account.getEmail()
+                                    + "\n"
+                                    + " with account name:  "
+                                    + account.getDisplayName()
+                                    + "\n"
+                                    + "ID TOKEN:  "
+                                    + account.getIdToken()
+                                    + "\n"
+                                    + "Account:  "
+                                    + Objects.requireNonNull(account.getAccount()).name
+                                    + "\n"
+                                    + "PHOTO URL:  "
+                                    + account.getPhotoUrl()
+                                    + "\n"
+                                    + "FamilyName:  "
+                                    + account.getFamilyName()
+                                    + "\n"
+                                    + "AUTH CODE:  "
+                                    + account.getServerAuthCode()
+                                    + "\n"
+                                    + "ID:  "
+                                    + account.getId());
+                    Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -89,7 +134,34 @@ public class UserLoginActivity extends AppCompatActivity {
                 // Sign in succeeded, proceed with account
                 GoogleSignInAccount acct = task.getResult();
                 assert acct != null;
-                Log.d(TAG, "successful results for account: " + acct.getEmail() + " for " + acct.getDisplayName());
+
+
+                Log.d(TAG,
+                        "successful results for \n"
+                                + "account email: "
+                                + acct.getEmail()
+                                + "\n"
+                                + " with account name:  "
+                                + acct.getDisplayName()
+                                + "\n"
+                                + "ID TOKEN:  "
+                                + acct.getIdToken()
+                                + "\n"
+                                + "Account:  "
+                                + Objects.requireNonNull(acct.getAccount()).name
+                                + "\n"
+                                + "PHOTO URL:  "
+                                + acct.getPhotoUrl()
+                                + "\n"
+                                + "FamilyName:  "
+                                + acct.getFamilyName()
+                                + "\n"
+                                + "AUTH CODE:  "
+                                + acct.getServerAuthCode()
+                                + "\n"
+                                + "ID:  "
+                                + acct.getId());
+
                 Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
                 startActivity(intent);
 
@@ -98,6 +170,47 @@ public class UserLoginActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void revokeAccess() {
+
+        googleSignInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .requestId()
+                        .requestIdToken(getString(R.string.client_ID))
+                        .requestProfile()
+                        .build();
+        mSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+        mSignInClient.revokeAccess()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "Removed information from the applicaiton ");
+                    }
+                });
+    }
+
+    // used to sign out of the application. So far it does nothing but it will need to go back to
+    // the orginal starting point of the application.
+    private void signOut() {
+        googleSignInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .requestId()
+                        .requestIdToken(getString(R.string.client_ID))
+                        .requestProfile()
+                        .build();
+        mSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+        mSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "Signed out from the application");
+                    }
+                });
+    }
+
+
 }
 
 
