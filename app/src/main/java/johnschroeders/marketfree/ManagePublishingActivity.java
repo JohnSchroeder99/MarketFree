@@ -63,6 +63,9 @@ public class ManagePublishingActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                intent.putExtra("SavedTab",1);
                 startActivity(intent);
             }
         });
@@ -160,5 +163,7 @@ public class ManagePublishingActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("SavedProductList", productList);
+        outState.putInt("SavedTab", 1);
+
     }
 }

@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".UserMainPageManagePersonalsActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mainActivityContainer"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/mainAcitivityViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,10 +21,10 @@
         android:id="@+id/mainActivityTabLayout"
         android:layout_width="410dp"
         android:layout_height="49dp"
-        app:layout_constraintBottom_toTopOf="@+id/mainActivityContainer"
-        app:layout_constraintEnd_toStartOf="@+id/mainActivityContainer"
+        app:layout_constraintBottom_toTopOf="@+id/mainAcitivityViewPager"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mainActivityContainer"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainActivityTitleCard">
 
         <com.google.android.material.tabs.TabItem
@@ -46,9 +46,9 @@
         android:layout_width="261dp"
         android:layout_height="117dp"
         android:layout_marginTop="2dp"
-        app:layout_constraintEnd_toStartOf="@+id/mainActivityContainer"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mainActivityContainer"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView

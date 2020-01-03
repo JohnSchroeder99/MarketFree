@@ -82,6 +82,10 @@ public class ManageYourThingsFragment extends Fragment {
             public void onClick(View view) {
                Intent intent = new Intent(view.getContext(),
                        ManageSubsciptionsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                intent.putExtra("SavedTab",1);
+
                 startActivity(intent);
             }
         });
@@ -90,6 +94,9 @@ public class ManageYourThingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ManagePublishingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                intent.putExtra("SavedTab",1);
                 startActivity(intent);
             }
         });
@@ -98,6 +105,9 @@ public class ManageYourThingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ManageOrderStatusActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                intent.putExtra("SavedTab",1);
                 startActivity(intent);
             }
         });
@@ -106,6 +116,9 @@ public class ManageYourThingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ManageProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                intent.putExtra("SavedTab",1);
                 startActivity(intent);
             }
         });
