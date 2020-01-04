@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -64,7 +67,54 @@ public class SeeWhatsNewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_see_whats_new_fragment_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_see_whats_new_fragment_view, container,
+                false);
+        Button newOrdersButton = view.findViewById(R.id.mainActivitySeeNewOrdersButton);
+        Button newProductsButton = view.findViewById(R.id.mainActivitySeeNewProductsButton);
+        Button newSubscribers = view.findViewById(R.id.mainActivitySeeNewSubscribersButton);
+        Button messages = view.findViewById(R.id.mainActivitySeeNewMessagesButton);
+
+        newOrdersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getContext(), "\"Need to set this up just swipe " +
+                                "right for now and deal with those ",
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+
+        newProductsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getContext(), "Need to set this up just swipe right for now and " +
+                    "deal with those ",
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+
+        newSubscribers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getContext(), "\"Need to set this up just swipe " +
+                                "right for now and deal with those ",
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+
+        messages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getContext(), "\"Need to set this up just swipe " +
+                                "right for now and deal with those ",
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -75,7 +125,7 @@ public class SeeWhatsNewFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;

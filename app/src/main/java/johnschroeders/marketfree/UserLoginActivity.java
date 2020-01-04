@@ -36,13 +36,10 @@ public class UserLoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
-        TextView tempLogin = (EditText) findViewById(R.id.loginActivityEmailAddressInput);
-        TextView tempPaSS = (EditText) findViewById(R.id.loginActivityPagepassWordText);
 
-        Button registerButton = findViewById(R.id.loginActivityRegisterButton);
         Button loginButton = findViewById(R.id.loginActivityLoginButton);
-        tempPaSS.setText(R.string.passwordText);
-        tempLogin.setText(R.string.loginText);
+        Button signInOtherAccountButton =
+                findViewById(R.id.loginActivityLoginWithOtherAccountButton);
 
         //setting up the image from the drawable resources.
         ImageView marketFreeIcon = findViewById(R.id.loginActivityImageMarketFreeIcon);
@@ -56,16 +53,24 @@ public class UserLoginActivity extends AppCompatActivity {
         // with their associated subscriptions, orders, publishings and profile. Label the
         // bundleKey "CurrentUserMetaData".
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        signInOtherAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-              /*  Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                startActivity(intent);*/
-                signOut();
 
+                signOut();
+                GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+
+                googleSignInOptions =
+                        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestEmail()
+                                .requestId()
+                                .requestIdToken(getString(R.string.client_ID))
+                                .requestServerAuthCode(getString(R.string.client_ID)).requestProfile()
+                                .build();
+                mSignInClient = GoogleSignIn.getClient(getApplicationContext(), googleSignInOptions);
+                signIn();
             }
         });
+
 
         //TODO handle various user login accounts and let them choose which one to login with
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +85,7 @@ public class UserLoginActivity extends AppCompatActivity {
                                     .requestEmail()
                                     .requestId()
                                     .requestIdToken(getString(R.string.client_ID))
-                                    .requestServerAuthCode(getString(R.string.client_ID))                                    .requestProfile()
+                                    .requestServerAuthCode(getString(R.string.client_ID)).requestProfile()
                                     .build();
                     mSignInClient = GoogleSignIn.getClient(getApplicationContext(), googleSignInOptions);
                     signIn();
@@ -140,8 +145,6 @@ public class UserLoginActivity extends AppCompatActivity {
                 // Sign in succeeded, proceed with account
                 GoogleSignInAccount acct = task.getResult();
                 assert acct != null;
-
-
                 Log.d(TAG,
                         "successful results for \n"
                                 + "account email: "
@@ -210,7 +213,6 @@ public class UserLoginActivity extends AppCompatActivity {
                         .requestEmail()
                         .requestId()
                         .requestIdToken(getString(R.string.client_ID))
-
                         .requestProfile()
                         .build();
         mSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);

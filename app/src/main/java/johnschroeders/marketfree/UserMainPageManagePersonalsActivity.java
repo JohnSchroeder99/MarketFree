@@ -45,6 +45,9 @@ public class UserMainPageManagePersonalsActivity extends AppCompatActivity imple
                 100));
         tabLayout = findViewById(R.id.mainActivityTabLayout);
         ViewPager viewPager = findViewById(R.id.mainAcitivityViewPager);
+
+
+
         // do the checks to see if we arrived here from another activity or if we arrived here
         // from screen rotation. Either way check to see where we should be and start with the
         // display at the correct position.
@@ -89,9 +92,6 @@ public class UserMainPageManagePersonalsActivity extends AppCompatActivity imple
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("SavedTab", tabLayout.getSelectedTabPosition());
-
-
-
     }
 
 

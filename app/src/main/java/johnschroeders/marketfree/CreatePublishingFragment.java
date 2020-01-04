@@ -185,15 +185,25 @@ public class CreatePublishingFragment extends Fragment {
     }
 
 
-    public void removeSelfAndPopulate(){
+    public void removeSelfAndPopulate() {
         Log.d(TAG, "Order fragment removing and starting activity");
         try {
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
-           Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
-           intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-           startActivity(intent);
-
+            String customerKey =
+                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                            "CustomerKey"));
+            String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                    "UserName"));
+            String photoURI =
+                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                            "Photo"));
+            intent.putExtra("CustomerKey", customerKey);
+            intent.putExtra("UserName", userName);
+            intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+            startActivity(intent);
         } catch (Exception e) {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
             e.printStackTrace();
@@ -261,15 +271,18 @@ public class CreatePublishingFragment extends Fragment {
         // a compositekey consisting of the (customerkey + the USERNAME) ie
         // (129asdf83746MattSucks)
         final StorageReference storageReference =
-                storageRef.child("ProductImages/").child("USER1").child(currentTimeStamp);
+                storageRef.child("ProductImages/").child(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
+                        + getActivity().getIntent().getStringExtra("CustomerKey")
+                ).child(currentTimeStamp);
 
         //TODO update metadata to reflect data from the producer with their customer key or
         // composite key that uniquely identifies them. We have some metadata already which may
         // be good enough
         StorageMetadata metadata = new StorageMetadata.Builder()
                 .setContentType("image/jpg")
-                .setCustomMetadata("ProductID", "USER1" + currentTimeStamp)
-                .setCustomMetadata("CustomerKey", "USER1")
+                .setCustomMetadata("ProductID", tempProduct.getProductID())
+                .setCustomMetadata("ProducerKey", tempProduct.getCustomerKey())
+                .setCustomMetadata("UserName", getActivity().getIntent().getStringExtra("UserName"))
                 .build();
 
         // converting image to byte array so it can be loaded to firestorage bucket
@@ -315,13 +328,13 @@ public class CreatePublishingFragment extends Fragment {
     public void publishProductDataToFireStorage() {
         //setting up temporary product with fields that are already available
         //TODO update the product ID to involve the customerkey value before being published.
-        tempProduct.setProductID("USER1" + this.currentTimeStamp);
+        tempProduct.setProductID(prodDescriptionInput.getText().toString() + this.currentTimeStamp);
         tempProduct.setQuantity(Integer.valueOf(prodquantityInput.getText().toString()));
         tempProduct.setProductDescription(prodDescriptionInput.getText().toString());
         Date date = new Date();
         date.getTime();
         tempProduct.setDateCreated(date);
-        tempProduct.setCustomerKey("USER1" + "somerandomShit");
+        tempProduct.setCustomerKey(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"));
         tempProduct.setProductTitle(prodTitleInput.getText().toString());
         finishSettingTempProd();
     }
@@ -330,16 +343,27 @@ public class CreatePublishingFragment extends Fragment {
     // published to firestorage
     public void finishSettingTempProd() {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        storageReference.child("ProductImages/USER1/" + currentTimeStamp).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Log.d(TAG, "Testing URL: " + uri);
-                tempProduct.setUri(uri.toString());
-                finalizeAndPublish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+
+        storageReference
+                .child("ProductImages")
+                .child( Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
+                        + Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"))
+                .child(currentTimeStamp)
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d(TAG, "Testing URL: " + uri);
+                        tempProduct.setUri(uri.toString());
+                        finalizeAndPublish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "Failed to properly publish" + exception.getMessage()+exception.getLocalizedMessage());
+                Log.d(TAG,"ProductImages/"
+                                +Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
+                                +Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"));
             }
         });
     }
@@ -360,15 +384,15 @@ public class CreatePublishingFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                         // remove the fragment and start the activity again so it can display
                         // what was just published.
-                       removeSelfAndPopulate();
+                        removeSelfAndPopulate();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressBar.setVisibility(View.GONE);
                 removeSelfAndPopulate();
-               Log.d(TAG,
-                       "Failed to publish the product with error: "+ e.getLocalizedMessage()+ e.getMessage()+ e.getCause());
+                Log.d(TAG,
+                        "Failed to publish the product with error: " + e.getLocalizedMessage() + e.getMessage() + e.getCause());
             }
         });
     }

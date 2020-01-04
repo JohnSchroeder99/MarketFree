@@ -7,47 +7,47 @@
     tools:context="johnschroeders.marketfree.SeeWhatsNewFragment">
 
     <Button
-        android:id="@+id/mainActivitySeeNewOrders"
+        android:id="@+id/mainActivitySeeNewOrdersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:scrollHorizontally="false"
         android:text="@string/new_orders_buttonText"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/mainActivitySeeNewProducts"
+        app:layout_constraintEnd_toStartOf="@+id/mainActivitySeeNewProductsButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/new_orders_buttonText" />
 
     <Button
-        android:id="@+id/mainActivitySeeNewProducts"
+        android:id="@+id/mainActivitySeeNewProductsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:scrollHorizontally="false"
         android:text="@string/new_productsButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/mainActivitySeeNewSubscribers"
+        app:layout_constraintEnd_toStartOf="@+id/mainActivitySeeNewSubscribersButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mainActivitySeeNewOrders"
+        app:layout_constraintStart_toEndOf="@+id/mainActivitySeeNewOrdersButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/mainActivitySeeNewSubscribers"
+        android:id="@+id/mainActivitySeeNewSubscribersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:scrollHorizontally="false"
         android:text="@string/new_subscribersButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/mainActivitySeeNewMessages"
+        app:layout_constraintEnd_toStartOf="@+id/mainActivitySeeNewMessagesButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mainActivitySeeNewProducts"
+        app:layout_constraintStart_toEndOf="@+id/mainActivitySeeNewProductsButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/mainActivitySeeNewMessages"
+        android:id="@+id/mainActivitySeeNewMessagesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -56,7 +56,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mainActivitySeeNewSubscribers"
+        app:layout_constraintStart_toEndOf="@+id/mainActivitySeeNewSubscribersButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

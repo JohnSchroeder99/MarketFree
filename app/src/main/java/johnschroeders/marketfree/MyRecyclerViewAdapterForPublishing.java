@@ -50,10 +50,15 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
             // setting the text to the passed in product title and the image for each item in the
             // listview from firestore this required using glide which was imported  in
             // the gradle properties file as a dependency
+        try{
             holder.productID.setText(this.productList.get(position).getProductTitle());
             Uri myUri = Uri.parse(this.productList.get(position).getUri());
             Glide.with(context).asBitmap().
                     load(myUri).into(holder.productImage);
+        }catch (Exception e){
+            Log.d(TAG, "Nothing in the item yet");
+        }
+
     }
 
     @Override

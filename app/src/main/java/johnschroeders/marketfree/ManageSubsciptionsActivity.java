@@ -72,14 +72,13 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
         Log.d(TAG, "loading data for subscriptions");
         //TODO need to load true subscriptions for each person from firestore
         ArrayList<String> names = new ArrayList<>();
-        names.add("John");
+        names.add("John ");
         names.add("Deborah");
         names.add("Useless");
         names.add("Brandumb");
         names.add("Richard");
         names.add("Idiot");
         Log.d(TAG, "loading data for subscriptions completed successfully");
-
         //
         Log.d(TAG, "creating recyclerview for the subscriptions view");
         RecyclerView recyclerView = findViewById(R.id.manageSubscriptionsRecyclerView);
