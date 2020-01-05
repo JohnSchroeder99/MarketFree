@@ -71,6 +71,10 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
 
         Log.d(TAG, "loading data for subscriptions");
         //TODO need to load true subscriptions for each person from firestore
+
+
+
+        //Get the people who you are subscribed too
         ArrayList<String> names = new ArrayList<>();
         names.add("John ");
         names.add("Deborah");

@@ -106,6 +106,7 @@
     <string name="new_subscribersButtonText">New Subscribers</string>
     <string name="new_messagesButtonText">Messaging</string>
     <string name="client_ID">"373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com"</string>
+    <string name="android_client_ID">"373985215969-m9eagqep1qt16s76ahstko6ln674kpt4.apps.googleusercontent.com"</string>
     <string name="CardImageView">CardImageView</string>
     <string name="sign_in_with_other_account">Sign In With Other Account</string>
 
