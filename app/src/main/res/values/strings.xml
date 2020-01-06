@@ -109,6 +109,9 @@
     <string name="android_client_ID">"373985215969-m9eagqep1qt16s76ahstko6ln674kpt4.apps.googleusercontent.com"</string>
     <string name="CardImageView">CardImageView</string>
     <string name="sign_in_with_other_account">Sign In With Other Account</string>
+    <string name="managesubrecyclerviewimage">manageSubRecyclerViewImage</string>
+    <string name="managesubsrecyclerview">manageSubsREcyclerView</string>
+    <string name="manageSubsInsertTextHint">Insert Key Here</string>
 
 
 </resources>

@@ -7,6 +7,7 @@
         android:required="true" />
 
     <application
+
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,6 +38,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ManageSubsciptionsActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_manage_subsciptions"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

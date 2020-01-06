@@ -145,8 +145,10 @@ public class ManagePublishingActivity extends AppCompatActivity implements
     public void getProductList() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "Getting all products from firestore");
+        //TODO upload only products that you have published
         productList = new ArrayList<>();
-        db.collection("Publishings").get()
+        db.collection("Publishings").whereEqualTo("customerKey", getIntent().getStringExtra(
+                "CustomerKey")).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
