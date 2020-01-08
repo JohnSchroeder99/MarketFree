@@ -29,9 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-//TODO refactor the product to have Images so that they can be saved for the screen rotation to
-// keep from going out to firestore again.
-
 //Must implement the listener for each of the fragments that you want to use.
 public class ManagePublishingActivity extends AppCompatActivity implements
         CreatePublishingFragment.OnFragmentInteractionListener,
@@ -108,16 +105,9 @@ public class ManagePublishingActivity extends AppCompatActivity implements
             //go out to firestore and retrieve the data
             getProductList();
         }
-
-
-        //TODO create and pull actual products from each user who you are subscribed too
-
         // Initiallize this method to create mock data for testing purposes.
         //createProducts();
 
-        //TODO hadndle the screen rotation so it does not repopulate the data from firestore and
-        // instead populates from the list that is already there.
-        // grab real data and set up view
 
     }
 
@@ -145,7 +135,6 @@ public class ManagePublishingActivity extends AppCompatActivity implements
     public void getProductList() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "Getting all products from firestore");
-        //TODO upload only products that you have published
         productList = new ArrayList<>();
         db.collection("Publishings").whereEqualTo("customerKey", getIntent().getStringExtra(
                 "CustomerKey")).get()

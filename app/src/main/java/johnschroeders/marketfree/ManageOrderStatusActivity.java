@@ -26,10 +26,6 @@ import java.util.Date;
 import java.util.Objects;
 
 
-// TODO update the orders page to ask the user if they want to view their own orders that they
-//  have put in for other people or the orders that have been put in from people who ordered from
-//  them (this might be done under another activity instead)
-
 
 public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener {
     static final String TAG = "OrderStatusActivity";
@@ -98,12 +94,6 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
             getListItems();
         }
     }
-
-
-    //TODO create orders from input instead of mocking it. This will likely be done under a new
-    // activity where the user decides to purchase something and after the publisher approves of
-    // the order
-
 
     public Order createOrder() {
         //just added for mock data

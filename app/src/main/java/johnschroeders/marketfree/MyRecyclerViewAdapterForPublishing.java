@@ -90,8 +90,6 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
                     productList.get(this.getAdapterPosition()).getProductID() +
                     " and Product URI" +  productList.get(this.getAdapterPosition()).getUri());
 
-            //TODO handle onlcick for each image, probably inflate a fragment that shows a bigger
-            // version of the picture with some details and an option to remove the publishing
             Fragment productListViewClickedFragement = new RemovePublishingFragment();
             Product productPublished = productList.get(this.getAdapterPosition());
 

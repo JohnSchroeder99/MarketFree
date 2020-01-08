@@ -7,7 +7,7 @@
     android:background="@android:color/white"
     tools:context="johnschroeders.marketfree.RemovePublishingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
 
     <Button
         android:id="@+id/editPubXButton"

@@ -62,8 +62,6 @@ public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each row
-    //TODO bind data from actual firestore data for subscriptions
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
@@ -173,9 +171,6 @@ public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<
         return super.getItemId(position);
     }
 
-
-    // allows clicks events to be caught
-    //TODO retrieve actual firestore data when a subscription is clicked for subscription fragment
     void setClickListener(ItemClickListener itemClickListener) {
         Log.d(TAG, "in on click for recyclerview class");
         this.mClickListener = itemClickListener;

@@ -267,9 +267,7 @@ public class CreatePublishingFragment extends Fragment {
 
         Log.d(TAG, "Setting up firestorage to handle bringing in the data");
         final StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        //TODO replace USER1 with the actual user of the program that will be passed around as
-        // a compositekey consisting of the (customerkey + the USERNAME) ie
-        // (129asdf83746MattSucks)
+
         final StorageReference storageReference =
                 storageRef.child("ProductImages/").child(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
                         + getActivity().getIntent().getStringExtra("CustomerKey")
@@ -327,7 +325,6 @@ public class CreatePublishingFragment extends Fragment {
     //set up the product data will be published to firebase firestore firestore database
     public void publishProductDataToFireStorage() {
         //setting up temporary product with fields that are already available
-        //TODO update the product ID to involve the customerkey value before being published.
         tempProduct.setProductID(prodDescriptionInput.getText().toString() + this.currentTimeStamp);
         tempProduct.setQuantity(Integer.valueOf(prodquantityInput.getText().toString()));
         tempProduct.setProductDescription(prodDescriptionInput.getText().toString());

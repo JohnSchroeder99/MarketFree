@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firestore.v1.Document;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -64,13 +66,6 @@ public class UserLoginActivity extends AppCompatActivity {
         ImageView marketFreeIcon = findViewById(R.id.loginActivityImageMarketFreeIcon);
         Drawable myDrawable = this.getResources().getDrawable(R.drawable.bluebutton);
         marketFreeIcon.setImageDrawable(myDrawable);
-
-
-        // handle login procedure for signing into the device
-        //TODO add information from successful signin (UserEmail and name) in to a bundle so it can
-        // so the correct customer Key can be applied and properly identify the current user
-        // with their associated subscriptions, orders, publishings and profile. Label the
-        // bundleKey "CurrentUserMetaData".
 
         signInOtherAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -196,7 +191,6 @@ public class UserLoginActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 if (document.getData().containsValue(custKey)) {
-                                    Log.d(TAG, "Customer key = " + custKey);
                                     findOutIfFound(true);
                                 }
                             }
@@ -213,10 +207,7 @@ public class UserLoginActivity extends AppCompatActivity {
             Log.d(TAG, "User found for: " + user.getUserName());
             startActivity(intent);
         }
-
-
     }
-
 
     public void addPersonToFireStore(final User newUser) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -236,9 +227,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         "Failed to publish the product with error: " + e.getLocalizedMessage() + e.getMessage() + e.getCause());
             }
         });
-
     }
-
 
     public void signInCreds(GoogleSignInAccount gsa) {
         Log.d(TAG,
@@ -255,35 +244,24 @@ public class UserLoginActivity extends AppCompatActivity {
         this.found = foundPassin;
     }
 
-
     public void setupForNextPage(GoogleSignInAccount account) {
 
-
-        //TODO pull down user info if it exists instead of using the mock data like right now.
         //pull down the information for the user
         String customerKey = account.getId();
         String userName = account.getDisplayName();
         String photoURI = Objects.requireNonNull(account.getPhotoUrl()).toString();
 
-        ArrayList<String> namesSubbedTo = new ArrayList<>();
-        namesSubbedTo.add("Deborah");
-        namesSubbedTo.add("Matt");
-        namesSubbedTo.add("John");
-        namesSubbedTo.add("Someone");
-        namesSubbedTo.add("someOther");
-
         //once pulled down then put in the extras
         intent.putExtra("CustomerKey", customerKey);
         intent.putExtra("UserName", userName);
         intent.putExtra("Photo", Objects.requireNonNull(photoURI));
-        intent.putStringArrayListExtra("SubscribedTo", namesSubbedTo);
 
         //setting up the information for the user. this will be done if the user has never logged
         // in.
         this.user.setCustomerKey(customerKey);
         this.user.setUserName(userName);
         this.user.setProfileImageURL(Objects.requireNonNull(photoURI));
-        this.user.setSubscribedTo(namesSubbedTo);
+
     }
 }
 
