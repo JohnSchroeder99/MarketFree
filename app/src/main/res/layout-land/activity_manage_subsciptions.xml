@@ -27,20 +27,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/manageSubscriptionsHintTextField"
+            app:layout_constraintStart_toEndOf="@+id/manageSubscriptionsRecyclerView"
             app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionsaddButton" />
-
-        <TextView
-            android:id="@+id/manageSubscriptionsHintTextField"
-            android:layout_width="373dp"
-            android:layout_height="65dp"
-            android:gravity="center"
-            android:text="@string/hint_text_ManageSubs_Activity"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/manageSubscriptionsBackButton"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manageSubscriptionsRecyclerView" />
 
         <Button
             android:id="@+id/manageSubscriptionsaddButton"
@@ -61,7 +49,6 @@
             android:ems="10"
             android:hint="@string/manageSubsInsertTextHint"
             android:inputType="textNoSuggestions"
-            android:labelFor="@id/manageSubscriptionsHintTextField"
             app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionsaddButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -71,10 +58,12 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/manageSubscriptionsRecyclerView"
-            android:layout_width="478dp"
-            android:layout_height="248dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/manageSubscriptionsHintTextField"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/manageSubscriptionskeyInsertTextView"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

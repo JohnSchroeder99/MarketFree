@@ -1,24 +1,35 @@
 package johnschroeders.marketfree;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.Objects;
 
 //recycler view for subscription views
 public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<MyRecyclerViewAdapterForSubscriptions.ViewHolder> {
@@ -28,12 +39,18 @@ public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<
     private ItemClickListener mClickListener;
     private static final String TAG = "SubscriptionsActivity";
     private Context context;
+    private User currentUser;
+
 
     // data is passed into the constructor
-    MyRecyclerViewAdapterForSubscriptions(Context context, ArrayList<User> data) {
+    MyRecyclerViewAdapterForSubscriptions(Context context, ArrayList<User> data,
+                                          User currentUserPassed
+    ) {
         this.mInflater = LayoutInflater.from(context);
         this.users = data;
         this.context = context;
+        this.currentUser = currentUserPassed;
+
     }
 
     // inflates the row layout from xml when needed
@@ -49,16 +66,68 @@ public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<
     //TODO bind data from actual firestore data for subscriptions
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG,
-                "setting up for user "+ users.get(position).getUserName()+ users.get(position).getProfileImageURL());
+                "setting up for user " + users.get(position).getUserName() + users.get(position).getProfileImageURL());
 
-        try{
+        try {
+
+            // setting up the actions for the recyclerview items if any are populated
             holder.myTextView.setText(users.get(position).getUserName());
             Uri uri = Uri.parse(users.get(position).getProfileImageURL());
             Glide.with(context).asBitmap().
-                    load( uri).into(holder.imageView);
-        }catch (Exception e){
+                    load(uri).into(holder.imageView);
+            holder.floatingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Context wrapper = new ContextThemeWrapper(context, R.style.popupMenuStyle);
+                    final PopupMenu popup = new PopupMenu(wrapper, v, Gravity.END);
+                    popup.inflate(R.menu.subscriptions_item_click_menu);
+                    popup.show();
+
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+                            final CollectionReference collectionReference = rootRef.collection("People");
+                            final Intent intent =
+                                    new Intent(context.getApplicationContext(),
+                                            ManageSubsciptionsActivity.class);
+                            collectionReference.whereEqualTo("customerKey", currentUser.getCustomerKey()).
+                                    get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                            collectionReference.document(document.getId()).update(
+                                                    "subscribedTo",
+                                                    FieldValue.arrayRemove(users.get(position).getCustomerKey()));
+                                        }
+                                    }
+
+                                    if (Objects.requireNonNull(task.getResult()).isEmpty()) {
+                                        Log.d(TAG,
+                                                "User was not found for removal" + users.get(position).getCustomerKey());
+                                    } else {
+                                        //customer was found and was removed.
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                                        intent.putExtra("CustomerKey",
+                                                currentUser.getCustomerKey());
+                                        intent.putExtra("Photo", currentUser.getProfileImageURL());
+                                        intent.putExtra("UserName", currentUser.getUserName());
+                                        context.startActivity(intent);
+                                    }
+                                }
+
+                            });
+                            return false;
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
             Toast toast = Toast.makeText(context, "Great! now its time to subscribe to people and" +
                             " see what they can offer you!",
                     Toast.LENGTH_SHORT);
@@ -82,12 +151,14 @@ public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
         ImageView imageView;
-
+        FloatingActionButton floatingButton;
 
         ViewHolder(View itemView) {
             super(itemView);
             myTextView = itemView.findViewById(R.id.mangeSubsRecyclerViewUserName);
             imageView = itemView.findViewById(R.id.manageSubsRecyclerViewImage);
+            floatingButton = itemView.findViewById(R.id.manageSubscriptionsRemoveButton);
+
             itemView.setOnClickListener(this);
         }
 
@@ -101,7 +172,6 @@ public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<
     public long getItemId(int position) {
         return super.getItemId(position);
     }
-
 
 
     // allows clicks events to be caught

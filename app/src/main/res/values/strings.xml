@@ -112,6 +112,8 @@
     <string name="managesubrecyclerviewimage">manageSubRecyclerViewImage</string>
     <string name="managesubsrecyclerview">manageSubsREcyclerView</string>
     <string name="manageSubsInsertTextHint">Insert Key Here</string>
+    <string name="managesubsmenucancelbutton">manageSubsMenuCancelButton</string>
+    <string name="remove_subscription">Remove Subscription</string>
 
 
 </resources>

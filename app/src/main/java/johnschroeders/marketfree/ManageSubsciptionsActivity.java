@@ -2,7 +2,6 @@ package johnschroeders.marketfree;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -21,23 +20,20 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class ManageSubsciptionsActivity extends AppCompatActivity {
     private static final String TAG = "SubscriptionsActivity";
     final ArrayList<String> people = new ArrayList<>();
     ArrayList<User> users = new ArrayList<>();
+    User currentUser;
 
     //TODO add functionality to the subscriptions to remove a subscription
     @Override
@@ -61,8 +57,13 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
 
 
         Log.d(TAG, "Setting up the subscriptions");
-
-
+        currentUser = new User();
+        currentUser.setCustomerKey(Objects.requireNonNull(getIntent().getStringExtra(
+                "CustomerKey")));
+        currentUser.setProfileImageURL(Objects.requireNonNull(getIntent().getStringExtra(
+                "Photo")));
+        currentUser.setUserName(Objects.requireNonNull(getIntent().getStringExtra(
+                "UserName")));
 
         subscriptionsBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,35 +87,40 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
             }
         });
 
-        //TODO add functionality to adding subcriptions to firestore
 
-        //TODO handle if the customer key does not exist yet. If it does not then have the task
-        // fail and show that they input the wrong key.
         addSubScriptionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //check if the user is in firestore, and then check if we are already subscribed
+                if (editText.getText().toString().equals("")) {
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("People")
-                        .whereEqualTo("customerKey", getIntent().getStringExtra("CustomerKey"))
-                        .whereArrayContains("subscribedTo", editText.getText().toString())
-                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        boolean isEmpty = Objects.requireNonNull(task.getResult()).isEmpty();
-                        if (task.isComplete())
-                            if (!isEmpty) {
-                                Toast toast = Toast.makeText(getApplicationContext(), "You are already" +
-                                                " subscribed to this user",
-                                        Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-                                toast.show();
-                            } else {
-                                checkIfUserExists(editText.getText().toString());
-                            }
-                    }
-                });
+                    Toast toast = Toast.makeText(getApplicationContext(), "No input was provided " +
+                                    "to search for",
+                            Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                    toast.show();
+                } else {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("People")
+                            .whereEqualTo("customerKey", getIntent().getStringExtra("CustomerKey"))
+                            .whereArrayContains("subscribedTo", editText.getText().toString())
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            boolean isEmpty = Objects.requireNonNull(task.getResult()).isEmpty();
+                            if (task.isComplete())
+                                if (!isEmpty) {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "You are " +
+                                                    "already subscribed to this user",
+                                            Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                                    toast.show();
+                                } else {
+                                    checkIfUserExists(editText.getText().toString());
+                                }
+                        }
+                    });
+                }
             }
         });
 
@@ -137,7 +143,15 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
                                 people.addAll(document.toObject(User.class).getSubscribedTo());
                             }
                         }
-                        getUsersFromSubscribedPeople(people);
+                        if (!Objects.requireNonNull(task.getResult()).isEmpty()) {
+                            getUsersFromSubscribedPeople(people);
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Its time to " +
+                                            "subscribe to people",
+                                    Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                            toast.show();
+                        }
                     }
                 });
     }
@@ -156,7 +170,6 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
                     }
                     populateAdapterAndDisplay();
                 }
-
             }
 
         });
@@ -168,7 +181,8 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
         Log.d(TAG, "creating recyclerview for the subscriptions view");
         RecyclerView recyclerView = findViewById(R.id.manageSubscriptionsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        MyRecyclerViewAdapterForSubscriptions mAdapter = new MyRecyclerViewAdapterForSubscriptions(this, users);
+        MyRecyclerViewAdapterForSubscriptions mAdapter =
+                new MyRecyclerViewAdapterForSubscriptions(this, users, currentUser);
         Log.d(TAG, "recyclerview created for subscriptions and recyclerlayout set to " + this);
         recyclerView.setAdapter(mAdapter);
     }
