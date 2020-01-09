@@ -20,19 +20,6 @@
         app:layout_constraintVertical_bias="0.009">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/manageSubscriptionsRecyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/USERINFO"
-            tools:listitem="@layout/recycler_view_item_1">
-
-        </androidx.recyclerview.widget.RecyclerView>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/USERINFO"
             android:layout_width="0dp"
@@ -106,12 +93,27 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/manageSubscriptionsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/USERINFO"
+            tools:listitem="@layout/recycler_view_item_1">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="401dp"
-        android:layout_height="130dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -120,7 +122,7 @@
 
         <EditText
             android:id="@+id/manageSubscriptionskeyInsertTextView"
-            android:layout_width="219dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:ems="10"
