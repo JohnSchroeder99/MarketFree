@@ -35,7 +35,6 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
     ArrayList<User> users = new ArrayList<>();
     User currentUser;
 
-    //TODO add functionality to the subscriptions to remove a subscription
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +70,6 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                intent.putExtra("SavedTab", 1);
                 String customerKey =
                         Objects.requireNonNull(getIntent().getStringExtra(
                                 "CustomerKey"));

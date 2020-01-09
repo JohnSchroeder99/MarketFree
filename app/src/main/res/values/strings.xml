@@ -114,6 +114,7 @@
     <string name="manageSubsInsertTextHint">Insert Key Here</string>
     <string name="managesubsmenucancelbutton">manageSubsMenuCancelButton</string>
     <string name="remove_subscription">Remove Subscription</string>
+    <string name="view_products">View Products</string>
 
 
 </resources>
