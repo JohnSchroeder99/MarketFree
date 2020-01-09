@@ -17,7 +17,9 @@
         app:layout_constraintEnd_toStartOf="@+id/manageOrdersView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/USERINFO" />
+        app:layout_constraintTop_toBottomOf="@+id/USERINFO"
+        android:stateListAnimator="@null"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/manageOrdersView"

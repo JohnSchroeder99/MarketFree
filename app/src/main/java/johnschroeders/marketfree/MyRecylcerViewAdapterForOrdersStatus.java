@@ -21,14 +21,16 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     private ArrayList<Order> passedInArrayList;
     private LayoutInflater mInflater;
+    User currentUser;
 
     private static final String TAG = "OrderStatusActivity";
 
     // data is passed into the constructor
-    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data) {
+    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data, User user) {
         Log.d(TAG, "RecyclerviewApapter Created ");
         this.mInflater = LayoutInflater.from(context);
         this.passedInArrayList = data;
+        this.currentUser = user;
     }
 
     // inflates the row layout from xml when needed
@@ -141,7 +143,9 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
             //Adding data to bundle to pass on to the fragment class for population.
             Bundle bundle = new Bundle();
             bundle.putParcelable("OrderClicked", order);
+            bundle.putParcelable("User", currentUser);
             orderFragment.setArguments(bundle);
+
 
             //get reference to calling activity to utilize getsupportfragmentmanager method
             AppCompatActivity appCompatActivity = (AppCompatActivity) view.getContext();

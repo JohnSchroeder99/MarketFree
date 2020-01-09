@@ -15,19 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.Transaction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +40,7 @@ public class OrderFragment extends Fragment {
     static final String TAG = "OrderStatusActivity";
     Bundle bundle;
     private Order tempOrder = new Order();
+    User user = new User();
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,6 +70,7 @@ public class OrderFragment extends Fragment {
             bundle = this.getArguments();
             if (bundle != null) {
                 tempOrder = bundle.getParcelable("OrderClicked");
+                user= bundle.getParcelable("User");
             }
             Log.d(TAG,
                     "Temp order ID = " + Objects.requireNonNull(tempOrder).getOrderID() + "Temp Producer Key is = " + tempOrder.getProducerKey());
@@ -89,6 +84,7 @@ public class OrderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         Button fragmentXbutton = view.findViewById(R.id.exitOrderFragmentButton);
         Button fragmentCancelOrderButton = view.findViewById(R.id.CancelButtonForOrderFrag);
+        fragmentCancelOrderButton.setVisibility(View.INVISIBLE);
         if (tempOrder.getOrderStatus().equals("Pending")) {
             fragmentCancelOrderButton.setVisibility(View.VISIBLE);
             fragmentCancelOrderButton.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +103,7 @@ public class OrderFragment extends Fragment {
                                     collectionReference.document(document.getId()).set(map,
                                             SetOptions.merge());
                                 }
-                                Intent intent = new Intent(getContext(), ManageOrderStatusActivity.class);
-                                startActivity(intent);
+                              removeSelfAndPopulate();
                             }
                         }
 
@@ -116,9 +111,8 @@ public class OrderFragment extends Fragment {
                     Log.d(TAG, " new order status set for order: " + tempOrder.getOrderID());
                 }
             });
-        } else {
-            fragmentCancelOrderButton.setVisibility(View.INVISIBLE);
         }
+
         fragmentXbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,15 +152,26 @@ public class OrderFragment extends Fragment {
     }
 
     // allow the fragment to remove itself from the view
-    private void removeSelf() {
+    private void removeSelfAndPopulate() {
         Log.d(TAG, "Order fragment removing");
         try {
-            bundle.clear();
+
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+            Intent intent = new Intent(getContext(), ManageOrderStatusActivity.class);
+            intent.putExtra("CustomerKey", Objects.requireNonNull(user).getCustomerKey());
+            intent.putExtra("UserName", Objects.requireNonNull(user).getUserName());
+            intent.putExtra("Photo",user.getProfileImageURL());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            startActivity(intent);
         } catch (Exception e) {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
             e.printStackTrace();
         }
+    }
+
+    public void removeSelf(){
+        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
     @Override

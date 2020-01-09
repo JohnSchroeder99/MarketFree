@@ -30,6 +30,7 @@ import java.util.Objects;
 public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener {
     static final String TAG = "OrderStatusActivity";
     ArrayList<Order> orders;
+    User currentUser;
 
     // added just for mock data randomization for order properties
     public static int count = 6;
@@ -39,6 +40,10 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_order_status);
+        currentUser = new User();
+        currentUser.setUserName(getIntent().getStringExtra("UserName"));
+        currentUser.setProfileImageURL(getIntent().getStringExtra("Photo"));
+        currentUser.setCustomerKey(getIntent().getStringExtra("CustomerKey"));
 
 
         TextView userName = findViewById(R.id.UserName);
@@ -169,7 +174,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         recyclerView.setLayoutManager(new LinearLayoutManager(ManageOrderStatusActivity.this));
         RecyclerView.Adapter mAdapter =
                 new MyRecylcerViewAdapterForOrdersStatus(ManageOrderStatusActivity.this,
-                        orders);
+                        orders, currentUser);
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "recyclerview and adapter successfully created and initialized");
     }
@@ -194,6 +199,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+
         outState.putParcelableArrayList("SavedOrders", orders);
     }
 }
