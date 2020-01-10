@@ -47,6 +47,8 @@ public class UserLoginActivity extends AppCompatActivity {
     Intent intent;
     User user = new User();
     private boolean found = false;
+    ArrayList<String> tempList = new ArrayList<>();
+
 
 
     @Override
@@ -178,7 +180,6 @@ public class UserLoginActivity extends AppCompatActivity {
 
 
     public void checkIfUserExistsAlready(final String custKey) {
-        boolean exists = false;
         FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
         firestoreDatabase.collection("People")
                 .whereEqualTo("customerKey", custKey)
@@ -189,8 +190,8 @@ public class UserLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
                                 if (document.getData().containsValue(custKey)) {
+                                    Log.d(TAG, "User was found, not adding to firebase");
                                     findOutIfFound(true);
                                 }
                             }
@@ -202,6 +203,8 @@ public class UserLoginActivity extends AppCompatActivity {
         if (!this.found) {
             Log.d(TAG,
                     "User was not found creating the user and adding to firestore for:  " + user.getUserName());
+            tempList.add("");
+            user.setSubscribedTo(tempList);
             addPersonToFireStore(user);
         } else {
             Log.d(TAG, "User found for: " + user.getUserName());
@@ -209,24 +212,20 @@ public class UserLoginActivity extends AppCompatActivity {
         }
     }
 
-    public void addPersonToFireStore(final User newUser) {
+    public void addPersonToFireStore(User newUser) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "adding User to firestore collection");
         db.collection("People").add(newUser)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                        Log.d(TAG,
-                                "User was added to firestore " + newUser.getUserName());
-                        startActivity(intent);
+                        if (task.isSuccessful()) {
+                            startActivity(intent);
+                        } else {
+                            Log.d(TAG, "could not add the user");
+                        }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG,
-                        "Failed to publish the product with error: " + e.getLocalizedMessage() + e.getMessage() + e.getCause());
-            }
-        });
+                });
     }
 
     public void signInCreds(GoogleSignInAccount gsa) {
@@ -237,7 +236,6 @@ public class UserLoginActivity extends AppCompatActivity {
                         + "\n" + "ID TOKEN:  " + gsa.getIdToken() + "\n" + "Account:  " + Objects.requireNonNull(gsa.getAccount())
                         + "\n" + "PHOTO URL:  " + gsa.getPhotoUrl() + "\n" + "FamilyName:  " + gsa.getFamilyName() + "\n"
                         + "AUTH CODE:  " + gsa.getServerAuthCode() + "\n" + "ID:  " + gsa.getId());
-
     }
 
     public void findOutIfFound(boolean foundPassin) {
@@ -261,7 +259,6 @@ public class UserLoginActivity extends AppCompatActivity {
         this.user.setCustomerKey(customerKey);
         this.user.setUserName(userName);
         this.user.setProfileImageURL(Objects.requireNonNull(photoURI));
-
     }
 }
 
