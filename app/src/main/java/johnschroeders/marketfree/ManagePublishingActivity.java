@@ -178,7 +178,5 @@ public class ManagePublishingActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("SavedProductList", productList);
-        outState.putInt("SavedTab", 1);
-
     }
 }
