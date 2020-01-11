@@ -115,6 +115,10 @@
     <string name="managesubsmenucancelbutton">manageSubsMenuCancelButton</string>
     <string name="remove_subscription">Remove Subscription</string>
     <string name="view_products">View Products</string>
+    <string name="publishedproductfororder">publishedProductForOrder</string>
+    <string name="productPrice">Price:</string>
+    <string name="order_button_text">Order</string>
+    <string name="inquire_more_about_this_product_button_label">Inquire More About This Product</string>
 
 
 </resources>

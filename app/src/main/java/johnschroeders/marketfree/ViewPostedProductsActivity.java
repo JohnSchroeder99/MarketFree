@@ -1,6 +1,7 @@
 package johnschroeders.marketfree;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,7 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ViewPostedProductsActivity extends AppCompatActivity {
+public class ViewPostedProductsActivity extends AppCompatActivity implements ViewPostedProductFragment.OnFragmentInteractionListener {
     private final static String TAG = "ViewPostedActivity";
     public ArrayList<String> usersCustKeyPulledFromFireStore;
     ArrayList<Product> productList;
@@ -157,17 +158,30 @@ public class ViewPostedProductsActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.viewPostedProdsActivityRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ViewPostedProductsActivity.this));
         RecyclerView.Adapter mAdapter =
-                new MyRecyclerViewAdapterForPublishing(ViewPostedProductsActivity.this,
+                new MyRecyclerViewAdapterForViewingPostedProducts(ViewPostedProductsActivity.this,
                         productList);
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "recyclerview and adapter successfully created and initialized");
     }
 
-
+    // save the content for screen rotation.
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("SavedProductList", productList);
     }
+
+    // required interface for fragment interaction
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
+    interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+
 
 }
