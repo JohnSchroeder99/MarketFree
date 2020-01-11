@@ -24,7 +24,7 @@ public class Message implements Parcelable {
     private String associatedProductImageURL;
 
 
-    private Message(Parcel in) {
+    public Message(Parcel in) {
         messageID = in.readString();
         messageContent = in.readString();
         messageFromCustomerKey = in.readString();
@@ -34,6 +34,10 @@ public class Message implements Parcelable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             hasPreviousMessage = in.readBoolean();
         }
+    }
+
+    public Message() {
+
     }
 
     @Override

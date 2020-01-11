@@ -75,8 +75,7 @@ public class ViewPostedProductFragment extends Fragment {
         inquireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Need to create the Message activity here",
-                        Toast.LENGTH_SHORT).show();
+            addSendMessageFrag(tempProduct);
             }
         });
 
@@ -125,7 +124,6 @@ public class ViewPostedProductFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -165,5 +163,15 @@ public class ViewPostedProductFragment extends Fragment {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
             e.printStackTrace();
         }
+    }
+
+    private void addSendMessageFrag(Product passedProduct){
+        Fragment sendMessageFragment = new SendMessageFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("PassedInFromViewPostedProductFragment", passedProduct);
+        sendMessageFragment.setArguments(bundle);
+        Objects.requireNonNull(getActivity()).getSupportFragmentManager().
+                beginTransaction().replace(R.id.viewProductActivityFrame, sendMessageFragment).commit();
+
     }
 }

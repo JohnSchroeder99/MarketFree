@@ -4,11 +4,12 @@
     android:id="@+id/sendMessageFragmentFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="johnschroeders.marketfree.SendMessageFragment">
 
     <Button
         android:id="@+id/sendMessageFrgamentSendButton"
-        android:layout_width="411dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/send_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,8 +20,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/sendMessageFragmentMessageInputLayout"
-        android:layout_width="407dp"
-        android:layout_height="147dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusableInTouchMode="true"
+        android:foregroundGravity="center"
         app:layout_constraintBottom_toTopOf="@+id/sendMessageFrgamentSendButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -31,23 +34,22 @@
             android:id="@+id/sendMessageFragmentCreateMessageInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:foregroundGravity="center"
             android:gravity="center_horizontal|center_vertical"
-            android:hint="@string/tap_to_create_hint"
             android:scrollHorizontally="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:id="@+id/sendMessageFragmentProductImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="139dp"
         android:contentDescription="@string/sendmessagefragmentimageview"
-        app:layout_constraintBottom_toTopOf="@+id/sendMessageFragmentProductDesc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendMessageProductTitle"
+        app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars[0]" />
 
     <TextView
@@ -65,8 +67,8 @@
 
     <TextView
         android:id="@+id/sendMessageFragmentProductDesc"
-        android:layout_width="348dp"
-        android:layout_height="120dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:gravity="center"
         android:text="@string/NA"
         app:layout_constraintBottom_toTopOf="@+id/sendMessageFragmentMessageInputLayout"
@@ -76,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sendMessageFragmentProductImage" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/sendMessageFragmentXbutton"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginTop="8dp"

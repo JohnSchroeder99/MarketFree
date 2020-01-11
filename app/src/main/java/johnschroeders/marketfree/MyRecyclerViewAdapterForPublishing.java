@@ -23,6 +23,9 @@ import java.util.ArrayList;
 //Recycler View for publishing. Requires a product arraylist ot be passed in for population of
 // the itmes in the view.
 
+
+//TODO manage the clicking events that are happening behind the inflated fragments for
+// creating and removing publishings
 public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyRecyclerViewAdapterForPublishing.ViewHolder> {
     private LayoutInflater mInflater;
     private ArrayList<Product> productList;
