@@ -119,6 +119,9 @@
     <string name="productPrice">Price:</string>
     <string name="order_button_text">Order</string>
     <string name="inquire_more_about_this_product_button_label">Inquire More About This Product</string>
+    <string name="tap_to_create_hint">Tap to Create</string>
+    <string name="send_button_text">Send</string>
+    <string name="sendmessagefragmentimageview">sendMessageFragmentImageView</string>
 
 
 </resources>

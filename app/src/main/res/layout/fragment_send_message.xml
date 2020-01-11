@@ -1,0 +1,87 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sendMessageFragmentFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="johnschroeders.marketfree.SendMessageFragment">
+
+    <Button
+        android:id="@+id/sendMessageFrgamentSendButton"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:text="@string/send_button_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendMessageFragmentMessageInputLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sendMessageFragmentMessageInputLayout"
+        android:layout_width="407dp"
+        android:layout_height="147dp"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageFrgamentSendButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendMessageFragmentProductDesc">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sendMessageFragmentCreateMessageInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:hint="@string/tap_to_create_hint"
+            android:scrollHorizontally="false" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/sendMessageFragmentProductImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/sendmessagefragmentimageview"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageFragmentProductDesc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendMessageProductTitle"
+        tools:src="@tools:sample/avatars[0]" />
+
+    <TextView
+        android:id="@+id/sendMessageProductTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/NA"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageFragmentProductImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sendMessageFragmentProductDesc"
+        android:layout_width="348dp"
+        android:layout_height="120dp"
+        android:gravity="center"
+        android:text="@string/NA"
+        app:layout_constraintBottom_toTopOf="@+id/sendMessageFragmentMessageInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendMessageFragmentProductImage" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/xbuttonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

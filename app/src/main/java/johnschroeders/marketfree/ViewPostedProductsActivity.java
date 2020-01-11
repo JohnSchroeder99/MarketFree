@@ -27,7 +27,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ViewPostedProductsActivity extends AppCompatActivity implements ViewPostedProductFragment.OnFragmentInteractionListener {
+public class ViewPostedProductsActivity extends AppCompatActivity implements
+        ViewPostedProductFragment.OnFragmentInteractionListener,
+        SendMessageFragment.OnFragmentInteractionListener {
     private final static String TAG = "ViewPostedActivity";
     public ArrayList<String> usersCustKeyPulledFromFireStore;
     ArrayList<Product> productList;
@@ -181,7 +183,6 @@ public class ViewPostedProductsActivity extends AppCompatActivity implements Vie
     interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-
 
 
 }
