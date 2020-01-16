@@ -48,6 +48,7 @@ public class UserLoginActivity extends AppCompatActivity {
     User user = new User();
     private boolean found = false;
     ArrayList<String> tempList = new ArrayList<>();
+    ArrayList<String> tempConverstaionList = new ArrayList<>();
 
 
 
@@ -204,7 +205,9 @@ public class UserLoginActivity extends AppCompatActivity {
             Log.d(TAG,
                     "User was not found creating the user and adding to firestore for:  " + user.getUserName());
             tempList.add("");
+            tempConverstaionList.add("");
             user.setSubscribedTo(tempList);
+            user.setConversationsKeys(tempConverstaionList);
             addPersonToFireStore(user);
         } else {
             Log.d(TAG, "User found for: " + user.getUserName());

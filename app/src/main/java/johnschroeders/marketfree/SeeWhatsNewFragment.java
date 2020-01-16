@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class SeeWhatsNewFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private OnFragmentInteractionListener mListener;
+    private final static String TAGMessage = "MessagingActivity";
 
     public SeeWhatsNewFragment() {
         // Required empty public constructor
@@ -118,10 +120,16 @@ public class SeeWhatsNewFragment extends Fragment {
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(getContext(), "\"Need to set this up just swipe " +
-                                "right for now and deal with those ",
-                        Toast.LENGTH_LONG);
-                toast.show();
+                SeeNewMessagesFragment seeNewMessagesFragment = new SeeNewMessagesFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("CustomerKey", getActivity().getIntent().getStringExtra(
+                        "CustomerKey"));
+                seeNewMessagesFragment.setArguments(bundle);
+                Log.d(TAGMessage, "Loading up the messaging fragment");
+
+               Objects.requireNonNull(getActivity().getSupportFragmentManager()).beginTransaction().
+                       replace(R.id.mainActivityFrame,
+                               seeNewMessagesFragment).commit();
             }
         });
 
@@ -151,16 +159,6 @@ public class SeeWhatsNewFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }

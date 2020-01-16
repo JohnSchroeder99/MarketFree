@@ -22,8 +22,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.Objects;
@@ -110,7 +114,9 @@ public class SendMessageFragment extends Fragment {
                 message.setAssociatedProductID(tempProduct.getProductID());
                 message.setAssociatedProductTitle(tempProduct.getProductTitle());
                 message.setMessageToCustomerKey(tempProduct.getCustomerKey());
-                sendMessageToFirestore(message);
+                addMessageToConversations(message,
+                        getActivity().getIntent().getStringExtra("CustomerKey")+message.getMessageToCustomerKey(), message.getMessageToCustomerKey());
+
             }
         });
 
@@ -166,30 +172,84 @@ public class SendMessageFragment extends Fragment {
     }
 
 
-    private void sendMessageToFirestore(final Message messageToSend) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Log.d(TAG, "adding Message to firestore message collection");
-        db.collection("Messages").add(messageToSend)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        Log.d(TAG,
-                                "Message was sent: " + messageToSend.getMessageID());
-                        Toast toast = Toast.makeText(getContext(), "Your message has been sent!",
-                                Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-                        toast.show();
-                        removeSelf();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+    private void addMessageToConversations (final Message message, final String conversationKey,
+                                            final String theirCustomerKey){
+        Log.d(TAG, "Adding to the users conversation keys to firestore");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("Conversations");
+        collectionReference.document(getActivity().getIntent().
+                getStringExtra("CustomerKey")+message.getAssociatedProductID()+message.getMessageToCustomerKey()).collection("Messages").add(message).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                removeSelf();
-                Log.d(TAG,
-                        "Failed to publish the product with error: " + e.getLocalizedMessage() + e.getMessage() + e.getCause());
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if(task.isSuccessful()){
+                    addToPersonalUserConversations(getActivity().getIntent().getStringExtra(
+                            "CustomerKey")+tempProduct.getProductID()+ message.getMessageToCustomerKey(), message.getMessageToCustomerKey());
+                }    else{
+                    Toast toast = Toast.makeText(getContext(), "Message failed to send",
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
+        });
+
+
+
+    }
+
+
+
+
+    private void addToPersonalUserConversations (final String conversationKey,
+                                                 final String theirCustomerKey){
+        Log.d(TAG, "Adding to the users conversation keys");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("People");
+        collectionReference.whereEqualTo("customerKey", getActivity().getIntent().getStringExtra(
+                "CustomerKey")).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        collectionReference.document(document.getId()).update("conversationsKeys",
+                                FieldValue.arrayUnion(conversationKey));
+                    }
+                    addConversationKeyToTheirList(theirCustomerKey, conversationKey);
+                   Log.d(TAG, "Message Conversation was started with the customer");
+                }else{
+                    Toast toast = Toast.makeText(getContext(), "Message failed to send",
+                            Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+
         });
     }
 
 
+    private void addConversationKeyToTheirList (final String theirCustomerKey,
+                                                final String converSationKey){
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("People");
+        collectionReference.whereEqualTo("customerKey", theirCustomerKey).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        collectionReference.document(document.getId()).update("conversationsKeys",
+                                FieldValue.arrayUnion(converSationKey));
+                    }
+                    Log.d(TAG, "Message Conversation was started with the customer");
+                    removeSelf();
+                }else{
+                    Toast toast = Toast.makeText(getContext(), "Message failed to send",
+                            Toast.LENGTH_LONG);
+                    toast.show();
+
+                }
+            }
+
+        });
+    }
 }

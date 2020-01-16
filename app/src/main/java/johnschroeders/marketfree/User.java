@@ -11,6 +11,10 @@ public class User implements Parcelable {
     private String profileImageURL;
     private ArrayList<String> subscribedTo;
 
+
+
+    private ArrayList<String> conversationsKeys;
+
     public User(){
 
 
@@ -68,9 +72,7 @@ public class User implements Parcelable {
         dest.writeString(customerKey);
         dest.writeString(userName);
         dest.writeString(profileImageURL);
-
     }
-
 
     public ArrayList<String> getSubscribedTo() {
         return subscribedTo;
@@ -79,4 +81,12 @@ public class User implements Parcelable {
     public void setSubscribedTo(ArrayList<String> subscribedTo) {
         this.subscribedTo = subscribedTo;
     }
+    public ArrayList<String> getConversationsKeys() {
+        return conversationsKeys;
+    }
+
+    public void setConversationsKeys(ArrayList<String> conversationsKeys) {
+        this.conversationsKeys = conversationsKeys;
+    }
+
 }

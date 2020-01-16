@@ -19,7 +19,8 @@ import java.util.Objects;
 
 // this class is the main layout for the application. This might be a good place to start
 // grabbing data for the client- perhaps not if we want to limit calls for only user usage.
-public class UserMainPageManagePersonalsActivity extends AppCompatActivity implements ManageYourThingsFragment.OnFragmentInteractionListener, SeeWhatsNewFragment.OnFragmentInteractionListener {
+public class UserMainPageManagePersonalsActivity extends AppCompatActivity implements ManageYourThingsFragment.OnFragmentInteractionListener,
+        SeeWhatsNewFragment.OnFragmentInteractionListener, SeeNewMessagesFragment.OnFragmentInteractionListener {
     private final static String TAG = "MainActivity";
     TabLayout tabLayout;
 
