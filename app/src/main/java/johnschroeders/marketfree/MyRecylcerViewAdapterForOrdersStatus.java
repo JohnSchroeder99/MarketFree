@@ -159,34 +159,6 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-/*
-    //Get the order from the position that was clicked that has a populated OrderID
-    private Order getOrder(String orderID) {
-        Log.d(TAG, "ItemClicked with orderID 19283aererterrtdfsa74");
-        db = FirebaseFirestore.getInstance();
-        CollectionReference collectionReference = db.collection("Orders");
-        final Query query =collectionReference.whereEqualTo("Orders", orderID );
-        Log.d(TAG, "Getting query now");
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "task was successful");
-                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                        Order orderReturned2 = document.toObject(Order.class);
-                        copyOutOrder(orderReturned2);
-                    }
-                }
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Task failed "+e.getCause());
-            }
-        });
-        return this.ordertemp;
-    }
-*/
 
 }

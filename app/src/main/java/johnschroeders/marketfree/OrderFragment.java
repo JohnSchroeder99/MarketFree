@@ -27,14 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OrderFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link OrderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class OrderFragment extends Fragment {
 
     static final String TAG = "OrderStatusActivity";

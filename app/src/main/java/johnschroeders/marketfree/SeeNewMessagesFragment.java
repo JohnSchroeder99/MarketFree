@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,22 +41,12 @@ public class SeeNewMessagesFragment extends Fragment {
     private final static String TAG = "MessagingActivity";
     Bundle bundle;
     private OnFragmentInteractionListener mListener;
-    ArrayList<String> conversationKeys;
-
+    private ArrayList<String> conversationKeys;
 
     public SeeNewMessagesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SeeNewMessagesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SeeNewMessagesFragment newInstance(String param1, String param2) {
         SeeNewMessagesFragment fragment = new SeeNewMessagesFragment();
 
@@ -109,7 +101,7 @@ public class SeeNewMessagesFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -145,7 +137,9 @@ public class SeeNewMessagesFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                     conversationKeys.addAll(document.toObject(User.class).getConversationsKeys());
+
                                 }
+                                populateAndDisplay();
                             }
                             if (!Objects.requireNonNull(task.getResult()).isEmpty()) {
                                Log.d(TAG, "Conversations Existed and were added");
@@ -163,7 +157,6 @@ public class SeeNewMessagesFragment extends Fragment {
     private void removeSelf() {
         Log.d(TAG, "Send Message fragment removing");
         try {
-            bundle.clear();
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().
                     beginTransaction().remove(this).commit();
         } catch (Exception e) {
@@ -172,6 +165,17 @@ public class SeeNewMessagesFragment extends Fragment {
         }
     }
 
+    public void populateAndDisplay(){
+        Log.d(TAG, "setting recycler layout and adapter for see new Messages fragmentRecyclerview");
+        RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(R.id.seeNewMessagesConversationRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView.Adapter mAdapter =
+                new MyRecyclerViewForMessages(getActivity(),
+                        conversationKeys);
+        recyclerView.setAdapter(mAdapter);
+        Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
+
+    }
 
 
 }

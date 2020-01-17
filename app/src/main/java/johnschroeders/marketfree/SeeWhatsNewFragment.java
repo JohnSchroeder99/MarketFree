@@ -120,16 +120,22 @@ public class SeeWhatsNewFragment extends Fragment {
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SeeNewMessagesFragment seeNewMessagesFragment = new SeeNewMessagesFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("CustomerKey", getActivity().getIntent().getStringExtra(
-                        "CustomerKey"));
-                seeNewMessagesFragment.setArguments(bundle);
-                Log.d(TAGMessage, "Loading up the messaging fragment");
+                Intent intent = new Intent(getContext(), MessagingActivity.class);
 
-               Objects.requireNonNull(getActivity().getSupportFragmentManager()).beginTransaction().
-                       replace(R.id.mainActivityFrame,
-                               seeNewMessagesFragment).commit();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                String customerKey =
+                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                                "CustomerKey");
+                String userName =   Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                        "UserName"));
+                String photoURI =
+                        Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                                "Photo"));
+                intent.putExtra("CustomerKey", customerKey);
+                intent.putExtra("UserName", userName);
+                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+                startActivity(intent);
             }
         });
 

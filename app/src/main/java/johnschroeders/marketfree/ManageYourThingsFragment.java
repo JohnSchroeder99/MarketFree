@@ -14,14 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ManageYourThingsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ManageYourThingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ManageYourThingsFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
