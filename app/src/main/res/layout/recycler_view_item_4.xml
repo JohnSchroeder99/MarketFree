@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/seeNewMessagesRecyclerItemContainer"
+    android:id="@+id/seeNewConversationsRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/seeNewMessagesRecyclerviewImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/seeNewConversationsImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="1dp"
         android:contentDescription="@string/seewhatsnewimageviewrecylceritem"
@@ -19,14 +19,15 @@
         tools:srcCompat="@tools:sample/avatars[0]" />
 
     <TextView
-        android:id="@+id/seeNewMessagesRecyclerviewText"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
+        android:id="@+id/seeNewConversationsText"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:gravity="center"
         android:text="@string/NA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/seeNewMessagesRecyclerviewImage"
+        app:layout_constraintStart_toEndOf="@+id/seeNewConversationsImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

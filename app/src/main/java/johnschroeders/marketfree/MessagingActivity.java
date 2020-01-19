@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,19 +20,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
-public class MessagingActivity extends AppCompatActivity implements MyRecyclerViewForMessages.ItemClickListener, SeeNewMessagesFragment.OnFragmentInteractionListener {
+public class MessagingActivity extends AppCompatActivity implements
+        MyRecyclerViewForConversations.ItemClickListener,
+        SeeNewMessagesFragment.OnFragmentInteractionListener,
+        MyRecyclerViewForMessages.ItemClickListener {
 
     private ArrayList<String> conversationKeys = new ArrayList<>();
     private final static String TAG = "MessagingActivity";
-
+    private ArrayList<Conversation> conversationsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
+        // getting references to all of the items that we use for the basic layout.
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView userImage = findViewById(R.id.CardImageView);
@@ -42,12 +46,11 @@ public class MessagingActivity extends AppCompatActivity implements MyRecyclerVi
         Glide.with(getApplicationContext()).asBitmap().
                 load(getIntent().getStringExtra("Photo")).into(userImage);
 
-
+        // handle screen rotation and first time openings.
         if (savedInstanceState != null) {
             try {
-
                 conversationKeys = savedInstanceState.getStringArrayList("SavedConvos");
-                populateAndDisplay(conversationKeys);
+                populateAndDisplay();
                 savedInstanceState.clear();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -58,12 +61,10 @@ public class MessagingActivity extends AppCompatActivity implements MyRecyclerVi
         }
 
 
-
-
     }
 
-    public void getConversations(String customerKey){
-
+    // go out to firestore and grab the conversation that is stored with you.
+    public void getConversations(String customerKey) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "Getting all the conversations that you have");
         db.collection("People")
@@ -75,54 +76,79 @@ public class MessagingActivity extends AppCompatActivity implements MyRecyclerVi
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 conversationKeys.addAll(document.toObject(User.class).getConversationsKeys());
-
-                            }
-                            for (String s: conversationKeys){
-                                Log.d(TAG, "converstation keys include: "+ s);
                             }
                         }
-                        if(task.isComplete()){
-                            populateAndDisplay(conversationKeys);
+                        if (task.isComplete()) {
+                            getTrueConversationLilstDetailed(cleanList(conversationKeys));
                         }
+                    }
+                });
 
+
+    }
+
+    // go out to firestore again and retrieve the true conversation details.
+    public void getTrueConversationLilstDetailed(ArrayList<String> conversationKeysPasedIn){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d(TAG, "Getting all parrelel conversations");
+        db.collection("ConversationReferences")
+                .whereIn("conversationKey", conversationKeysPasedIn)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                conversationsList.addAll(Collections.singleton(document.toObject(Conversation.class)));
+                            }
+                        }
+                        if (task.isComplete()) {
+                            populateAndDisplay();
+                        }
                     }
                 });
     }
 
 
-    public void populateAndDisplay(ArrayList<String> convoKeysPassedIn){
+    // once the conversations have been grabbed we need populate the recylcerview
+    public void populateAndDisplay() {
         Log.d(TAG, "setting recycler layout and adapter messaging activity");
         RecyclerView recyclerView = findViewById(R.id.seeNewMessagesConversationsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(MessagingActivity.this));
         RecyclerView.Adapter mAdapter =
-                new MyRecyclerViewForMessages(MessagingActivity.this,
-                        convoKeysPassedIn);
-
+                new MyRecyclerViewForConversations(MessagingActivity.this,
+                        conversationsList);
         recyclerView.setAdapter(mAdapter);
-
-
-        for(String s: convoKeysPassedIn){
-            Log.d(TAG, "recyclerview and adapter successfully created and initialized for key: "+s);
-        }
-
-
     }
 
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList("SavedConvos", conversationKeys);
+        outState.putParcelableArrayList("SavedConvos", conversationsList);
     }
 
-
+    // must be implemented to work with the recyclerview
     @Override
     public void onItemClick(View view, int position) {
 
     }
 
+    //must be implemented to work with the fragment
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    //method for setting up the arraylist for population so you can add a clean list to the
+    // conversation list without nulls or other potential issues.
+    public ArrayList<String> cleanList(ArrayList<String> dirtyList) {
+        ArrayList<String> cleanList = new ArrayList<>();
+        for (String s : dirtyList) {
+            if (!s.equals("")) {
+                cleanList.add(s);
+            }
+        }
+        return cleanList;
     }
 }

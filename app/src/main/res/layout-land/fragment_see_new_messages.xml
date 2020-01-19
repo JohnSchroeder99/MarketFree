@@ -1,7 +1,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/seeNewMessagesConversationContainer"
+    android:id="@+id/seeNewMessagesMessagesContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -12,21 +12,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/conversations_Label"
-        app:layout_constraintBottom_toTopOf="@+id/seeNewMessagesConversationRecyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/seeNewMessagesMessagesRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/seeNewMessagesConversationRecyclerView"
+        android:id="@+id/seeNewMessagesMessagesRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="358dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editText2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seeWhatsNewFragmentExitButton" />
+        app:layout_constraintTop_toBottomOf="@+id/seeWhatsNewFragmentExitButton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/seeWhatsNewFragmentExitButton"
@@ -37,4 +39,31 @@
         android:text="@string/xbuttonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/reply_hereHint"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/seeNewMessagesConversationsButton2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/seeNewMessagesMessagesRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/seeWhatsNewFragmentExitButton"
+        tools:targetApi="o" />
+
+    <Button
+        android:id="@+id/seeNewMessagesConversationsButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sendButtonText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/seeNewMessagesMessagesRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/editText2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

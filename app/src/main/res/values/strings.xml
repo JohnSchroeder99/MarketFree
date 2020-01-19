@@ -125,6 +125,12 @@
     <string name="conversations_Label">Conversations</string>
     <string name="seewhatsnewimageviewrecylceritem">seeWhatsNewImageViewRecylcerItem</string>
     <string name="conversation_about_product_title">Conversation About Product Title</string>
+    <string name="seeMessagesYourMessageText">TextView</string>
+    <string name="seeMessagesTheirMessageText">TextView</string>
+    <string name="seemessagesyourimageview">seeMessagesYourImageView</string>
+    <string name="seemessagestheirimageview">seeMessagesTheirImageView</string>
+    <string name="sendButtonText">Send</string>
+    <string name="reply_hereHint">Reply Here</string>
 
 
 </resources>

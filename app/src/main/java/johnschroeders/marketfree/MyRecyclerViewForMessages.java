@@ -1,101 +1,97 @@
 package johnschroeders.marketfree;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerViewForMessages.ViewHolder> {
     private final static String TAG = "MessagingActivity";
-    ArrayList<String> conversationList;
+    private ArrayList<Message> messageList;
     private LayoutInflater mInflator;
+    private User you;
+    private User them;
     Context context;
 
-    MyRecyclerViewForMessages (Context context, ArrayList<String> converstationListsPassedIn ){
+    //Constructor that was updated to handle them and you in a message dialogue.
+    MyRecyclerViewForMessages(Context context, ArrayList<Message> messageListpassedIn,
+                              User you, User them) {
         this.mInflator = LayoutInflater.from(context);
-        this.conversationList = converstationListsPassedIn;
+        this.messageList = messageListpassedIn;
         this.context = context;
+        this.you = you;
+        this.them = them;
     }
 
 
-    //TODO change this to be the the recylcer view for converstations, not messages, create
-    // another recylcer view to handle the messages.
     @NonNull
     @Override
-    public MyRecyclerViewForMessages.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = this.mInflator.inflate(R.layout.recycler_view_item_4, parent, false);
+    public MyRecyclerViewForMessages.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                                   int viewType) {
+        View view = this.mInflator.inflate(R.layout.recylcer_view_item_5, parent, false);
+        Log.d(TAG, "Recylcer view for viewing the messages has been set up");
         return new ViewHolder(view);
     }
 
-    //TODO make the layout for the messages cleaner with the picture of the person who wrote
-    // it and a change in sides depending on if it was from you or the other
-
+    // for each item in the list bind the values to the row and display the messages with the
+    // pictures.
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewForMessages.ViewHolder holder, int position) {
-        //TODO handle if the conversation key is blank
-        //TODO handle if conversation key already exists
-        //TODO make the layouts for the conversation keys cleaner with picture and the product
-        // title
 
-        Log.d(TAG, "Conversation key was added to the list: "+ conversationList.get(position));
-            try{
-                holder.conversationID.setText(conversationList.get(position));
-            }catch (Exception e){
+        if (messageList.get(position).getMessageFromCustomerKey().equals(you.getCustomerKey())) {
+            Glide.with(context).asBitmap().
+                    load(you.getProfileImageURL()).into(holder.yourImage);
+            holder.yourMessage.setVisibility(View.VISIBLE);
+            holder.theirMessage.setVisibility(View.INVISIBLE);
+            holder.yourMessage.setText(messageList.get(position).getMessageContent());
 
-                Log.d(TAG, "Nothing to populate");
-            }
-
+        } else {
+            Glide.with(context).asBitmap().
+                    load(them.getProfileImageURL()).into(holder.theirImage);
+            holder.yourMessage.setVisibility(View.INVISIBLE);
+            holder.theirMessage.setVisibility(View.VISIBLE);
+            holder.theirMessage.setText(messageList.get(position).getMessageContent());
+        }
     }
 
-
-    //this must be set to the size of the array that is passed in
+    // this is needed in order to display the values in the recylcerview
     @Override
     public int getItemCount() {
         try {
-            return this.conversationList.size();
+            return this.messageList.size();
         } catch (Exception e) {
             return 0;
         }
     }
 
+    // getting references to all of the items in the recylcerview.
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-      TextView conversationID;
-
+        TextView theirMessage;
+        TextView yourMessage;
+        ImageView yourImage;
+        ImageView theirImage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            conversationID = itemView.findViewById(R.id.seeNewMessagesRecyclerviewText);
-
+            theirMessage = itemView.findViewById(R.id.seeMessagesTheirMessages);
+            yourMessage = itemView.findViewById(R.id.seeMessagesYourMessages);
+            yourImage = itemView.findViewById(R.id.seeMessagesYourImageView);
+            theirImage = itemView.findViewById(R.id.seeMessagesTheirImageView);
             itemView.setOnClickListener(this);
         }
 
-
         @Override
         public void onClick(View v) {
-            Log.d(TAG, "item in line was clicked");
-            SeeNewMessagesFragment seeNewMessagesFragment = new SeeNewMessagesFragment();
-            String key = conversationList.get(this.getAdapterPosition());
-
-           Bundle bundle = new Bundle();
-           bundle.putString("ConversationKey",  key );
-           seeNewMessagesFragment.setArguments(bundle);
-
-
-
-
-            ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction().add(R.id.seeNewMessagingActivityFrame,
-                    seeNewMessagesFragment).commit();
 
         }
     }
