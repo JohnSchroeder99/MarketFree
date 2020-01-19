@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 
@@ -41,7 +42,7 @@ public class SeeNewMessagesFragment extends Fragment {
     private final static String TAG = "MessagingActivity";
     Bundle bundle;
     private OnFragmentInteractionListener mListener;
-    private ArrayList<String> conversationKeys;
+    private ArrayList<String> messages;
 
     public SeeNewMessagesFragment() {
         // Required empty public constructor
@@ -66,7 +67,8 @@ public class SeeNewMessagesFragment extends Fragment {
             Log.d(TAG, "before bundle grab in messages fragment " + getArguments());
             bundle = this.getArguments();
             if (bundle != null) {
-               getConversations(bundle.getString("CustomerKey"));
+               getMessages(bundle.getString("ConversationKey"));
+
             }else{
                 Log.d(TAG, "There is no new conversations to be found for this user");
             }
@@ -124,25 +126,28 @@ public class SeeNewMessagesFragment extends Fragment {
     }
 
 
-    public void getConversations(String customerKey){
-            conversationKeys = new ArrayList<>();
+
+
+    public void getMessages(String convoKey){
+            messages = new ArrayList<>();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             Log.d(TAG, "Getting all the people that you are subscribed too");
-            db.collection("People")
-                    .whereEqualTo("customerKey", customerKey)
+            db.collection("Conversations").document(convoKey).collection("Messages")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                    conversationKeys.addAll(document.toObject(User.class).getConversationsKeys());
-
+                                    messages.addAll(Collections.singleton(document.toObject(Message.class).getMessageContent()));
+                                    Log.d(TAG,
+                                            "Message was added to list:  "+ Collections.singleton(document.toObject(Message.class).getMessageContent()));
                                 }
-                                populateAndDisplay();
+
                             }
-                            if (!Objects.requireNonNull(task.getResult()).isEmpty()) {
-                               Log.d(TAG, "Conversations Existed and were added");
+                            if (!Objects.requireNonNull(task.getResult()).isEmpty()&& task.isComplete()) {
+                                Log.d(TAG, "Conversations Existed and were added");
+                                populateAndDisplay();
                             } else {
                                 Toast toast = Toast.makeText(getContext(), "There are no current " +
                                                 "Conversations",
@@ -150,6 +155,7 @@ public class SeeNewMessagesFragment extends Fragment {
                                 toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
                             }
+
                         }
                     });
     }
@@ -166,16 +172,18 @@ public class SeeNewMessagesFragment extends Fragment {
     }
 
     public void populateAndDisplay(){
+        for(String s: messages){
+            Log.d(TAG, "Messages included include: "+ s);
+        }
         Log.d(TAG, "setting recycler layout and adapter for see new Messages fragmentRecyclerview");
         RecyclerView recyclerView = Objects.requireNonNull(getView()).findViewById(R.id.seeNewMessagesConversationRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerView.Adapter mAdapter =
                 new MyRecyclerViewForMessages(getActivity(),
-                        conversationKeys);
+                        messages);
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
 
     }
-
 
 }
