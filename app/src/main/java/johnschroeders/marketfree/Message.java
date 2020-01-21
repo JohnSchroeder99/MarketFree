@@ -14,12 +14,9 @@ public class Message implements Parcelable {
     private String messageFromCustomerKey;
     private String messageToCustomerKey;
     private String messageFromEmail;
-    private Date dateSent;
+    private String dateSent;
     private boolean hasPreviousMessage;
     private String previousMessageSentID;
-
-
-
     private String associatedProductID;
     private String associatedProductDescription;
     private String associatedProductTitle;
@@ -33,6 +30,7 @@ public class Message implements Parcelable {
         messageToCustomerKey = in.readString();
         messageFromEmail = in.readString();
         previousMessageSentID = in.readString();
+        dateSent = in.readString();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             hasPreviousMessage = in.readBoolean();
         }
@@ -50,6 +48,8 @@ public class Message implements Parcelable {
         dest.writeString(messageToCustomerKey);
         dest.writeString(messageFromEmail);
         dest.writeString(previousMessageSentID);
+        dest.writeString(dateSent);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             dest.writeBoolean(hasPreviousMessage);
         }
@@ -107,11 +107,11 @@ public class Message implements Parcelable {
         this.messageFromEmail = messageFromEmail;
     }
 
-    public Date getDateSent() {
+    public String getDateSent() {
         return dateSent;
     }
 
-    public void setDateSent(Date dateSent) {
+    public void setDateSent(String dateSent) {
         this.dateSent = dateSent;
     }
 

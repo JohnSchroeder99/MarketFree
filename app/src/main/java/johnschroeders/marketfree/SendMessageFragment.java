@@ -29,7 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class SendMessageFragment extends Fragment {
@@ -106,7 +108,9 @@ public class SendMessageFragment extends Fragment {
                 message.setMessageID(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey")
                         + getActivity().getIntent().getStringExtra("UserName"));
                 message.setMessageContent(Objects.requireNonNull(textInputEditText.getText()).toString());
-                Date date = new Date();
+                String date;
+                SimpleDateFormat spf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa", Locale.US);
+                date = spf.format(new Date());
                 message.setDateSent(date);
                 message.setAssociatedProductDescription(tempProduct.getProductDescription());
                 message.setAssociatedProductImageURL(tempProduct.getUri());
@@ -115,8 +119,7 @@ public class SendMessageFragment extends Fragment {
                 message.setAssociatedProductID(tempProduct.getProductID());
                 message.setAssociatedProductTitle(tempProduct.getProductTitle());
                 message.setMessageToCustomerKey(tempProduct.getCustomerKey());
-                checkForConversationalready();
-
+                getConversationListing();
             }
         });
 
@@ -171,29 +174,69 @@ public class SendMessageFragment extends Fragment {
         }
     }
 
-    // set up the conversations for referencing in the future.
-    private void checkForConversationalready(){
-        final Conversation conversation = new Conversation();
-        conversation.setConversationKey(Objects.requireNonNull(getActivity()).getIntent().
-                getStringExtra("CustomerKey") + message.getAssociatedProductID() + message.getMessageToCustomerKey());
+    // see if the user has a thread already for this conversation. If they do then dont
+    // populate more from this section and instead reference them to the messages tab
+    public void getConversationListing() {
+
+        String custkey = Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey");
+        String conversationkey =
+                custkey + message.getAssociatedProductID() + message.getMessageToCustomerKey();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("ConversationReferences").whereEqualTo("conversationKey",
-                conversation.getConversationKey()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("People")
+                .whereEqualTo("customerKey", custkey)
+                .whereArrayContains("conversationsKeys", conversationkey)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(Objects.requireNonNull(task.getResult()).isEmpty()){
-                    addConversationToFirestore();
-                }else{
-                    Toast toast = Toast.makeText(getContext(), "There is already a message thread" +
-                                    " about this product in your feeds. Please refer to " +
-                                    "Messaging or remove the conversation",
-                            Toast.LENGTH_LONG);
-                    toast.show();
+                boolean isEmpty = Objects.requireNonNull(task.getResult()).isEmpty();
+                if (task.isComplete()) {
+                    if (!isEmpty) {
+                        Toast toast = Toast.makeText(getContext(), "You still have a conversation" +
+                                        " open for this. Either delete it or go to messages " +
+                                        "to continue this conversation",
+                                Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                        toast.show();
+                    } else {
+                        checkForConversationalready();
+                    }
                 }
             }
         });
     }
 
+    // see if the conversation already exists. If it does then do not create a new conversation
+    // and instead just add the message to the conversation that already exists.
+    private void checkForConversationalready() {
+
+        final Conversation conversation = new Conversation();
+        conversation.setConversationKey(Objects.requireNonNull(getActivity()).getIntent().
+                getStringExtra("CustomerKey") + message.getAssociatedProductID() + message.getMessageToCustomerKey());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("ConversationReferences").whereEqualTo("conversationKey",
+                message.getMessageID()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (Objects.requireNonNull(task.getResult()).isEmpty()) {
+                    addConversationToFirestore();
+                } else {
+                    final Conversation conversation = new Conversation();
+                    conversation.setConversationKey(Objects.requireNonNull(getActivity()).getIntent().
+                            getStringExtra("CustomerKey") + message.getAssociatedProductID() + message.getMessageToCustomerKey());
+                    conversation.setAssociatedProductID(message.getAssociatedProductID());
+                    conversation.setAssociatedProductTitle(message.getAssociatedProductTitle());
+                    conversation.setConversationStartedDate(new Date());
+                    conversation.setAssociatedProductImage(message.getAssociatedProductImageURL());
+                    conversation.setInquiringCustomerUniqueKey(message.getMessageFromCustomerKey());
+                    conversation.setProductOwnerUniqueKey(message.getMessageToCustomerKey());
+                    addMessageToConversations(message, conversation);
+                }
+            }
+        });
+    }
+
+    // adding the conversation details to firestore. This helps with population of data for the
+    // recylcerview.
     private void addConversationToFirestore() {
         final Conversation conversation = new Conversation();
         conversation.setConversationKey(Objects.requireNonNull(getActivity()).getIntent().
@@ -210,7 +253,7 @@ public class SendMessageFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isComplete() && task.isSuccessful()) {
-                       addMessageToConversations(message, conversation);
+                    addMessageToConversations(message, conversation);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -221,7 +264,8 @@ public class SendMessageFragment extends Fragment {
         });
     }
 
-
+    //adding the message to the conversations collection then verify that the user has the
+    // conversation added to their user profile.
     private void addMessageToConversations(final Message message, final Conversation conversation) {
         Log.d(TAG, "Adding to the users conversation keys to firestore");
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -242,7 +286,7 @@ public class SendMessageFragment extends Fragment {
         });
     }
 
-
+    //adding the conversation key to who sent the message
     private void addToPersonalUserConversations(final String conversationKey,
                                                 final String theirCustomerKey) {
         Log.d(TAG, "Adding to the users conversation keys");
@@ -270,7 +314,7 @@ public class SendMessageFragment extends Fragment {
         });
     }
 
-
+    // adding the conversation key to who the message was sent to
     private void addConversationKeyToTheirList(final String theirCustomerKey,
                                                final String converSationKey) {
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -284,7 +328,7 @@ public class SendMessageFragment extends Fragment {
                         collectionReference.document(document.getId()).update("conversationsKeys",
                                 FieldValue.arrayUnion(converSationKey));
                     }
-                    Log.d(TAG, "Message Conversation was started with the customer");
+                    Log.d(TAG, "New message Conversation was started with the customer");
                     removeSelf();
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Message failed to send",

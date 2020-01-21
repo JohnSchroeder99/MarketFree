@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,7 +80,15 @@ public class MessagingActivity extends AppCompatActivity implements
                             }
                         }
                         if (task.isComplete()) {
-                            getTrueConversationLilstDetailed(cleanList(conversationKeys));
+                            try {
+                                getTrueConversationLilstDetailed(cleanList(conversationKeys));
+                            } catch (Exception e) {
+                                Toast toast = Toast.makeText(getApplicationContext(), "You do not" +
+                                                " have any conversations started yet",
+                                        Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+
                         }
                     }
                 });
@@ -88,7 +97,7 @@ public class MessagingActivity extends AppCompatActivity implements
     }
 
     // go out to firestore again and retrieve the true conversation details.
-    public void getTrueConversationLilstDetailed(ArrayList<String> conversationKeysPasedIn){
+    public void getTrueConversationLilstDetailed(ArrayList<String> conversationKeysPasedIn) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "Getting all parrelel conversations");
         db.collection("ConversationReferences")
@@ -97,13 +106,13 @@ public class MessagingActivity extends AppCompatActivity implements
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && task.isComplete()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 conversationsList.addAll(Collections.singleton(document.toObject(Conversation.class)));
                             }
-                        }
-                        if (task.isComplete()) {
                             populateAndDisplay();
+                        } else if (Objects.requireNonNull(task.getResult()).isEmpty()) {
+                            Log.d(TAG, "There were no conversations populated");
                         }
                     }
                 });
@@ -151,4 +160,6 @@ public class MessagingActivity extends AppCompatActivity implements
         }
         return cleanList;
     }
+
+
 }

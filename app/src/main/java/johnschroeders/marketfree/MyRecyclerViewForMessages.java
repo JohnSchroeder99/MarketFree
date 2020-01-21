@@ -48,19 +48,31 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewForMessages.ViewHolder holder, int position) {
 
-        if (messageList.get(position).getMessageFromCustomerKey().equals(you.getCustomerKey())) {
+        if ((messageList.get(position).getMessageFromCustomerKey().equals(you.getCustomerKey()) && (!messageList.get(position).getMessageContent().equals("")))
+        ) {
+            holder.yourMessage.setVisibility(View.VISIBLE);
+            holder.yourImage.setVisibility(View.VISIBLE);
+            holder.yourMessage.setText(messageList.get(position).getMessageContent());
             Glide.with(context).asBitmap().
                     load(you.getProfileImageURL()).into(holder.yourImage);
-            holder.yourMessage.setVisibility(View.VISIBLE);
-            holder.theirMessage.setVisibility(View.INVISIBLE);
-            holder.yourMessage.setText(messageList.get(position).getMessageContent());
 
-        } else {
-            Glide.with(context).asBitmap().
-                    load(them.getProfileImageURL()).into(holder.theirImage);
-            holder.yourMessage.setVisibility(View.INVISIBLE);
+            holder.theirMessage.setVisibility(View.INVISIBLE);
+            holder.theirImage.setVisibility(View.INVISIBLE);
+
+
+        } else if ((messageList.get(position).getMessageFromCustomerKey().equals(them.getCustomerKey()) && (!messageList.get(position).getMessageContent().equals("")))
+        ) {
             holder.theirMessage.setVisibility(View.VISIBLE);
             holder.theirMessage.setText(messageList.get(position).getMessageContent());
+            holder.theirImage.setVisibility(View.VISIBLE);
+            Glide.with(context).asBitmap().
+                    load(them.getProfileImageURL()).into(holder.theirImage);
+
+            holder.yourImage.setVisibility(View.INVISIBLE);
+            holder.yourMessage.setVisibility(View.INVISIBLE);
+
+        } else {
+            Log.d(TAG, "Nothing was in the message so it wasn't populated");
         }
     }
 
@@ -100,6 +112,4 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-
-
 }
