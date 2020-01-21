@@ -19,8 +19,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/seeNewMessagesMessagesRecyclerView"
-        android:layout_width="407dp"
-        android:layout_height="435dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/seeNewMessagesEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,13 +44,13 @@
         android:layout_height="wrap_content"
         android:text="@string/sendButtonText"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/seeNewMessagesEditTextReply"
-        android:layout_width="269dp"
-        android:layout_height="192dp"
+        android:id="@+id/seeNewMessagesEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
         android:ems="10"
         android:gravity="center"
         android:hint="@string/reply_hereHint"
@@ -58,6 +59,6 @@
         app:layout_constraintEnd_toStartOf="@+id/seeNewMessagesButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/seeNewMessagesMessagesRecyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

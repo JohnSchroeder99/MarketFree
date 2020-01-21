@@ -1,6 +1,7 @@
 package johnschroeders.marketfree;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -43,9 +45,9 @@ public class SeeNewMessagesFragment extends Fragment {
     Bundle bundle;
     private OnFragmentInteractionListener mListener;
     private ArrayList<Message> messages = new ArrayList<>();
-    User you;
-    User them;
-    String theirKey;
+    private User you = new User();
+    private User them = new User();
+    private EditText editTextForReply;
 
     public SeeNewMessagesFragment() {
         // Required empty public constructor
@@ -63,64 +65,53 @@ public class SeeNewMessagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-            //Inflating View with proper items from saved bundle
-            Log.d(TAG, "before bundle grab in messages fragment " + getArguments());
-            bundle = this.getArguments();
-            if (bundle != null) {
-                getMessages(bundle.getString("ConversationKey"));
-            } else {
-                Log.d(TAG, "There is no new conversations to be found for this user");
-            }
-        }
     }
 
     //TODO create a listener for real time updating of the messages.
-    // TODO fix screen rotation, probably just need to add arguments to onsaveInstance
-    //TODO Fix the message sizing for a message in the recycler view to handle big messages
-    // TODO fix the edit text field to remove all the messages once it has been sent and to
-    //  restore the keyboard back to hidden.
+    //TODO make texts get added to recyclerview wihtout having to repopulate the entire list.
+    //TODO make the texts as one textview in the recyclerview for the messages that people send
+    // to eachother to remove the gap between messages.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Objects.requireNonNull(getActivity()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-        // Inflate the layout for this fragment
+        Objects.requireNonNull(getActivity()).getWindow().
+                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.fragment_see_new_messages, container, false);
+        this.editTextForReply = view.findViewById(R.id.seeNewMessagesEditText);
         Button xButton = view.findViewById(R.id.seeWhatsNewFragmentExitButton);
         Button replyButton = view.findViewById(R.id.seeNewMessagesButton);
-        final TextView editTextForReply = view.findViewById(R.id.seeNewMessagesEditTextReply);
-
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Edit text value is " + editTextForReply.getText());
-                if (TextUtils.isEmpty(editTextForReply.getText())) {
-                    Log.d(TAG,
-                            "Nothing was in the message for the reply: " + editTextForReply.getText());
-                    Toast toast = Toast.makeText(getContext(), "You need to fill out " +
-                                    "the information to send a message",
-                            Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-                    toast.show();
-                } else {
-                    Log.d(TAG,
-                            "Message is being added for the replys: " + editTextForReply.getText());
-                    Message message = new Message();
-                    message.setMessageFromCustomerKey(you.getCustomerKey());
-                    message.setMessageToCustomerKey(them.getCustomerKey());
-                    message.setMessageContent(editTextForReply.getText().toString());
-                    String date;
-                    SimpleDateFormat spf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa", Locale.US);
-                    date = spf.format(new Date());
-                    message.setDateSent(date);
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    Log.d(TAG, "Replying to message and adding to the conversation");
-                    addMessageToConversations(message, bundle.getString("ConversationKey"));
-                }
+                try {
 
+                    if (TextUtils.isEmpty(editTextForReply.getText())) {
+                        Toast toast = Toast.makeText(getContext(), "You need to fill out " +
+                                        "the information to send a message",
+                                Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                        toast.show();
+                    } else {
+                        Log.d(TAG,
+                                "Message is being added for the replys: " + editTextForReply.getText());
+                        Message message = new Message();
+                        message.setMessageFromCustomerKey(you.getCustomerKey());
+                        message.setMessageToCustomerKey(them.getCustomerKey());
+                        message.setMessageContent(editTextForReply.getText().toString());
+                        editTextForReply.setText(null);
+                        String date;
+                        SimpleDateFormat spf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aaa", Locale.US);
+                        date = spf.format(new Date());
+                        message.setDateSent(date);
+                        Log.d(TAG, "Replying to message and adding to the conversation");
+                        addMessageToConversations(message, bundle.getString("ConversationKey"));
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG,
+                            "Failed to grab the edit text input field: " + e.getMessage() + Arrays.toString(e.getStackTrace()) + e.getCause() + e.getLocalizedMessage());
+                }
             }
         });
 
@@ -131,6 +122,15 @@ public class SeeNewMessagesFragment extends Fragment {
             }
         });
 
+        if (savedInstanceState != null) {
+            this.editTextForReply.setText(savedInstanceState.getString("InputText"));
+        }
+        if (getArguments() != null) {
+            bundle = this.getArguments();
+            getMessages(bundle.getString("ConversationKey"));
+        } else {
+            Log.d(TAG, "Nothing was passed in");
+        }
         return view;
     }
 
@@ -178,9 +178,11 @@ public class SeeNewMessagesFragment extends Fragment {
                             Log.d(TAG, "Messages existed and were added to the list");
                             for (Message message : messages) {
                                 try {
-                                    if ((!message.getMessageFromCustomerKey().equals("")) && (!message.getMessageFromCustomerKey()
-                                            .equals(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey")))) {
-                                        theirKey = message.getMessageFromCustomerKey();
+                                    if ((!message.getMessageFromCustomerKey().equals("")) &&
+                                            (!message.getMessageFromCustomerKey()
+                                                    .equals(Objects.requireNonNull(getActivity()).
+                                                            getIntent().getStringExtra("CustomerKey")))) {
+                                        them.setCustomerKey(message.getMessageFromCustomerKey());
                                     }
                                 } catch (Exception e) {
                                     Log.d(TAG,
@@ -217,16 +219,9 @@ public class SeeNewMessagesFragment extends Fragment {
                         }
                         try {
                             if (task.isComplete()) {
-                                for (Message message : messages) {
-                                    if (!message.getMessageFromCustomerKey().equals(you.getCustomerKey())) {
-                                        Log.d(TAG, "new key was set:  " + message.getMessageFromCustomerKey());
-                                        theirKey = message.getMessageFromCustomerKey();
-                                    }
-                                }
-                                getWhoYouAreTalkingWithNext(theirKey);
+                                getWhoYouAreTalkingWithNext(them.getCustomerKey());
                             }
                         } catch (Exception e) {
-
                             populateAndDisplay();
                         }
 
@@ -264,6 +259,21 @@ public class SeeNewMessagesFragment extends Fragment {
         try {
             Objects.requireNonNull(getActivity()).getSupportFragmentManager().
                     beginTransaction().remove(this).commit();
+            Intent intent = new Intent(getContext(), MessagingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            String customerKey =
+                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                            "CustomerKey"));
+            String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                    "UserName"));
+            String photoURI =
+                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                            "Photo"));
+            intent.putExtra("CustomerKey", customerKey);
+            intent.putExtra("UserName", userName);
+            intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+            startActivity(intent);
         } catch (Exception e) {
             Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
             e.printStackTrace();
@@ -274,29 +284,30 @@ public class SeeNewMessagesFragment extends Fragment {
     // more readable.
     public void populateAndDisplay() {
         Log.d(TAG, "setting recycler layout and adapter for see new Messages fragmentRecyclerview");
+        RecyclerView recyclerView =
+                Objects.requireNonNull(getActivity()).findViewById(R.id.seeNewMessagesMessagesRecyclerView);
+        Log.d(TAG, "Before layout is set");
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        Log.d(TAG, "Before the adapter is created");
+        RecyclerView.Adapter mAdapter =
+                new MyRecyclerViewForMessages(getActivity(),
+                        this.messages, this.you, this.them);
+        Log.d(TAG, "Adapter for Messages was set up");
         try {
-            RecyclerView recyclerView =
-                    Objects.requireNonNull(getView()).findViewById(R.id.seeNewMessagesMessagesRecyclerView);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            RecyclerView.Adapter mAdapter =
-                    new MyRecyclerViewForMessages(getActivity(),
-                            this.messages, you, them);
-            try {
-                Collections.sort(this.messages, new Comparator<Message>() {
-                    public int compare(Message obj1, Message obj2) {
-                        return obj1.getDateSent().compareToIgnoreCase(obj2.getDateSent());
-                    }
-                });
-            } catch (Exception e) {
-                Log.d(TAG, "Nothing to compare against");
-            }
-
-            recyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
-            recyclerView.setAdapter(mAdapter);
-            Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
+            Collections.sort(this.messages, new Comparator<Message>() {
+                public int compare(Message obj1, Message obj2) {
+                    return obj1.getDateSent().compareToIgnoreCase(obj2.getDateSent());
+                }
+            });
         } catch (Exception e) {
-            Log.d(TAG, "Failed to initialize the recylcerview and to create the adapter");
+            Log.d(TAG, "Nothing to compare against");
         }
+        recyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
+        Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
+        recyclerView.setAdapter(mAdapter);
+        Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
     }
 
     public ArrayList<Message> cleanMessageList(ArrayList<Message> dirtyList) {
@@ -337,6 +348,18 @@ public class SeeNewMessagesFragment extends Fragment {
     public interface OnFragmentInteractionListener {
 
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (TextUtils.isEmpty(editTextForReply.getText().toString())) {
+            Log.d(TAG, "text was empty");
+        } else {
+            outState.putString("InputText", editTextForReply.getText().toString());
+            Log.d(TAG, "text was not empty");
+        }
     }
 
 

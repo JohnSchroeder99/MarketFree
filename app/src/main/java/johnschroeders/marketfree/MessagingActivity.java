@@ -47,20 +47,7 @@ public class MessagingActivity extends AppCompatActivity implements
         Glide.with(getApplicationContext()).asBitmap().
                 load(getIntent().getStringExtra("Photo")).into(userImage);
 
-        // handle screen rotation and first time openings.
-        if (savedInstanceState != null) {
-            try {
-                conversationKeys = savedInstanceState.getStringArrayList("SavedConvos");
-                populateAndDisplay();
-                savedInstanceState.clear();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            //go out to firestore and retrieve the data
-            getConversations(getIntent().getStringExtra("CustomerKey"));
-        }
-
+        getConversations(getIntent().getStringExtra("CustomerKey"));
 
     }
 
