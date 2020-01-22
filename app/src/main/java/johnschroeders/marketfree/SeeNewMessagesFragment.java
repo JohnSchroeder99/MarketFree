@@ -24,7 +24,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -48,6 +51,10 @@ public class SeeNewMessagesFragment extends Fragment {
     private User you = new User();
     private User them = new User();
     private EditText editTextForReply;
+    private Message message;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+
 
     public SeeNewMessagesFragment() {
         // Required empty public constructor
@@ -68,10 +75,10 @@ public class SeeNewMessagesFragment extends Fragment {
 
     }
 
-    //TODO create a listener for real time updating of the messages.
-    //TODO make texts get added to recyclerview wihtout having to repopulate the entire list.
+    //TODO hash out the problems with the real time message updating. It seems to be working but
+    // it has problems.
     //TODO make the texts as one textview in the recyclerview for the messages that people send
-    // to eachother to remove the gap between messages.
+    // to each other to remove the gap between messages.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,6 +89,8 @@ public class SeeNewMessagesFragment extends Fragment {
         this.editTextForReply = view.findViewById(R.id.seeNewMessagesEditText);
         Button xButton = view.findViewById(R.id.seeWhatsNewFragmentExitButton);
         Button replyButton = view.findViewById(R.id.seeNewMessagesButton);
+
+
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +105,7 @@ public class SeeNewMessagesFragment extends Fragment {
                     } else {
                         Log.d(TAG,
                                 "Message is being added for the replys: " + editTextForReply.getText());
-                        Message message = new Message();
+                        message = new Message();
                         message.setMessageFromCustomerKey(you.getCustomerKey());
                         message.setMessageToCustomerKey(them.getCustomerKey());
                         message.setMessageContent(editTextForReply.getText().toString());
@@ -128,9 +137,11 @@ public class SeeNewMessagesFragment extends Fragment {
         if (getArguments() != null) {
             bundle = this.getArguments();
             getMessages(bundle.getString("ConversationKey"));
+
         } else {
             Log.d(TAG, "Nothing was passed in");
         }
+        setupListener();
         return view;
     }
 
@@ -145,8 +156,7 @@ public class SeeNewMessagesFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful() && task.isComplete()) {
-                    Log.d(TAG, "Message was updated correcty");
-                    getMessages(conversationKey);
+                    Log.d(TAG, "Message was added to firestore");
                 } else {
                     Toast toast = Toast.makeText(getContext(), "Message failed to send try again",
                             Toast.LENGTH_LONG);
@@ -162,7 +172,7 @@ public class SeeNewMessagesFragment extends Fragment {
     public void getMessages(String convoKey) {
         messages.clear();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Log.d(TAG, "Getting conversations from each conversation that you have started");
+        Log.d(TAG, "Getting All the messages for the conversation");
         db.collection("Conversations").document(convoKey).collection("Messages")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -172,8 +182,14 @@ public class SeeNewMessagesFragment extends Fragment {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 messages.addAll(Collections.singleton(document.toObject(Message.class)));
                             }
-                            messages = cleanMessageList(messages);
+                            try {
+                                messages = cleanMessageList(messages);
+                            } catch (Exception e) {
+                                Log.d(TAG, "Couldnt clean empty set");
+                            }
+
                         }
+                        Log.d(TAG, "Trying to add all the messages to the list");
                         if (!Objects.requireNonNull(task.getResult()).isEmpty() && task.isComplete()) {
                             Log.d(TAG, "Messages existed and were added to the list");
                             for (Message message : messages) {
@@ -192,7 +208,7 @@ public class SeeNewMessagesFragment extends Fragment {
                             getYourselfAsAUserFirst();
                         } else {
                             Toast toast = Toast.makeText(getContext(), "There are no current " +
-                                            "Conversations",
+                                            "Messages",
                                     Toast.LENGTH_SHORT);
                             toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                             toast.show();
@@ -222,13 +238,12 @@ public class SeeNewMessagesFragment extends Fragment {
                                 getWhoYouAreTalkingWithNext(them.getCustomerKey());
                             }
                         } catch (Exception e) {
-                            populateAndDisplay();
+                            Log.d(TAG, "Nothing to do here");
                         }
 
                     }
                 });
     }
-
 
     // finally find the person that you have been talking with and provide the information to the
     // recylcerview when you populate.
@@ -253,45 +268,18 @@ public class SeeNewMessagesFragment extends Fragment {
                 });
     }
 
-    // onclick for the fragment to be able to remove itself from the view.
-    private void removeSelf() {
-        Log.d(TAG, "Send Message fragment removing");
-        try {
-            Objects.requireNonNull(getActivity()).getSupportFragmentManager().
-                    beginTransaction().remove(this).commit();
-            Intent intent = new Intent(getContext(), MessagingActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-            String customerKey =
-                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
-                            "CustomerKey"));
-            String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
-                    "UserName"));
-            String photoURI =
-                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
-                            "Photo"));
-            intent.putExtra("CustomerKey", customerKey);
-            intent.putExtra("UserName", userName);
-            intent.putExtra("Photo", Objects.requireNonNull(photoURI));
-            startActivity(intent);
-        } catch (Exception e) {
-            Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
-            e.printStackTrace();
-        }
-    }
-
     // populate the recycler view with the appropriate user information to make the conversation
     // more readable.
     public void populateAndDisplay() {
         Log.d(TAG, "setting recycler layout and adapter for see new Messages fragmentRecyclerview");
-        RecyclerView recyclerView =
+        recyclerView =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.seeNewMessagesMessagesRecyclerView);
         Log.d(TAG, "Before layout is set");
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         Log.d(TAG, "Before the adapter is created");
-        RecyclerView.Adapter mAdapter =
+        mAdapter =
                 new MyRecyclerViewForMessages(getActivity(),
                         this.messages, this.you, this.them);
         Log.d(TAG, "Adapter for Messages was set up");
@@ -310,7 +298,29 @@ public class SeeNewMessagesFragment extends Fragment {
         Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
     }
 
-    public ArrayList<Message> cleanMessageList(ArrayList<Message> dirtyList) {
+    public void setupListener() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final CollectionReference docRef =
+                db.collection("Conversations").document(Objects.requireNonNull(bundle.getString(
+                        "ConversationKey"))).collection("Messages");
+        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
+                Log.d(TAG,
+                        "Registered an event:  " + Objects.requireNonNull(queryDocumentSnapshots).getDocuments().get(0).toString());
+                if (!queryDocumentSnapshots.getMetadata().isFromCache()) {
+                    if (!Objects.requireNonNull(queryDocumentSnapshots).getDocumentChanges().isEmpty()) {
+                        Log.d(TAG, "Snapshot was not empty");
+                        getMessages(bundle.getString("ConversationKey"));
+                    }
+                }
+
+            }
+        });
+    }
+
+    // a method for cleaning up messages.
+    private ArrayList<Message> cleanMessageList(ArrayList<Message> dirtyList) {
         ArrayList<Message> cleanList = new ArrayList<>();
         for (Message s : dirtyList) {
             if (!s.getMessageContent().equals("")) {
@@ -342,6 +352,34 @@ public class SeeNewMessagesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
+    }
+
+    // onclick for the fragment to be able to remove itself from the view.
+    private void removeSelf() {
+        Log.d(TAG, "Send Message fragment removing");
+        try {
+            Objects.requireNonNull(getActivity()).getSupportFragmentManager().
+                    beginTransaction().remove(this).commit();
+            Intent intent = new Intent(getContext(), MessagingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            String customerKey =
+                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                            "CustomerKey"));
+            String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                    "UserName"));
+            String photoURI =
+                    Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                            "Photo"));
+            intent.putExtra("CustomerKey", customerKey);
+            intent.putExtra("UserName", userName);
+            intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.d(TAG, " failed to pop fragment " + e.getMessage() + e.getCause());
+            e.printStackTrace();
+        }
     }
 
 

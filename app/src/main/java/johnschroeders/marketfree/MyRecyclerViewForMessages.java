@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerViewForMessages.ViewHolder> {
     private final static String TAG = "MessagingActivity";
@@ -47,33 +49,39 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
     // pictures.
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewForMessages.ViewHolder holder, int position) {
+        try{
+            if ((messageList.get(position).getMessageFromCustomerKey().equals(you.getCustomerKey()) && (!messageList.get(position).getMessageContent().equals("")))
+            ) {
+                holder.yourMessage.setVisibility(View.VISIBLE);
+                holder.yourImage.setVisibility(View.VISIBLE);
+                holder.yourMessage.setText(messageList.get(position).getMessageContent());
+                Glide.with(context).asBitmap().
+                        load(you.getProfileImageURL()).into(holder.yourImage);
 
-        if ((messageList.get(position).getMessageFromCustomerKey().equals(you.getCustomerKey()) && (!messageList.get(position).getMessageContent().equals("")))
-        ) {
-            holder.yourMessage.setVisibility(View.VISIBLE);
-            holder.yourImage.setVisibility(View.VISIBLE);
-            holder.yourMessage.setText(messageList.get(position).getMessageContent());
-            Glide.with(context).asBitmap().
-                    load(you.getProfileImageURL()).into(holder.yourImage);
-
-            holder.theirMessage.setVisibility(View.INVISIBLE);
-            holder.theirImage.setVisibility(View.INVISIBLE);
+                holder.theirMessage.setVisibility(View.INVISIBLE);
+                holder.theirImage.setVisibility(View.INVISIBLE);
 
 
-        } else if ((messageList.get(position).getMessageFromCustomerKey().equals(them.getCustomerKey()) && (!messageList.get(position).getMessageContent().equals("")))
-        ) {
-            holder.theirMessage.setVisibility(View.VISIBLE);
-            holder.theirMessage.setText(messageList.get(position).getMessageContent());
-            holder.theirImage.setVisibility(View.VISIBLE);
-            Glide.with(context).asBitmap().
-                    load(them.getProfileImageURL()).into(holder.theirImage);
+            } else if ((messageList.get(position).getMessageFromCustomerKey().equals(them.getCustomerKey()) && (!messageList.get(position).getMessageContent().equals("")))
+            ) {
+                holder.theirMessage.setVisibility(View.VISIBLE);
+                holder.theirMessage.setText(messageList.get(position).getMessageContent());
+                holder.theirImage.setVisibility(View.VISIBLE);
+                Glide.with(context).asBitmap().
+                        load(them.getProfileImageURL()).into(holder.theirImage);
 
-            holder.yourImage.setVisibility(View.INVISIBLE);
-            holder.yourMessage.setVisibility(View.INVISIBLE);
+                holder.yourImage.setVisibility(View.INVISIBLE);
+                holder.yourMessage.setVisibility(View.INVISIBLE);
 
-        } else {
-            Log.d(TAG, "Nothing was in the message so it wasn't populated");
+            } else {
+                Log.d(TAG, "Nothing was in the message so it wasn't populated");
+            }
+        } catch (Exception e){
+            Toast toast = Toast.makeText(context, "No Messages yet",
+                    Toast.LENGTH_LONG);
+            toast.show();
         }
+
     }
 
     // this is needed in order to display the values in the recylcerview
