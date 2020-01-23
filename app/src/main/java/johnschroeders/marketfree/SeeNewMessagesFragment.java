@@ -24,10 +24,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -54,7 +57,8 @@ public class SeeNewMessagesFragment extends Fragment {
     private Message message;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-
+    private Query query;
+    private ListenerRegistration listenerRegistration;
 
     public SeeNewMessagesFragment() {
         // Required empty public constructor
@@ -75,11 +79,6 @@ public class SeeNewMessagesFragment extends Fragment {
 
     }
 
-    //TODO hash out the problems with the real time message updating. It seems to be working but
-    // it has problems.
-    //TODO make the texts as one textview in the recyclerview for the messages that people send
-    // to each other to remove the gap between messages.
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,7 +88,6 @@ public class SeeNewMessagesFragment extends Fragment {
         this.editTextForReply = view.findViewById(R.id.seeNewMessagesEditText);
         Button xButton = view.findViewById(R.id.seeWhatsNewFragmentExitButton);
         Button replyButton = view.findViewById(R.id.seeNewMessagesButton);
-
 
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +233,7 @@ public class SeeNewMessagesFragment extends Fragment {
                         }
                         try {
                             if (task.isComplete()) {
-                                getWhoYouAreTalkingWithNext(them.getCustomerKey());
+                                getWhoFromInConversation();
                             }
                         } catch (Exception e) {
                             Log.d(TAG, "Nothing to do here");
@@ -247,7 +245,32 @@ public class SeeNewMessagesFragment extends Fragment {
 
     // finally find the person that you have been talking with and provide the information to the
     // recylcerview when you populate.
+
+    public void getWhoFromInConversation() {
+        Log.d(TAG, "getting the conversation outline to get who you are talking with");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection(
+                "ConversationReferences");
+        collectionReference.whereEqualTo("conversationKey", bundle.getString("ConversationKey")).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isComplete() && task.isSuccessful()) {
+                    for (DocumentSnapshot documentSnapshot : Objects.requireNonNull(task.getResult())) {
+                        Log.d(TAG, "getting data" + Objects.requireNonNull(documentSnapshot.getData()).toString());
+                        if (!Objects.requireNonNull(documentSnapshot.get("productOwnerUniqueKey")).toString()
+                                .equals(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"))) {
+                            them.setCustomerKey(Objects.requireNonNull(documentSnapshot.get("productOwnerUniqueKey")).toString());
+                        }
+                    }
+                    getWhoYouAreTalkingWithNext(them.getCustomerKey());
+                }
+            }
+        });
+    }
+
     public void getWhoYouAreTalkingWithNext(String userKeyPassedIN) {
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "adding who you are talking to to the list of people");
         db.collection("People").whereEqualTo("customerKey",
@@ -300,23 +323,23 @@ public class SeeNewMessagesFragment extends Fragment {
 
     public void setupListener() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final CollectionReference docRef =
-                db.collection("Conversations").document(Objects.requireNonNull(bundle.getString(
-                        "ConversationKey"))).collection("Messages");
-        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
-                Log.d(TAG,
-                        "Registered an event:  " + Objects.requireNonNull(queryDocumentSnapshots).getDocuments().get(0).toString());
-                if (!queryDocumentSnapshots.getMetadata().isFromCache()) {
-                    if (!Objects.requireNonNull(queryDocumentSnapshots).getDocumentChanges().isEmpty()) {
-                        Log.d(TAG, "Snapshot was not empty");
-                        getMessages(bundle.getString("ConversationKey"));
-                    }
-                }
+        query = db.collection("Conversations").document(Objects.requireNonNull(bundle.getString(
+                "ConversationKey"))).collection("Messages");
+        listenerRegistration = query.addSnapshotListener(MetadataChanges.EXCLUDE,
+                new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@androidx.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @androidx.annotation.Nullable FirebaseFirestoreException e) {
+                        Log.d(TAG,
+                                "Registered an event:  " + Objects.requireNonNull(queryDocumentSnapshots).getDocuments().get(0).toString());
+                        if (!queryDocumentSnapshots.getMetadata().isFromCache()) {
+                            if (!Objects.requireNonNull(queryDocumentSnapshots).getDocumentChanges().isEmpty()) {
+                                Log.d(TAG, "Snapshot was not empty");
+                                getMessages(bundle.getString("ConversationKey"));
+                            }
+                        }
 
-            }
-        });
+                    }
+                });
     }
 
     // a method for cleaning up messages.
@@ -352,6 +375,7 @@ public class SeeNewMessagesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        listenerRegistration.remove();
 
     }
 
@@ -384,7 +408,6 @@ public class SeeNewMessagesFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-
         void onFragmentInteraction(Uri uri);
     }
 

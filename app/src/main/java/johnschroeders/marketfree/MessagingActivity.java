@@ -24,6 +24,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
+//TODO update conversations list to be able to be removed from the user. This will need to
+// be removed from the current users key so it doesnt populate for them. If it is removed then we
+// need a way to handle that in firestore if the user decides to go to that same product again
+// and ask about that product. One ssolution might be if the conversation still exists then it
+// can just be readded to the users conversastion key list.
+
 public class MessagingActivity extends AppCompatActivity implements
         MyRecyclerViewForConversations.ItemClickListener,
         SeeNewMessagesFragment.OnFragmentInteractionListener,
