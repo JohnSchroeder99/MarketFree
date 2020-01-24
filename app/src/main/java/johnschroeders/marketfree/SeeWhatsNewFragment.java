@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,10 +70,6 @@ public class SeeWhatsNewFragment extends Fragment {
         Button messages = view.findViewById(R.id.mainActivitySeeNewMessagesButton);
 
 
-
-
-
-
         newOrdersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +90,7 @@ public class SeeWhatsNewFragment extends Fragment {
                 String customerKey =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                                 "CustomerKey");
-                String userName =   Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
                         "UserName"));
                 String photoURI =
                         Objects.requireNonNull(getActivity().getIntent().getStringExtra(
@@ -127,7 +122,7 @@ public class SeeWhatsNewFragment extends Fragment {
                 String customerKey =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                                 "CustomerKey");
-                String userName =   Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
                         "UserName"));
                 String photoURI =
                         Objects.requireNonNull(getActivity().getIntent().getStringExtra(

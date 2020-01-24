@@ -1,7 +1,5 @@
 package johnschroeders.marketfree;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,23 +28,19 @@ public class UserMainPageManagePersonalsActivity extends AppCompatActivity imple
         setContentView(R.layout.activity_user_main_page);
 
 
-
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView userImage = findViewById(R.id.CardImageView);
-        userName.setText( getIntent().getStringExtra("CustomerKey"));
-        customerKey.setText( getIntent().getStringExtra("UserName"));
+        userName.setText(getIntent().getStringExtra("CustomerKey"));
+        customerKey.setText(getIntent().getStringExtra("UserName"));
         Glide.with(getApplicationContext()).asBitmap().
-                load( getIntent().getStringExtra("Photo")).into(userImage);
-
-
+                load(getIntent().getStringExtra("Photo")).into(userImage);
 
 
         Log.d(TAG, "Setting up Main activity with Intent " + getIntent().getIntExtra("SavedTab",
                 100));
         tabLayout = findViewById(R.id.mainActivityTabLayout);
         ViewPager viewPager = findViewById(R.id.mainAcitivityViewPager);
-
 
 
         // do the checks to see if we arrived here from another activity or if we arrived here

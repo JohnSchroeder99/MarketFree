@@ -4,10 +4,6 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-
 public class Message implements Parcelable {
     private String messageID;
     private String messageContent;

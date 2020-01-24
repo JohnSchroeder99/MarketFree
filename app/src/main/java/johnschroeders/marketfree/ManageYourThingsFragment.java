@@ -22,7 +22,6 @@ public class ManageYourThingsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
 
-
     private OnFragmentInteractionListener mListener;
 
     public ManageYourThingsFragment() {
@@ -56,13 +55,13 @@ public class ManageYourThingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_manage_your_things, container, false);
+        View view = inflater.inflate(R.layout.fragment_manage_your_things, container, false);
 
         Button manageSubscriptionsButton =
                 view.findViewById(R.id.mainActivityManageSubscriptionsButton);
-        Button managePublishingButton =  view.findViewById(R.id.mainActivityManagePublishingButton);
-        Button manageOrderStatusButton = view. findViewById(R.id.mainActivityManageOrderStatusButton);
-        Button manageProfileButton =  view.findViewById(R.id.mainActivityManageProfileButton);
+        Button managePublishingButton = view.findViewById(R.id.mainActivityManagePublishingButton);
+        Button manageOrderStatusButton = view.findViewById(R.id.mainActivityManageOrderStatusButton);
+        Button manageProfileButton = view.findViewById(R.id.mainActivityManageProfileButton);
 
 
         // create listeners for each button select that is tied to specific activities
@@ -70,15 +69,15 @@ public class ManageYourThingsFragment extends Fragment {
         manageSubscriptionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent intent = new Intent(view.getContext(),
-                       ManageSubsciptionsActivity.class);
+                Intent intent = new Intent(view.getContext(),
+                        ManageSubsciptionsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                intent.putExtra("SavedTab",1);
+                intent.putExtra("SavedTab", 1);
                 String customerKey =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                                 "CustomerKey");
-                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                String userName = Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                         "UserName");
                 String photoURI =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
@@ -96,11 +95,11 @@ public class ManageYourThingsFragment extends Fragment {
                 Intent intent = new Intent(view.getContext(), ManagePublishingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                intent.putExtra("SavedTab",1);
+                intent.putExtra("SavedTab", 1);
                 String customerKey =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                                 "CustomerKey");
-                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                String userName = Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                         "UserName");
                 String photoURI =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
@@ -118,11 +117,11 @@ public class ManageYourThingsFragment extends Fragment {
                 Intent intent = new Intent(view.getContext(), ManageOrderStatusActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                intent.putExtra("SavedTab",1);
+                intent.putExtra("SavedTab", 1);
                 String customerKey =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                                 "CustomerKey");
-                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                String userName = Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                         "UserName");
                 String photoURI =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
@@ -140,11 +139,11 @@ public class ManageYourThingsFragment extends Fragment {
                 Intent intent = new Intent(view.getContext(), ManageProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                intent.putExtra("SavedTab",1);
+                intent.putExtra("SavedTab", 1);
                 String customerKey =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                                 "CustomerKey");
-                String userName =   Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                String userName = Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
                         "UserName");
                 String photoURI =
                         Objects.requireNonNull(getActivity()).getIntent().getStringExtra(

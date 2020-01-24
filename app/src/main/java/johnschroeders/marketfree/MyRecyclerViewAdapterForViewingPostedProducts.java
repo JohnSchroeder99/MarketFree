@@ -34,7 +34,6 @@ public class MyRecyclerViewAdapterForViewingPostedProducts extends RecyclerView.
     }
 
 
-
     @NonNull
     @Override
     public MyRecyclerViewAdapterForViewingPostedProducts.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,12 +43,12 @@ public class MyRecyclerViewAdapterForViewingPostedProducts extends RecyclerView.
 
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewAdapterForViewingPostedProducts.ViewHolder holder, int position) {
-        try{
+        try {
             holder.productID.setText(this.productList.get(position).getProductTitle());
             Uri myUri = Uri.parse(this.productList.get(position).getUri());
             Glide.with(context).asBitmap().
                     load(myUri).into(holder.productImage);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d(TAG, "Nothing in the item yet");
         }
     }
@@ -86,13 +85,13 @@ public class MyRecyclerViewAdapterForViewingPostedProducts extends RecyclerView.
             Log.d(TAG, "Loading up the fragment into the container");
             //get reference to calling activity to utilize getsupportfragmentmanager method
 
-            try{
+            try {
                 AppCompatActivity appCompatActivity = (AppCompatActivity) context;
                 appCompatActivity.getSupportFragmentManager().beginTransaction().replace(R.id.viewProductActivityFrame,
                         viewPostedFragment).commit();
-            }catch (Exception e){
+            } catch (Exception e) {
 
-                Log.d(TAG, "failed to swap containers: "+e.getMessage()+ e.getLocalizedMessage() );
+                Log.d(TAG, "failed to swap containers: " + e.getMessage() + e.getLocalizedMessage());
             }
 
         }

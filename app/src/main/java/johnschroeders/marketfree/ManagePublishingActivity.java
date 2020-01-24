@@ -46,11 +46,10 @@ public class ManagePublishingActivity extends AppCompatActivity implements
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView userImage = findViewById(R.id.CardImageView);
-        userName.setText( getIntent().getStringExtra("CustomerKey"));
-        customerKey.setText( getIntent().getStringExtra("UserName"));
+        userName.setText(getIntent().getStringExtra("CustomerKey"));
+        customerKey.setText(getIntent().getStringExtra("UserName"));
         Glide.with(getApplicationContext()).asBitmap().
-                load( getIntent().getStringExtra("Photo")).into(userImage);
-
+                load(getIntent().getStringExtra("Photo")).into(userImage);
 
 
         // Getting references to the buttons and establishing onclick methods for each of them
@@ -75,11 +74,11 @@ public class ManagePublishingActivity extends AppCompatActivity implements
                 Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                intent.putExtra("SavedTab",1);
+                intent.putExtra("SavedTab", 1);
                 String customerKey =
                         Objects.requireNonNull(getIntent().getStringExtra(
                                 "CustomerKey"));
-                String userName =   Objects.requireNonNull(getIntent().getStringExtra(
+                String userName = Objects.requireNonNull(getIntent().getStringExtra(
                         "UserName"));
                 String photoURI =
                         Objects.requireNonNull(getIntent().getStringExtra(

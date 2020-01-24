@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Objects;
 
 
-
 public class OrderFragment extends Fragment {
 
     static final String TAG = "OrderStatusActivity";
@@ -63,7 +62,7 @@ public class OrderFragment extends Fragment {
             bundle = this.getArguments();
             if (bundle != null) {
                 tempOrder = bundle.getParcelable("OrderClicked");
-                user= bundle.getParcelable("User");
+                user = bundle.getParcelable("User");
             }
             Log.d(TAG,
                     "Temp order ID = " + Objects.requireNonNull(tempOrder).getOrderID() + "Temp Producer Key is = " + tempOrder.getProducerKey());
@@ -96,7 +95,7 @@ public class OrderFragment extends Fragment {
                                     collectionReference.document(document.getId()).set(map,
                                             SetOptions.merge());
                                 }
-                              removeSelfAndPopulate();
+                                removeSelfAndPopulate();
                             }
                         }
 
@@ -153,7 +152,7 @@ public class OrderFragment extends Fragment {
             Intent intent = new Intent(getContext(), ManageOrderStatusActivity.class);
             intent.putExtra("CustomerKey", Objects.requireNonNull(user).getCustomerKey());
             intent.putExtra("UserName", Objects.requireNonNull(user).getUserName());
-            intent.putExtra("Photo",user.getProfileImageURL());
+            intent.putExtra("Photo", user.getProfileImageURL());
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
             startActivity(intent);
@@ -163,7 +162,7 @@ public class OrderFragment extends Fragment {
         }
     }
 
-    public void removeSelf(){
+    public void removeSelf() {
         Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 

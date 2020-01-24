@@ -14,7 +14,7 @@ public class Conversation implements Parcelable {
     public String productOwnerUniqueKey;
     public Date conversationStartedDate;
 
-    public Conversation(){
+    public Conversation() {
 
 
     }

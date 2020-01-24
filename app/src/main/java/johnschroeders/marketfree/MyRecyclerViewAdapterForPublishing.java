@@ -50,15 +50,15 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewAdapterForPublishing.ViewHolder holder, int position) {
 
-            // setting the text to the passed in product title and the image for each item in the
-            // listview from firestore this required using glide which was imported  in
-            // the gradle properties file as a dependency
-        try{
+        // setting the text to the passed in product title and the image for each item in the
+        // listview from firestore this required using glide which was imported  in
+        // the gradle properties file as a dependency
+        try {
             holder.productID.setText(this.productList.get(position).getProductTitle());
             Uri myUri = Uri.parse(this.productList.get(position).getUri());
             Glide.with(context).asBitmap().
                     load(myUri).into(holder.productImage);
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d(TAG, "Nothing in the item yet");
         }
 
@@ -91,8 +91,7 @@ public class MyRecyclerViewAdapterForPublishing extends RecyclerView.Adapter<MyR
         public void onClick(View view) {
             Log.d(TAG, "In ONCLICK with ProductID clicked: " +
                     productList.get(this.getAdapterPosition()).getProductID() +
-                    " and Product URI" +  productList.get(this.getAdapterPosition()).getUri());
-
+                    " and Product URI" + productList.get(this.getAdapterPosition()).getUri());
 
 
             Fragment productListViewClickedFragement = new RemovePublishingFragment();

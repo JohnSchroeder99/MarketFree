@@ -2,17 +2,11 @@ package johnschroeders.marketfree;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,18 +16,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firestore.v1.Document;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -51,15 +39,14 @@ public class UserLoginActivity extends AppCompatActivity {
     ArrayList<String> tempConverstaionList = new ArrayList<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
 
+
         intent = new Intent(getApplicationContext(),
                 UserMainPageManagePersonalsActivity.class);
-
 
         Button loginButton = findViewById(R.id.loginActivityLoginButton);
         Button signInOtherAccountButton =
@@ -113,6 +100,7 @@ public class UserLoginActivity extends AppCompatActivity {
         });
     }
 
+    // attempt to sign in and then call onActivityResult to handle according
     private void signIn() {
         // Launches the sign in flow, the result is returned in onActivityResult
         Intent intent = mSignInClient.getSignInIntent();
@@ -140,8 +128,8 @@ public class UserLoginActivity extends AppCompatActivity {
         }
     }
 
+    // not sure if we should implement this yet.
     private void revokeAccess() {
-
         googleSignInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
@@ -179,7 +167,8 @@ public class UserLoginActivity extends AppCompatActivity {
                 });
     }
 
-
+    // check if the user exists already. If they do then you already exist so do nothing but sign
+    // in. else add them to the list with their associated user fields set to null
     public void checkIfUserExistsAlready(final String custKey) {
         FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
         firestoreDatabase.collection("People")
@@ -215,6 +204,7 @@ public class UserLoginActivity extends AppCompatActivity {
         }
     }
 
+    // adding the person to firestore in the people collection
     public void addPersonToFireStore(User newUser) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "adding User to firestore collection");
@@ -231,6 +221,7 @@ public class UserLoginActivity extends AppCompatActivity {
                 });
     }
 
+    // if the account exists then sign in with their account information
     public void signInCreds(GoogleSignInAccount gsa) {
         Log.d(TAG,
                 "successful results for \n"
@@ -245,6 +236,8 @@ public class UserLoginActivity extends AppCompatActivity {
         this.found = foundPassin;
     }
 
+    // set up the information for gliding in images and user information for the rest of the
+    // application
     public void setupForNextPage(GoogleSignInAccount account) {
 
         //pull down the information for the user

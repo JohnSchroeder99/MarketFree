@@ -84,7 +84,7 @@
                 <ImageView
                     android:id="@+id/CardImageView"
                     android:layout_width="100dp"
-                    android:layout_height="100dp"                    
+                    android:layout_height="100dp"
                     android:layout_marginStart="16dp"
                     android:contentDescription="@string/CardImageView"
                     android:scaleType="fitXY"
@@ -102,8 +102,8 @@
             android:id="@+id/manageProfileimageButton"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/bluebutton"
             android:contentDescription="@string/profileimage"
+            android:src="@drawable/bluebutton"
             app:layout_constraintBottom_toTopOf="@+id/ManageProfileInputKeyField"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -137,6 +137,7 @@
             android:id="@+id/ManageProfileInputKeyField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:ems="10"
             android:gravity="center"
             android:hint="@string/input_new_key_here"
@@ -146,7 +147,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/manageProfileimageButton"
-            android:autofillHints="" tools:targetApi="o" />
+            tools:targetApi="o" />
 
         <TextView
             android:id="@+id/ManageProfilePictureImageLabel"

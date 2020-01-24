@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerViewForMessages.ViewHolder> {
     private final static String TAG = "MessagingActivity";
@@ -49,7 +48,7 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
     // pictures.
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewForMessages.ViewHolder holder, int position) {
-        try{
+        try {
             if ((messageList.get(position).getMessageFromCustomerKey().equals(you.getCustomerKey()) && (!messageList.get(position).getMessageContent().equals("")))
             ) {
                 holder.yourMessage.setVisibility(View.VISIBLE);
@@ -76,7 +75,7 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
             } else {
                 Log.d(TAG, "Nothing was in the message so it wasn't populated");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast toast = Toast.makeText(context, "No Messages yet",
                     Toast.LENGTH_LONG);
             toast.show();

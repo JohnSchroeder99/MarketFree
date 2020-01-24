@@ -12,13 +12,13 @@ public class User implements Parcelable {
     private ArrayList<String> subscribedTo;
 
 
-
     private ArrayList<String> conversationsKeys;
 
-    public User(){
+    public User() {
 
 
     }
+
     private User(Parcel in) {
         customerKey = in.readString();
         userName = in.readString();
@@ -81,6 +81,7 @@ public class User implements Parcelable {
     public void setSubscribedTo(ArrayList<String> subscribedTo) {
         this.subscribedTo = subscribedTo;
     }
+
     public ArrayList<String> getConversationsKeys() {
         return conversationsKeys;
     }

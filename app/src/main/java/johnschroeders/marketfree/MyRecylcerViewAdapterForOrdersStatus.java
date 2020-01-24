@@ -46,7 +46,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG,
-                "setting text values in adapterview for order "+this.passedInArrayList.get(position).getOrderID());
+                "setting text values in adapterview for order " + this.passedInArrayList.get(position).getOrderID());
 
         holder.orderIDpopulate.setText(this.passedInArrayList.get(position).getOrderID());
 

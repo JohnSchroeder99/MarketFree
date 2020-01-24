@@ -271,10 +271,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:stateListAnimator="@null"
         android:id="@+id/CancelButtonForOrderFrag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:stateListAnimator="@null"
         android:text="@string/CancelButtonForOrders"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

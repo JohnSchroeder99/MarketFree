@@ -343,7 +343,7 @@ public class CreatePublishingFragment extends Fragment {
 
         storageReference
                 .child("ProductImages")
-                .child( Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
+                .child(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
                         + Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"))
                 .child(currentTimeStamp)
                 .getDownloadUrl()
@@ -357,10 +357,10 @@ public class CreatePublishingFragment extends Fragment {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.d(TAG, "Failed to properly publish" + exception.getMessage()+exception.getLocalizedMessage());
-                Log.d(TAG,"ProductImages/"
-                                +Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
-                                +Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"));
+                Log.d(TAG, "Failed to properly publish" + exception.getMessage() + exception.getLocalizedMessage());
+                Log.d(TAG, "ProductImages/"
+                        + Objects.requireNonNull(getActivity()).getIntent().getStringExtra("UserName")
+                        + Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"));
             }
         });
     }

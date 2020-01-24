@@ -48,7 +48,6 @@ public class RemovePublishingFragment extends Fragment {
     }
 
 
-
     public static RemovePublishingFragment newInstance(String param1, String param2) {
         RemovePublishingFragment fragment = new RemovePublishingFragment();
         Bundle args = new Bundle();
@@ -159,7 +158,7 @@ public class RemovePublishingFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void removeProduct(){
+    private void removeProduct() {
         Log.d(TAG, "Removing product from firestore");
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
@@ -180,7 +179,7 @@ public class RemovePublishingFragment extends Fragment {
         });
     }
 
-    private void removeProductImage(){
+    private void removeProductImage() {
         removeSelf();
         Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

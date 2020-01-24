@@ -75,7 +75,7 @@ public class ViewPostedProductFragment extends Fragment {
         inquireButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            addSendMessageFrag(tempProduct);
+                addSendMessageFrag(tempProduct);
             }
         });
 
@@ -165,7 +165,7 @@ public class ViewPostedProductFragment extends Fragment {
         }
     }
 
-    private void addSendMessageFrag(Product passedProduct){
+    private void addSendMessageFrag(Product passedProduct) {
         Fragment sendMessageFragment = new SendMessageFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("PassedInFromViewPostedProductFragment", passedProduct);
