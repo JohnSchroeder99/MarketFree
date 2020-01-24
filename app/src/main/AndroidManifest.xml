@@ -22,10 +22,6 @@
             android:value="373985215969-rqo2s5144lhu0a1i7j2bsi5h8j6ulima.apps.googleusercontent.com" />
 
         <activity
-            android:name=".RegisterActivity"
-            android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ManageOrderStatusActivity"
             android:label="@string/title_activity_manage_order_status"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -131,6 +131,8 @@
     <string name="seemessagestheirimageview">seeMessagesTheirImageView</string>
     <string name="sendButtonText">Send</string>
     <string name="reply_hereHint">Reply Here</string>
+    <string name="input_new_key_here">Input New Key Here</string>
+    <string name="click_image_to_change">Click Image to Change</string>
 
 
 </resources>

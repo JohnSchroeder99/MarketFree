@@ -19,8 +19,8 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/mainActivityTabLayout"
-            android:layout_width="410dp"
-            android:layout_height="49dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/mainActivityManageYourThingsTab"
