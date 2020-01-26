@@ -9,6 +9,8 @@ import java.util.Date;
 
 public class Order implements Parcelable {
 
+
+    private String orderTitle;
     private String orderID;
     private String producerKey;
     private String customerKey;
@@ -20,6 +22,7 @@ public class Order implements Parcelable {
     private Date dateDelivered;
     private Date dateCanceled;
     private double amountPaid;
+    private String productURI;
     static final String TAG = "OrderStatusActivity";
 
 
@@ -32,6 +35,22 @@ public class Order implements Parcelable {
         productQuantity = in.readInt();
         orderStatus = in.readString();
         amountPaid = in.readDouble();
+        orderTitle = in.readString();
+        productURI = in.readString();
+
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(orderID);
+        dest.writeString(producerKey);
+        dest.writeString(customerKey);
+        dest.writeString(productID);
+        dest.writeString(productDescription);
+        dest.writeInt(productQuantity);
+        dest.writeString(orderStatus);
+        dest.writeDouble(amountPaid);
+        dest.writeString(productURI);
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -50,6 +69,13 @@ public class Order implements Parcelable {
 
     }
 
+    public String getProductURI() {
+        return productURI;
+    }
+
+    public void setProductURI(String productURI) {
+        this.productURI = productURI;
+    }
 
     public String getOrderID() {
         return orderID;
@@ -145,15 +171,13 @@ public class Order implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(orderID);
-        dest.writeString(producerKey);
-        dest.writeString(customerKey);
-        dest.writeString(productID);
-        dest.writeString(productDescription);
-        dest.writeInt(productQuantity);
-        dest.writeString(orderStatus);
-        dest.writeDouble(amountPaid);
+    public String getOrderTitle() {
+        return orderTitle;
     }
+
+    public void setOrderTitle(String orderTitle) {
+        this.orderTitle = orderTitle;
+    }
+
+
 }

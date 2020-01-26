@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     private ArrayList<Order> passedInArrayList;
     private LayoutInflater mInflater;
     User currentUser;
+    private Context context;
 
     private static final String TAG = "OrderStatusActivity";
 
@@ -31,6 +35,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         this.mInflater = LayoutInflater.from(context);
         this.passedInArrayList = data;
         this.currentUser = user;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -45,11 +50,11 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
     // binds the data to the TextView in each row for each member in the passedInArraylist member
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d(TAG,
-                "setting text values in adapterview for order " + this.passedInArrayList.get(position).getOrderID());
 
-        holder.orderIDpopulate.setText(this.passedInArrayList.get(position).getOrderID());
+        holder.orderIDpopulate.setText(this.passedInArrayList.get(position).getOrderTitle());
 
+        Glide.with(context).asBitmap().
+                load(this.passedInArrayList.get(position).getProductURI()).into(holder.productImage);
 
         // setting up which color to use depending on the order status in mdata.
         try {
@@ -94,6 +99,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
         TextView orderIDpopulate;
         TextView orderStatusImage;
+        ImageView productImage;
 
         Drawable imageYellow;
         Drawable imageGreen;
@@ -104,6 +110,8 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
         // after all of them have been created and resources have been referenced
         ViewHolder(View itemView) {
             super(itemView);
+
+            productImage = itemView.findViewById(R.id.orderStatusPopulateProductImage);
 
             orderIDpopulate = itemView.findViewById(R.id.OrderIDPopulate);
             orderStatusImage = itemView.findViewById(R.id.OrderStatusIconPopulate);

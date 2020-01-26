@@ -20,8 +20,9 @@
 
         <TextView
             android:id="@+id/orderDescriptionResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/orderQuantityResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,8 +32,9 @@
 
         <TextView
             android:id="@+id/orderQuantityResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/dateOrderedResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,8 +44,9 @@
 
         <TextView
             android:id="@+id/customerKeyResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/productIDResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -53,8 +56,9 @@
 
         <TextView
             android:id="@+id/orderIDResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/producerKeyResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,8 +68,9 @@
 
         <TextView
             android:id="@+id/producerKeyResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/customerKeyResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,26 +79,76 @@
             app:layout_constraintTop_toBottomOf="@+id/orderIDResult" />
 
         <TextView
+            android:id="@+id/producerkeyplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/producer_keyplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/customerKeyplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/customerKeyplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/orderIDResult" />
+
+        <TextView
+            android:id="@+id/orderidplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/orderidplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/producerkeyplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/producerkeyplaceholder"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/customerKeyplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/customer_keyplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/prodcutIDplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/prodcutIDplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/producerKeyResult" />
+
+        <TextView
+            android:id="@+id/prodcutIDplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/product_idplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/orderdescriptionplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/orderdescriptionplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/customerKeyplaceholder" />
+
+        <TextView
+            android:id="@+id/orderdescriptionplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_descriptionplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/orderQuantityResult"
+            app:layout_constraintStart_toStartOf="@+id/orderQuantityplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/prodcutIDplaceholder" />
+
+        <TextView
+            android:id="@+id/orderQuantityplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_quantityplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/dateOrderedplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/dateOrderedplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/orderdescriptionplaceholder" />
+
+        <TextView
             android:id="@+id/dateOrderedplaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/date_orderedplaceholder"
             app:layout_constraintBottom_toTopOf="@+id/dateCompletedplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/dateOrderedResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/dateCompletedplaceholder"
             app:layout_constraintTop_toBottomOf="@+id/orderQuantityplaceholder" />
 
         <TextView
-            android:id="@+id/amountPaidplaceholder"
+            android:id="@+id/dateCompletedplaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/amount_paidplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/orderStatusplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/amountPaidResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateCanceledplaceholder" />
+            android:text="@string/date_completedplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/dateCanceledplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/dateCanceledplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/dateOrderedplaceholder" />
 
         <TextView
             android:id="@+id/dateCanceledplaceholder"
@@ -101,26 +156,33 @@
             android:layout_height="wrap_content"
             android:text="@string/date_canceledplaceholder"
             app:layout_constraintBottom_toTopOf="@+id/amountPaidplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/dateCanceledResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/amountPaidplaceholder"
             app:layout_constraintTop_toBottomOf="@+id/dateCompletedplaceholder" />
 
         <TextView
-            android:id="@+id/producerkeyplaceholder"
+            android:id="@+id/amountPaidplaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/producer_keyplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/customerKeyplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/producerKeyResult"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:text="@string/amount_paidplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/orderStatusplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/orderStatusplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/dateCanceledplaceholder" />
+
+        <TextView
+            android:id="@+id/orderStatusplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/order_statusplaceholder"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderidplaceholder" />
+            app:layout_constraintTop_toBottomOf="@+id/amountPaidplaceholder" />
 
         <TextView
             android:id="@+id/orderStatusResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,8 +192,9 @@
 
         <TextView
             android:id="@+id/dateOrderedResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/dateCompletedResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -141,8 +204,9 @@
 
         <TextView
             android:id="@+id/dateCompletedResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/dateCanceledResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -152,8 +216,9 @@
 
         <TextView
             android:id="@+id/dateCanceledResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/amountPaidResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -163,8 +228,9 @@
 
         <TextView
             android:id="@+id/amountPaidResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/orderStatusResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -173,86 +239,10 @@
             app:layout_constraintTop_toBottomOf="@+id/dateCanceledResult" />
 
         <TextView
-            android:id="@+id/orderQuantityplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/order_quantityplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/dateOrderedplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/orderQuantityResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderdescriptionplaceholder" />
-
-        <TextView
-            android:id="@+id/orderidplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/orderidplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/producerkeyplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/orderIDResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/dateCompletedplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/date_completedplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/dateCanceledplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/dateCompletedResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateOrderedplaceholder" />
-
-        <TextView
-            android:id="@+id/customerKeyplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/customer_keyplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/prodcutIDplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/customerKeyResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/producerkeyplaceholder" />
-
-        <TextView
-            android:id="@+id/prodcutIDplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/product_idplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/orderdescriptionplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/productIDResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customerKeyplaceholder" />
-
-        <TextView
-            android:id="@+id/orderdescriptionplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/order_descriptionplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/orderQuantityplaceholder"
-            app:layout_constraintEnd_toStartOf="@+id/orderDescriptionResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/prodcutIDplaceholder" />
-
-        <TextView
-            android:id="@+id/orderStatusplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/order_statusplaceholder"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orderStatusResult"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/amountPaidplaceholder" />
-
-        <TextView
             android:id="@+id/productIDResult"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/orderDescriptionResult"
             app:layout_constraintEnd_toEndOf="parent"
@@ -274,7 +264,7 @@
         android:id="@+id/CancelButtonForOrderFrag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:stateListAnimator="@null"
+
         android:text="@string/CancelButtonForOrders"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

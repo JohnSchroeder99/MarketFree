@@ -330,9 +330,11 @@ public class CreatePublishingFragment extends Fragment {
         tempProduct.setProductDescription(prodDescriptionInput.getText().toString());
         Date date = new Date();
         date.getTime();
+
         tempProduct.setDateCreated(date);
         tempProduct.setCustomerKey(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"));
         tempProduct.setProductTitle(prodTitleInput.getText().toString());
+
         finishSettingTempProd();
     }
 

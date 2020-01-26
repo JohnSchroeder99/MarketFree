@@ -28,26 +28,16 @@ import java.util.Objects;
 
 
 public class OrderFragment extends Fragment {
-
     static final String TAG = "OrderStatusActivity";
     Bundle bundle;
     private Order tempOrder = new Order();
     User user = new User();
-
     private OnFragmentInteractionListener mListener;
 
     public OrderFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OrderFragment.
-     */
     private static OrderFragment newInstance(String param1, String param2) {
         return new OrderFragment();
     }
@@ -115,8 +105,8 @@ public class OrderFragment extends Fragment {
         try {
             TextView orderID = view.findViewById(R.id.orderIDResult);
             orderID.setText(tempOrder.getOrderID());
-            TextView productKey = view.findViewById(R.id.producerKeyResult);
-            productKey.setText(tempOrder.getProductID());
+            TextView producerKey = view.findViewById(R.id.producerKeyResult);
+            producerKey.setText(tempOrder.getProducerKey());
             TextView productID = view.findViewById(R.id.productIDResult);
             productID.setText(tempOrder.getProductID());
             TextView customerKey = view.findViewById(R.id.customerKeyResult);
@@ -138,8 +128,6 @@ public class OrderFragment extends Fragment {
         } catch (Exception e) {
             Log.d(TAG, "One of the values are null");
         }
-
-
         return view;
     }
 
@@ -183,17 +171,6 @@ public class OrderFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    //Not exactly sure what the proper way to use this interface is
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }

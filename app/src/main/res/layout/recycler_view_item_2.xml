@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ordersStatusOrdersList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
     android:orientation="horizontal"
     android:padding="8dp">
 
 
     <TextView
         android:id="@+id/OrderStatusIconPopulate"
-        android:layout_width="75dp"
-        android:layout_height="39dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="16dp"
         android:drawableStart="@drawable/woman"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/OrderIDPopulate"
-        android:layout_width="181dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:gravity="center_horizontal" />
+        android:gravity="center|center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/OrderStatusIconPopulate"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/orderStatusPopulateProductImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="28dp"
+        android:contentDescription="@string/orderstatusproductimage"
+        app:layout_constraintBottom_toTopOf="@+id/OrderStatusIconPopulate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OrderStatusIconPopulate"
+        tools:srcCompat="@tools:sample/avatars[0]" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

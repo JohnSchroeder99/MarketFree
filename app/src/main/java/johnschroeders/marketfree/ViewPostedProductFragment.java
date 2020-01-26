@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,23 +18,26 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ViewPostedProductFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ViewPostedProductFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+//TODO handle the constant button pushing fromt he user when ordering products.
 public class ViewPostedProductFragment extends Fragment {
     private static final String TAG = "ViewPostedActivty";
     Bundle bundle;
     private Product tempProduct = new Product();
     private OnFragmentInteractionListener mListener;
+    private ProgressBar progressBar;
+    private Order tempOrder = new Order();
+    private Button orderButton;
 
     public ViewPostedProductFragment() {
         // Required empty public constructor
@@ -68,9 +73,15 @@ public class ViewPostedProductFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_posted_product, container, false);
+        progressBar = view.findViewById(R.id.viewProductProgressBar);
+        setupProgressar(false);
+
+
         Button inquireButton = view.findViewById(R.id.viewProductInquireButton);
-        Button orderButton = view.findViewById(R.id.viewProductOrderButton);
+        orderButton = view.findViewById(R.id.viewProductOrderButton);
+
         Button xButton = view.findViewById(R.id.viewProductXbutton);
+
 
         inquireButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +93,14 @@ public class ViewPostedProductFragment extends Fragment {
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Need to create an order that is set to a pending " +
-                                "state here ",
-                        Toast.LENGTH_SHORT).show();
+                orderButton.setVisibility(View.INVISIBLE);
+                //set up the progress bar
+                setupProgressar(true);
+                // assign values to the order
+                createAndAssignValuesToOrder();
+
+                // publish the order to firestore
+                publishTheOrderToFirestore();
             }
         });
 
@@ -172,6 +188,70 @@ public class ViewPostedProductFragment extends Fragment {
         sendMessageFragment.setArguments(bundle);
         Objects.requireNonNull(getActivity()).getSupportFragmentManager().
                 beginTransaction().replace(R.id.viewProductActivityFrame, sendMessageFragment).commit();
+    }
+
+
+    public void setupProgressar(boolean status) {
+        if (status) {
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setIndeterminate(true);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    public void createAndAssignValuesToOrder() {
+        Locale current = getResources().getConfiguration().locale;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", current);
+        Date date = new Date();
+        dateFormat.format(date);
+        tempOrder.setOrderID(tempProduct.getProductID() + date);
+        tempOrder.setProductDescription(tempProduct.getProductDescription());
+        tempOrder.setOrderStatus("Pending");
+        tempOrder.setDateOrdered(date);
+        tempOrder.setProductQuantity(tempProduct.getQuantity());
+        tempOrder.setProducerKey(tempProduct.getCustomerKey());
+        tempOrder.setCustomerKey(Objects.requireNonNull(getActivity()).getIntent().getStringExtra("CustomerKey"));
+        tempOrder.setProductDescription(tempProduct.getProductDescription());
+        tempOrder.setOrderTitle(tempProduct.getProductTitle());
+        tempOrder.setProductURI(tempProduct.getUri());
+    }
+
+    public void publishTheOrderToFirestore() {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("Orders").add(tempOrder).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful() && task.isComplete()) {
+                    toastShow("Great! Your order was made! Go to your orders to manage it if " +
+                            "needed");
+                    setupProgressar(false);
+                    orderButton.setVisibility(View.VISIBLE);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                toastShow("Something happened! Your order failed to publish. Try again.");
+                setupProgressar(false);
+                Log.d(TAG,
+                        "Failed to create and publish the order" + e.getLocalizedMessage() + e.getCause() + e.getMessage());
+            }
+        });
+    }
+
+    public void updateCustomerAndProducersOrderLists() {
 
     }
+
+    public void toastShow(String whatToSay) {
+        Toast toast = Toast.makeText(getContext(),
+                whatToSay,
+                Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
+
+    }
+
+
 }

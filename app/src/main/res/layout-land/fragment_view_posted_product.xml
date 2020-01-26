@@ -9,8 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout7"
-        android:layout_width="846dp"
-        android:layout_height="206dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -26,14 +26,13 @@
             app:layout_constraintBottom_toTopOf="@+id/viewProductImageView"
             app:layout_constraintEnd_toStartOf="@+id/viewProductDescriptionInput"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/viewProductXbutton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/viewProductImageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:contentDescription="@string/publishedproductfororder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/viewProductDescriptionInput"
@@ -45,15 +44,12 @@
 
         <Button
             android:id="@+id/viewProductInquireButton"
-            android:layout_width="162dp"
-            android:layout_height="153dp"
-            android:layout_marginTop="27dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="26dp"
+            android:layout_width="159dp"
+            android:layout_height="117dp"
             android:text="@string/inquire_more_about_this_product_button_label"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/viewProductXbutton" />
 
         <TextView
             android:id="@+id/viewProductDescriptionInput"
@@ -71,10 +67,10 @@
             android:id="@+id/viewProductXbutton"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="7dp"
             android:text="@string/xbuttonName"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -82,10 +78,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout6"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
@@ -118,6 +114,7 @@
             app:layout_constraintBottom_toTopOf="@+id/viewProductPriceInput"
             app:layout_constraintEnd_toStartOf="@+id/viewProductOrderButton"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toEndOf="@+id/viewProductDateCreatedLabel"
             app:layout_constraintTop_toBottomOf="@+id/viewProductIDInput" />
 
@@ -182,10 +179,20 @@
             android:id="@+id/viewProductOrderButton"
             android:layout_width="163dp"
             android:layout_height="138dp"
-            android:layout_marginEnd="16dp"
             android:text="@string/order_button_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewProductProgressBar" />
+
+        <ProgressBar
+            android:id="@+id/viewProductProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/viewProductIDInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

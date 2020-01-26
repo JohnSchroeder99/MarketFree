@@ -114,22 +114,6 @@ public class ManagePublishingActivity extends AppCompatActivity implements
     public void onFragmentInteraction(Uri uri) {
     }
 
-    // mock product object for random creation and testing purposes
-    public void createProducts() {
-        for (int i = 0; i < 15; i++) {
-            Date currentTime = Calendar.getInstance().getTime();
-            Product product = new Product();
-            product.setCost(1.00 * count);
-            product.setCustomerKey("a;lsdkjf" + count);
-            product.setDateCreated(currentTime);
-            product.setUri(null);
-            product.setProductDescription("nails or some crap");
-            product.setProductID("askl;djfh" + count);
-            product.setQuantity(12);
-            productList.add(product);
-        }
-    }
-
     //Method to grab real data from FIrestore
     public void getProductList() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

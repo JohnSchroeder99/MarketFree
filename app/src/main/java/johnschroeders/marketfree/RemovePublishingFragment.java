@@ -26,14 +26,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.DateFormat;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RemovePublishingFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RemovePublishingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RemovePublishingFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -144,16 +136,7 @@ public class RemovePublishingFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
@@ -172,18 +155,30 @@ public class RemovePublishingFragment extends Fragment {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         collectionReference.document(document.getId()).delete();
                     }
-                    removeProductImage();
+                    restartActivity();
                 }
             }
 
         });
     }
 
-    private void removeProductImage() {
+    private void restartActivity() {
         removeSelf();
         Intent intent = new Intent(getContext(), ManagePublishingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        intent.putExtra("SavedTab", 1);
+        String customerKey =
+                Objects.requireNonNull(Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                        "CustomerKey"));
+        String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                "UserName"));
+        String photoURI =
+                Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                        "Photo"));
+        intent.putExtra("CustomerKey", customerKey);
+        intent.putExtra("UserName", userName);
+        intent.putExtra("Photo", Objects.requireNonNull(photoURI));
         startActivity(intent);
     }
 

@@ -57,6 +57,7 @@ public class UserLoginActivity extends AppCompatActivity {
         Drawable myDrawable = this.getResources().getDrawable(R.drawable.bluebutton);
         marketFreeIcon.setImageDrawable(myDrawable);
 
+
         signInOtherAccountButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 

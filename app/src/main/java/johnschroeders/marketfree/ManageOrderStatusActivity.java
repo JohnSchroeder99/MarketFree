@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +24,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 
 
@@ -31,10 +32,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
     ArrayList<Order> orders;
     User currentUser;
 
-    // added just for mock data randomization for order properties
-    public static int count = 6;
-
-
+    //TODO create a listener to update the orders real time for status updates and for orders added
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +51,6 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         Glide.with(getApplicationContext()).asBitmap().
                 load(getIntent().getStringExtra("Photo")).into(userImage);
 
-
-        //you can use the create mock data method here to load up mock data to firestore
-        //createMockData();
 
         Button manageOrdersBackButton = findViewById(R.id.manageOrdersBackButton);
         manageOrdersBackButton.setOnClickListener(new View.OnClickListener() {
@@ -97,54 +92,13 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         }
     }
 
-    public Order createOrder() {
-        //just added for mock data
-
-
-        Order order1 = new Order();
-        order1.setOrderID("19283aererterrtdfsa74" + count++);
-        order1.setProducerKey("a;asdfklhjasdkljfhaklsjdhflkjashdf;ksjdf");
-        order1.setCustomerKey("new key" + count++);
-        order1.setAmountPaid(12.00);
-        order1.setProductDescription("Nails");
-        order1.setProductQuantity(234);
-        Date date = new Date();
-        date.setTime(234235L);
-        order1.setDateCanceled(date);
-        order1.setDateDelivered(date);
-        order1.setDateOrdered(date);
-        order1.setProductID("qosikedujfh3425");
-        //just moccking out random orders for now
-        if (count % 3 == 0) {
-            order1.setOrderStatus("Canceled");
-            count++;
-        } else if (count % 5 == 0) {
-            order1.setOrderStatus("Approved");
-            count++;
-        } else if (count % 7 == 0) {
-            order1.setOrderStatus("Complete");
-            count++;
-        } else if (count % 2 == 0) {
-            order1.setOrderStatus("Pending");
-            count++;
-        } else {
-            order1.setOrderStatus("Canceled");
-            count++;
-        }
-
-        Log.d(TAG,
-                "Order created: " + order1.getOrderID() + " with order status " + order1.getOrderStatus() + " with count " +
-                        "being " + count);
-        return order1;
-    }
-
     //Right now goes out to FIrestore and pulls down entire collection of Orders documents,
     // converts them to an Order object and then adds them to the OrdersArraylist
     private void getListItems() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         orders = new ArrayList<>();
         Log.d(TAG, "Getting all orders from firestore");
-        db.collection("Orders").get()
+        db.collection("Orders").whereEqualTo("customerKey", currentUser.getCustomerKey()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -155,17 +109,24 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
-                        populateAdapterAndDisplay();
-                    }
 
+                        if (task.isComplete() && Objects.requireNonNull(task.getResult()).isEmpty()) {
+                            toastShow("There have been no orders placed yet");
+                        } else {
+                            cleanList(orders);
+                            if (orders.isEmpty()) {
+                                toastShow("There have been no orders placed yet");
+                            } else {
+                                populateAdapterAndDisplay();
+                            }
+                        }
+                    }
                 });
     }
 
     // Create the adapter, load it with the orders arraylist, and pass in the correct activity
     // (ManageOrderStatusAcitivty.this) so the fragment can initialize correctly.
     public void populateAdapterAndDisplay() {
-
-
         Log.d(TAG, "setting recycler layout and adapter");
         RecyclerView recyclerView = findViewById(R.id.manageOrdersView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ManageOrderStatusActivity.this));
@@ -174,16 +135,6 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
                         orders, currentUser);
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "recyclerview and adapter successfully created and initialized");
-    }
-
-    // implement this method if you want to load up mock data to firestore and then remove it again
-    // after enough orders have been uploaded.
-    public void createMockData() {
-        for (int i = 0; i < 20; i++) {
-            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-            firebaseFirestore.collection("Orders").add(createOrder());
-        }
-
     }
 
     //Not currently using this but it needs to be instantiated to inflate the fragment
@@ -196,7 +147,25 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putParcelableArrayList("SavedOrders", orders);
+    }
+
+    public void cleanList(ArrayList<Order> orderList) {
+        Log.d(TAG, "Cleaning Orders " + orderList.get(0).getOrderID());
+        for (Order order : orderList) {
+            if ((order.getOrderID().equals("") || order.getOrderID().isEmpty())) {
+                orderList.remove(order);
+            }
+        }
+    }
+
+
+    public void toastShow(String whatToSay) {
+        Toast toast = Toast.makeText(getApplicationContext(),
+                whatToSay,
+                Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
+
     }
 }
