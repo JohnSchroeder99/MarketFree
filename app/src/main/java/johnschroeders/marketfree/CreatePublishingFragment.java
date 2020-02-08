@@ -218,23 +218,33 @@ public class CreatePublishingFragment extends Fragment {
 
     //start the activity to take the picture of the product which returns a bitmap
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        try {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Failed to open the camera intent: " + e.getCause() + e.getMessage());
         }
+
     }
 
     // sets the bit map to the size that we want for publishing and set it as the image for the
     // product to be saved
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) Objects.requireNonNull(extras).get("data");
-            scaled = Bitmap.createScaledBitmap(Objects.requireNonNull(imageBitmap), 300, 300, true);
-            scaled.setHeight(300);
-            scaled.setWidth(300);
-            imageButton.setImageBitmap(scaled);
+        try {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) Objects.requireNonNull(extras).get("data");
+                scaled = Bitmap.createScaledBitmap(Objects.requireNonNull(imageBitmap), 300, 300, true);
+                scaled.setHeight(300);
+                scaled.setWidth(300);
+                imageButton.setImageBitmap(scaled);
+            }
+        } catch (Exception e) {
+            Log.d(TAG,
+                    "Failed to save the camera picture with error: " + e.getMessage() + e.getCause());
         }
     }
 

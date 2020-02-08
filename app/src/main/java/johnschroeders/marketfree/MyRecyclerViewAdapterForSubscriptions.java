@@ -102,6 +102,15 @@ public class MyRecyclerViewAdapterForSubscriptions extends RecyclerView.Adapter<
                                                     "subscribedTo",
                                                     FieldValue.arrayRemove(users.get(position).getCustomerKey()));
                                         }
+                                        if(task.isComplete()){
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                                            intent.putExtra("CustomerKey",
+                                                    currentUser.getCustomerKey());
+                                            intent.putExtra("Photo", currentUser.getProfileImageURL());
+                                            intent.putExtra("UserName", currentUser.getUserName());
+                                            context.startActivity(intent);
+                                        }
                                     }
 
                                     if (Objects.requireNonNull(task.getResult()).isEmpty()) {

@@ -213,6 +213,7 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
         });
     }
 
+
     public void updateAndAddToSubscription(final String passedEditText) {
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = rootRef.collection("People");

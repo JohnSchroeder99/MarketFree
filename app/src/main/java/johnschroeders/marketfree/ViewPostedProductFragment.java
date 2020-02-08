@@ -98,6 +98,7 @@ public class ViewPostedProductFragment extends Fragment {
                 setupProgressar(true);
                 // assign values to the order
                 createAndAssignValuesToOrder();
+                orderButton.setVisibility(View.INVISIBLE);
 
                 // publish the order to firestore
                 publishTheOrderToFirestore();
@@ -226,7 +227,6 @@ public class ViewPostedProductFragment extends Fragment {
                     toastShow("Great! Your order was made! Go to your orders to manage it if " +
                             "needed");
                     setupProgressar(false);
-                    orderButton.setVisibility(View.VISIBLE);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -250,8 +250,6 @@ public class ViewPostedProductFragment extends Fragment {
                 Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
-
     }
-
 
 }
