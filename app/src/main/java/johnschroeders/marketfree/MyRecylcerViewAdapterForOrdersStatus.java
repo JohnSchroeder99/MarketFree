@@ -24,18 +24,21 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
 
     private ArrayList<Order> passedInArrayList;
     private LayoutInflater mInflater;
-    User currentUser;
+    private User currentUser;
     private Context context;
+    private boolean yourOrders;
 
     private static final String TAG = "OrderStatusActivity";
 
     // data is passed into the constructor
-    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data, User user) {
+    MyRecylcerViewAdapterForOrdersStatus(Context context, ArrayList<Order> data, User user,
+                                         boolean yourOrders) {
         Log.d(TAG, "RecyclerviewApapter Created ");
         this.mInflater = LayoutInflater.from(context);
         this.passedInArrayList = data;
         this.currentUser = user;
         this.context = context;
+        this.yourOrders = yourOrders;
     }
 
     // inflates the row layout from xml when needed
@@ -152,6 +155,7 @@ public class MyRecylcerViewAdapterForOrdersStatus extends RecyclerView.Adapter<M
             Bundle bundle = new Bundle();
             bundle.putParcelable("OrderClicked", order);
             bundle.putParcelable("User", currentUser);
+            bundle.putBoolean("YourOrders", yourOrders);
             orderFragment.setArguments(bundle);
 
 

@@ -12,80 +12,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/CancelButtonForOrderFrag"
+        app:layout_constraintBottom_toTopOf="@+id/orderAcceptButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exitOrderFragmentButton">
-
-        <TextView
-            android:id="@+id/orderDescriptionResult"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/NA"
-            app:layout_constraintBottom_toTopOf="@+id/orderQuantityResult"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/orderdescriptionplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/productIDResult" />
-
-        <TextView
-            android:id="@+id/orderQuantityResult"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/NA"
-            app:layout_constraintBottom_toTopOf="@+id/dateOrderedResult"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/orderQuantityplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/orderDescriptionResult" />
-
-        <TextView
-            android:id="@+id/customerKeyResult"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/NA"
-            app:layout_constraintBottom_toTopOf="@+id/productIDResult"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/customerKeyplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/producerKeyResult" />
-
-        <TextView
-            android:id="@+id/orderIDResult"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/NA"
-            app:layout_constraintBottom_toTopOf="@+id/producerKeyResult"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/orderidplaceholder"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/producerKeyResult"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/NA"
-            app:layout_constraintBottom_toTopOf="@+id/customerKeyResult"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/producerkeyplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/orderIDResult" />
-
-        <TextView
-            android:id="@+id/producerkeyplaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/producer_keyplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/customerKeyplaceholder"
-            app:layout_constraintStart_toStartOf="@+id/customerKeyplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/orderIDResult" />
+        app:layout_constraintTop_toBottomOf="@+id/CancelButtonForOrderFrag">
 
         <TextView
             android:id="@+id/orderidplaceholder"
@@ -97,13 +28,73 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/customerKeyplaceholder"
+            android:id="@+id/orderDescriptionResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/NA"
+            app:layout_constraintBottom_toTopOf="@+id/orderQuantityResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/orderdescriptionplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/productIDResult" />
+
+        <TextView
+            android:id="@+id/orderQuantityResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/NA"
+            app:layout_constraintBottom_toTopOf="@+id/dateOrderedResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/orderQuantityplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/orderDescriptionResult" />
+
+        <TextView
+            android:id="@+id/customerKeyResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/NA"
+            app:layout_constraintBottom_toTopOf="@+id/productIDResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/customerKeyplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/producerKeyResult" />
+
+        <TextView
+            android:id="@+id/orderIDResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/NA"
+            app:layout_constraintBottom_toTopOf="@+id/producerKeyResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/orderidplaceholder"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/producerKeyResult"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/NA"
+            app:layout_constraintBottom_toTopOf="@+id/customerKeyResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/producerkeyplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/orderIDResult" />
+
+        <TextView
+            android:id="@+id/producerkeyplaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/customer_keyplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/prodcutIDplaceholder"
-            app:layout_constraintStart_toStartOf="@+id/prodcutIDplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/producerKeyResult" />
+            android:text="@string/producer_keyplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/customerKeyplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/customerKeyplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/orderIDResult" />
 
         <TextView
             android:id="@+id/prodcutIDplaceholder"
@@ -155,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/date_canceledplaceholder"
-            app:layout_constraintBottom_toTopOf="@+id/amountPaidplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/orderCancelReasonLabel"
             app:layout_constraintStart_toStartOf="@+id/amountPaidplaceholder"
             app:layout_constraintTop_toBottomOf="@+id/dateCompletedplaceholder" />
 
@@ -166,7 +157,7 @@
             android:text="@string/amount_paidplaceholder"
             app:layout_constraintBottom_toTopOf="@+id/orderStatusplaceholder"
             app:layout_constraintStart_toStartOf="@+id/orderStatusplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/dateCanceledplaceholder" />
+            app:layout_constraintTop_toBottomOf="@+id/orderCancelReasonLabel" />
 
         <TextView
             android:id="@+id/orderStatusplaceholder"
@@ -186,9 +177,10 @@
             android:text="@string/NA"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/orderStatusplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/amountPaidResult" />
+            app:layout_constraintTop_toBottomOf="@+id/amountPaidplaceholder"
+            app:layout_constraintVertical_bias="0.508" />
 
         <TextView
             android:id="@+id/dateOrderedResult"
@@ -196,9 +188,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/NA"
-            app:layout_constraintBottom_toTopOf="@+id/dateCompletedResult"
+            app:layout_constraintBottom_toTopOf="@+id/dateCompletedplaceholder"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/dateOrderedplaceholder"
             app:layout_constraintTop_toBottomOf="@+id/orderQuantityResult" />
 
@@ -210,7 +202,7 @@
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/dateCanceledResult"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/dateCompletedplaceholder"
             app:layout_constraintTop_toBottomOf="@+id/dateOrderedResult" />
 
@@ -220,11 +212,11 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/NA"
-            app:layout_constraintBottom_toTopOf="@+id/amountPaidResult"
+            app:layout_constraintBottom_toTopOf="@+id/orderCancelReasonInput"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/dateCanceledplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/dateCompletedResult" />
+            app:layout_constraintTop_toBottomOf="@+id/dateCompletedplaceholder" />
 
         <TextView
             android:id="@+id/amountPaidResult"
@@ -234,9 +226,9 @@
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/orderStatusResult"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/amountPaidplaceholder"
-            app:layout_constraintTop_toBottomOf="@+id/dateCanceledResult" />
+            app:layout_constraintTop_toBottomOf="@+id/orderCancelReasonLabel" />
 
         <TextView
             android:id="@+id/productIDResult"
@@ -246,11 +238,70 @@
             android:text="@string/NA"
             app:layout_constraintBottom_toTopOf="@+id/orderDescriptionResult"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/prodcutIDplaceholder"
             app:layout_constraintTop_toBottomOf="@+id/customerKeyResult" />
 
+        <TextView
+            android:id="@+id/orderCancelReasonLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:text="@string/cancel_reason"
+            app:layout_constraintBottom_toTopOf="@+id/amountPaidplaceholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateCanceledplaceholder" />
+
+        <TextView
+            android:id="@+id/orderCancelReasonInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/NA"
+            app:layout_constraintBottom_toTopOf="@+id/amountPaidResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/orderCancelReasonLabel"
+            app:layout_constraintTop_toBottomOf="@+id/dateCanceledplaceholder" />
+
+        <TextView
+            android:id="@+id/customerKeyplaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/customer_keyplaceholder"
+            app:layout_constraintBottom_toTopOf="@+id/prodcutIDplaceholder"
+            app:layout_constraintStart_toStartOf="@+id/prodcutIDplaceholder"
+            app:layout_constraintTop_toBottomOf="@+id/producerKeyResult" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/CancelButtonForOrderFrag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/CancelButtonForOrders"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orderDetailsFragementTitle" />
+
+    <Button
+        android:id="@+id/exitOrderFragmentButton"
+        android:layout_width="39dp"
+        android:layout_height="35dp"
+        android:text="@string/xbuttonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/orderAcceptButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/accept_order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/orderDetailsFragementTitle"
@@ -260,25 +311,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/CancelButtonForOrderFrag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/CancelButtonForOrders"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orderFragmentTrue" />
-
-    <Button
-        android:id="@+id/exitOrderFragmentButton"
-        android:layout_width="39dp"
-        android:layout_height="35dp"
-        android:text="@string/xbuttonName"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

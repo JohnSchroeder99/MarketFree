@@ -135,6 +135,8 @@
     <string name="click_image_to_change">Click Image to Change</string>
     <string name="mom_is_traassshhhhh">MOm is traassshhhhh</string>
     <string name="orderstatusproductimage">orderStatusProductImage</string>
+    <string name="accept_order">Accept Order</string>
+    <string name="cancel_reason">Cancel Reason</string>
 
 
 </resources>

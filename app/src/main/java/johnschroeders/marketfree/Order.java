@@ -23,6 +23,7 @@ public class Order implements Parcelable {
     private Date dateCanceled;
     private double amountPaid;
     private String productURI;
+    private String cancelReason;
     static final String TAG = "OrderStatusActivity";
 
 
@@ -37,6 +38,7 @@ public class Order implements Parcelable {
         amountPaid = in.readDouble();
         orderTitle = in.readString();
         productURI = in.readString();
+        cancelReason = in.readString();
 
     }
 
@@ -51,6 +53,7 @@ public class Order implements Parcelable {
         dest.writeString(orderStatus);
         dest.writeDouble(amountPaid);
         dest.writeString(productURI);
+        dest.writeString(cancelReason);
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -179,5 +182,12 @@ public class Order implements Parcelable {
         this.orderTitle = orderTitle;
     }
 
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
 
 }

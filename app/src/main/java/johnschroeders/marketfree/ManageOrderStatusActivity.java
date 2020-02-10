@@ -31,6 +31,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
     static final String TAG = "OrderStatusActivity";
     ArrayList<Order> orders;
     User currentUser;
+    public boolean ordersForYou;
 
     //TODO create a listener to update the orders real time for status updates and for orders added
     @Override
@@ -41,7 +42,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         currentUser.setUserName(getIntent().getStringExtra("UserName"));
         currentUser.setProfileImageURL(getIntent().getStringExtra("Photo"));
         currentUser.setCustomerKey(getIntent().getStringExtra("CustomerKey"));
-
+        this.ordersForYou = getIntent().getBooleanExtra("YourOrders", false);
 
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
@@ -60,7 +61,11 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
                 Intent intent = new Intent(getApplicationContext(), UserMainPageManagePersonalsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                intent.putExtra("SavedTab", 1);
+                if (ordersForYou) {
+                    intent.putExtra("SavedTab", 0);
+                } else {
+                    intent.putExtra("SavedTab", 1);
+                }
                 String customerKey =
                         Objects.requireNonNull(getIntent().getStringExtra(
                                 "CustomerKey"));
@@ -88,40 +93,69 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
             }
         } else {
             //go out to firestore and retrieve the data
-            getListItems();
+            getListItems(ordersForYou);
         }
     }
+    // TODO rename the button names to be more reflective of the actions for the user
 
     //Right now goes out to FIrestore and pulls down entire collection of Orders documents,
     // converts them to an Order object and then adds them to the OrdersArraylist
-    private void getListItems() {
+    // If you clicked to see the orders that are waiting for you products then populate that list
+    // . Otherwise populate the list of orders that you have made for everyone else
+    private void getListItems(final boolean ordersForYou) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         orders = new ArrayList<>();
         Log.d(TAG, "Getting all orders from firestore");
-        db.collection("Orders").whereEqualTo("customerKey", currentUser.getCustomerKey()).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                orders.add(document.toObject(Order.class));
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-
-                        if (task.isComplete() && Objects.requireNonNull(task.getResult()).isEmpty()) {
-                            toastShow("There have been no orders placed yet");
-                        } else {
-                            cleanList(orders);
-                            if (orders.isEmpty()) {
-                                toastShow("There have been no orders placed yet");
+        if (!ordersForYou) {
+            db.collection("Orders").whereEqualTo("customerKey", currentUser.getCustomerKey()).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    orders.add(document.toObject(Order.class));
+                                }
                             } else {
-                                populateAdapterAndDisplay();
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+
+                            if (task.isComplete() && Objects.requireNonNull(task.getResult()).isEmpty()) {
+                                toastShow("There have been no orders placed on your products yet");
+                            } else {
+                                cleanList(orders);
+                                if (orders.isEmpty()) {
+                                    toastShow("You have not placed any orders yet");
+                                } else {
+                                    populateAdapterAndDisplay();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        } else {
+            db.collection("Orders").whereEqualTo("producerKey", currentUser.getCustomerKey()).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    orders.add(document.toObject(Order.class));
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+
+                            if (task.isComplete() && Objects.requireNonNull(task.getResult()).isEmpty()) {
+                                toastShow("There have been no orders placed yet for your products");
+                            } else {
+                                cleanList(orders);
+                                if (orders.isEmpty()) {
+                                    toastShow("There have been no orders placed for your products yet");
+                                    populateAdapterAndDisplay();
+                                }
+                            }
+                        }
+                    });
+        }
     }
 
     // Create the adapter, load it with the orders arraylist, and pass in the correct activity
@@ -132,7 +166,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         recyclerView.setLayoutManager(new LinearLayoutManager(ManageOrderStatusActivity.this));
         RecyclerView.Adapter mAdapter =
                 new MyRecylcerViewAdapterForOrdersStatus(ManageOrderStatusActivity.this,
-                        orders, currentUser);
+                        orders, currentUser, getIntent().getBooleanExtra("YourOrders", false));
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "recyclerview and adapter successfully created and initialized");
     }

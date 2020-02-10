@@ -15,17 +15,9 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SeeWhatsNewFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SeeWhatsNewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SeeWhatsNewFragment extends Fragment {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private OnFragmentInteractionListener mListener;
@@ -35,14 +27,6 @@ public class SeeWhatsNewFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SeeWhatsNewFragment.
-     */
 
     public static SeeWhatsNewFragment newInstance(String param1, String param2) {
         SeeWhatsNewFragment fragment = new SeeWhatsNewFragment();
@@ -73,32 +57,14 @@ public class SeeWhatsNewFragment extends Fragment {
         newOrdersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(getContext(), "\"Need to set this up just swipe " +
-                                "right for now and deal with those ",
-                        Toast.LENGTH_LONG);
-                toast.show();
+                transitionToNextState(ManageOrderStatusActivity.class);
             }
         });
 
         viewPostedProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ViewPostedProductsActivity.class);
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                String customerKey =
-                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
-                                "CustomerKey");
-                String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
-                        "UserName"));
-                String photoURI =
-                        Objects.requireNonNull(getActivity().getIntent().getStringExtra(
-                                "Photo"));
-                intent.putExtra("CustomerKey", customerKey);
-                intent.putExtra("UserName", userName);
-                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
-                startActivity(intent);
+                transitionToNextState(ViewPostedProductsActivity.class);
             }
         });
 
@@ -115,22 +81,7 @@ public class SeeWhatsNewFragment extends Fragment {
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MessagingActivity.class);
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-                String customerKey =
-                        Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
-                                "CustomerKey");
-                String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
-                        "UserName"));
-                String photoURI =
-                        Objects.requireNonNull(getActivity().getIntent().getStringExtra(
-                                "Photo"));
-                intent.putExtra("CustomerKey", customerKey);
-                intent.putExtra("UserName", userName);
-                intent.putExtra("Photo", Objects.requireNonNull(photoURI));
-                startActivity(intent);
+                transitionToNextState(MessagingActivity.class);
             }
         });
 
@@ -162,5 +113,26 @@ public class SeeWhatsNewFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void transitionToNextState(Class activityClass) {
+        Intent intent = new Intent(getContext(), activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        String customerKey =
+                Objects.requireNonNull(getActivity()).getIntent().getStringExtra(
+                        "CustomerKey");
+        String userName = Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                "UserName"));
+        String photoURI =
+                Objects.requireNonNull(getActivity().getIntent().getStringExtra(
+                        "Photo"));
+        intent.putExtra("CustomerKey", customerKey);
+        intent.putExtra("UserName", userName);
+        intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+        if (Objects.requireNonNull(activityClass.getCanonicalName()).equals(ManageOrderStatusActivity.class.getCanonicalName())) {
+            intent.putExtra("YourOrders", true);
+        }
+        startActivity(intent);
     }
 }
