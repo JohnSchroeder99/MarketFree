@@ -58,6 +58,7 @@ public class MessagingActivity extends AppCompatActivity implements
     }
 
     // go out to firestore and grab the conversation that is stored with you.
+
     public void getConversations(String customerKey) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "Getting all the conversations that you have");
@@ -80,6 +81,8 @@ public class MessagingActivity extends AppCompatActivity implements
                                                 " have any conversations started yet",
                                         Toast.LENGTH_SHORT);
                                 toast.show();
+                                Log.d(TAG,
+                                        "failed to load messages " + e.getCause() + e.getMessage()+ e.getLocalizedMessage());
                             }
 
                         }
@@ -90,6 +93,8 @@ public class MessagingActivity extends AppCompatActivity implements
     }
 
     // go out to firestore again and retrieve the true conversation details.
+    //TODO This needs to be able to handle more then 10 possibel queries at a time per firestore
+    // documentation for  "whereIn" (only 10 items allowed to be pulled in at a time)
     public void getTrueConversationLilstDetailed(ArrayList<String> conversationKeysPasedIn) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "Getting all parrelel conversations");
@@ -99,13 +104,16 @@ public class MessagingActivity extends AppCompatActivity implements
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && task.isComplete()) {
+                        if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 conversationsList.addAll(Collections.singleton(document.toObject(Conversation.class)));
                             }
-                            populateAndDisplay();
+
                         } else if (Objects.requireNonNull(task.getResult()).isEmpty()) {
                             Log.d(TAG, "There were no conversations populated");
+                        }
+                        if(task.isComplete()&&task.isSuccessful()){
+                            populateAndDisplay();
                         }
                     }
                 });
@@ -147,11 +155,11 @@ public class MessagingActivity extends AppCompatActivity implements
     public ArrayList<String> cleanList(ArrayList<String> dirtyList) {
         ArrayList<String> cleanList = new ArrayList<>();
         for (String s : dirtyList) {
-            if (!s.equals("")) {
-                cleanList.add(s);
+            if (s.equals("")) {
+                cleanList.remove(s);
             }
         }
-        return cleanList;
+        return dirtyList;
     }
 
 
