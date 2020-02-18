@@ -121,7 +121,7 @@ public class UserLoginActivity extends AppCompatActivity {
 
                 signInCreds(Objects.requireNonNull(acct));
                 setupForNextPage(acct);
-                checkIfUserExistsAlready(user.getCustomerKey());
+                checkIfUserExistsAlready(acct.getId());
 
             } else {
                 Log.d(TAG, "failed to login" + task.getException());
@@ -179,18 +179,15 @@ public class UserLoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                if (document.getData().containsValue(custKey)) {
-                                    Log.d(TAG, "User was found, not adding to firebase");
-                                    findOutIfFound(true);
-                                }
-                            }
+                        if (task.isSuccessful()&&task.isComplete()&& !Objects.requireNonNull(task.getResult()).isEmpty()) {
+                            Log.d(TAG, "User was found");
+                            findOutIfFound(true);
                         } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                           findOutIfFound(false);
                         }
                     }
                 });
+        Log.d(TAG, "Current value of found is: "+this.found  );
         if (!this.found) {
             Log.d(TAG,
                     "User was not found creating the user and adding to firestore for:  " + user.getUserName());
@@ -234,6 +231,7 @@ public class UserLoginActivity extends AppCompatActivity {
     }
 
     public void findOutIfFound(boolean foundPassin) {
+        Log.d(TAG, "This.Found being set to "+ foundPassin);
         this.found = foundPassin;
     }
 
