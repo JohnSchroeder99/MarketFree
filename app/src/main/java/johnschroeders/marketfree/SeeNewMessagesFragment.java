@@ -294,18 +294,14 @@ public class SeeNewMessagesFragment extends Fragment {
     // populate the recycler view with the appropriate user information to make the conversation
     // more readable.
     public void populateAndDisplay() {
-        Log.d(TAG, "setting recycler layout and adapter for see new Messages fragmentRecyclerview");
         recyclerView =
                 Objects.requireNonNull(getActivity()).findViewById(R.id.seeNewMessagesMessagesRecyclerView);
-        Log.d(TAG, "Before layout is set");
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        Log.d(TAG, "Before the adapter is created");
         mAdapter =
                 new MyRecyclerViewForMessages(getActivity(),
                         this.messages, this.you, this.them);
-        Log.d(TAG, "Adapter for Messages was set up");
         try {
             Collections.sort(this.messages, new Comparator<Message>() {
                 public int compare(Message obj1, Message obj2) {
@@ -316,7 +312,6 @@ public class SeeNewMessagesFragment extends Fragment {
             Log.d(TAG, "Nothing to compare against");
         }
         recyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
-        Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
         recyclerView.setAdapter(mAdapter);
         Log.d(TAG, "recyclerview and adapter successfully created and initialized for messages");
     }

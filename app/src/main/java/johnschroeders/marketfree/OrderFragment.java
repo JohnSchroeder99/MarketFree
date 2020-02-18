@@ -59,8 +59,6 @@ public class OrderFragment extends Fragment {
                 tempOrder = bundle.getParcelable("OrderClicked");
                 user = bundle.getParcelable("User");
             }
-            Log.d(TAG,
-                    "Temp order ID = " + Objects.requireNonNull(tempOrder).getOrderID() + "Temp Producer Key is = " + tempOrder.getProducerKey());
         }
     }
 

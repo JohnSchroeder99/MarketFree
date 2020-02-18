@@ -20,9 +20,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 //TODO update conversations list to be able to be removed from the user. This will need to
 // be removed from the current users key so it doesnt populate for them. If it is removed then we
@@ -72,56 +75,55 @@ public class MessagingActivity extends AppCompatActivity implements
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                 conversationKeys.addAll(document.toObject(User.class).getConversationsKeys());
                             }
-                        }
-                        if (task.isComplete()) {
-                            try {
-                                getTrueConversationLilstDetailed(cleanList(conversationKeys));
-                            } catch (Exception e) {
-                                Toast toast = Toast.makeText(getApplicationContext(), "You do not" +
-                                                " have any conversations started yet",
-                                        Toast.LENGTH_SHORT);
-                                toast.show();
-                                Log.d(TAG,
-                                        "failed to load messages " + e.getCause() + e.getMessage()+ e.getLocalizedMessage());
+                            if (task.isComplete()) {
+                                try {
+                                    getConversationReferences(conversationKeys);
+                                } catch (Exception e) {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "You do not" +
+                                                    " have any conversations started yet",
+                                            Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    Log.d(TAG,
+                                            "failed to load messages " + e.getCause() + e.getMessage() + e.getLocalizedMessage());
+                                }
                             }
-
                         }
                     }
                 });
-
-
     }
 
-    // go out to firestore again and retrieve the true conversation details.
-    //TODO This needs to be able to handle more then 10 possibel queries at a time per firestore
-    // documentation for  "whereIn" (only 10 items allowed to be pulled in at a time)
-    public void getTrueConversationLilstDetailed(ArrayList<String> conversationKeysPasedIn) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Log.d(TAG, "Getting all parrelel conversations");
-        db.collection("ConversationReferences")
-                .whereIn("conversationKey", conversationKeysPasedIn)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                conversationsList.addAll(Collections.singleton(document.toObject(Conversation.class)));
-                            }
 
-                        } else if (Objects.requireNonNull(task.getResult()).isEmpty()) {
-                            Log.d(TAG, "There were no conversations populated");
-                        }
-                        if(task.isComplete()&&task.isSuccessful()){
-                            populateAndDisplay();
-                        }
-                    }
-                });
+    public void getConversationReferences(final ArrayList<String> conversationKeysPasedIn) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        for (int i = 0; i < conversationKeysPasedIn.size(); i++) {
+            final int finalI = i;
+            if ((!conversationKeysPasedIn.get(i).equals("")) || (!conversationKeysPasedIn.get(i).isEmpty())) {
+                db.collection("ConversationReferences")
+                        .whereEqualTo("conversationKey", conversationKeysPasedIn.get(i))
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                        conversationsList.add(document.toObject(Conversation.class));
+                                    }
+                                } else if (Objects.requireNonNull(task.getResult()).isEmpty() || conversationsList.isEmpty()) {
+                                    Log.d(TAG, "There were no conversations populated");
+                                }
+                                if ((task.isComplete() && (finalI == conversationKeysPasedIn.size() - 1))) {
+                                    populateAndDisplay();
+                                }
+                            }
+                        });
+            }
+        }
     }
 
 
     // once the conversations have been grabbed we need populate the recylcerview
     public void populateAndDisplay() {
+        //cleanList();
         Log.d(TAG, "setting recycler layout and adapter messaging activity");
         RecyclerView recyclerView = findViewById(R.id.seeNewMessagesConversationsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(MessagingActivity.this));
@@ -149,18 +151,4 @@ public class MessagingActivity extends AppCompatActivity implements
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-    //method for setting up the arraylist for population so you can add a clean list to the
-    // conversation list without nulls or other potential issues.
-    public ArrayList<String> cleanList(ArrayList<String> dirtyList) {
-        ArrayList<String> cleanList = new ArrayList<>();
-        for (String s : dirtyList) {
-            if (s.equals("")) {
-                cleanList.remove(s);
-            }
-        }
-        return dirtyList;
-    }
-
-
 }

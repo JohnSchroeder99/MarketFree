@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class MyRecyclerViewForConversations extends RecyclerView.Adapter<MyRecyclerViewForConversations.ViewHolder> {
     private final static String TAG = "MessagingActivity";
-    ArrayList<Conversation> conversationList;
+    private ArrayList<Conversation> conversationList;
     private LayoutInflater mInflator;
     Context context;
 
@@ -75,7 +75,6 @@ public class MyRecyclerViewForConversations extends RecyclerView.Adapter<MyRecyc
 
         @Override
         public void onClick(View v) {
-            Log.d(TAG, "item in line was clicked");
             SeeNewMessagesFragment seeNewMessagesFragment = new SeeNewMessagesFragment();
             String key = conversationList.get(this.getAdapterPosition()).getConversationKey();
             Bundle bundle = new Bundle();

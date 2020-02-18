@@ -106,52 +106,43 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         orders = new ArrayList<>();
         Log.d(TAG, "Getting all orders from firestore");
-        if (!ordersForYou) {
-            db.collection("Orders").whereEqualTo("customerKey", currentUser.getCustomerKey()).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                    orders.add(document.toObject(Order.class));
-                                }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-
-                            if (task.isComplete() && Objects.requireNonNull(task.getResult()).isEmpty()) {
-                                toastShow("There have been no orders placed on your products yet");
-                            } else {
-                                cleanList(orders);
-                                if (orders.isEmpty()) {
-                                    toastShow("You have not placed any orders yet");
-                                } else {
-                                    populateAdapterAndDisplay();
-                                }
-                            }
-                        }
-                    });
-        } else {
+        if (ordersForYou) {
             db.collection("Orders").whereEqualTo("producerKey", currentUser.getCustomerKey()).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                    orders.add(document.toObject(Order.class));
+                                    if (document.toObject(Order.class).getOrderID() != null) {
+                                        orders.add(document.toObject(Order.class));
+                                    }
                                 }
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
+
                             }
 
                             if (task.isComplete() && Objects.requireNonNull(task.getResult()).isEmpty()) {
-                                toastShow("There have been no orders placed yet for your products");
+                                toastShow("There have been no orders placed on your products yet");
                             } else {
-                                cleanList(orders);
-                                if (orders.isEmpty()) {
-                                    toastShow("There have been no orders placed for your products yet");
-                                    populateAdapterAndDisplay();
+                                populateAdapterAndDisplay();
+                            }
+                        }
+                    });
+        } else {
+            db.collection("Orders").whereEqualTo("customerKey", currentUser.getCustomerKey()).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                    if (document.toObject(Order.class).getOrderID() != null) {
+                                        orders.add(document.toObject(Order.class));
+                                    }
                                 }
+                            }
+                            if (task.isComplete() && Objects.requireNonNull(task.getResult()).isEmpty()) {
+                                toastShow("You have not placed any orders yet");
+                            } else {
+                                populateAdapterAndDisplay();
                             }
                         }
                     });
@@ -184,13 +175,14 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         outState.putParcelableArrayList("SavedOrders", orders);
     }
 
-    public void cleanList(ArrayList<Order> orderList) {
+    public ArrayList<Order> cleanList(ArrayList<Order> orderList) {
         Log.d(TAG, "Cleaning Orders " + orderList.get(0).getOrderID());
         for (Order order : orderList) {
             if ((order.getOrderID().equals("") || order.getOrderID().isEmpty())) {
                 orderList.remove(order);
             }
         }
+        return orderList;
     }
 
 
