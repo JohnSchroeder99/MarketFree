@@ -27,12 +27,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener {
+public class ManageOrderStatusActivity extends AppCompatActivity implements OrderFragment.OnFragmentInteractionListener, CancelReasonFragment.OnFragmentInteractionListener {
     static final String TAG = "OrderStatusActivity";
     ArrayList<Order> orders;
     User currentUser;
     public boolean ordersForYou;
 
+    // TODO rename the button names to be more reflective of the actions for the user
     //TODO create a listener to update the orders real time for status updates and for orders added
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
             getListItems(ordersForYou);
         }
     }
-    // TODO rename the button names to be more reflective of the actions for the user
+
 
     //Right now goes out to FIrestore and pulls down entire collection of Orders documents,
     // converts them to an Order object and then adds them to the OrdersArraylist

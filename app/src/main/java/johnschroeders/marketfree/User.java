@@ -10,13 +10,19 @@ public class User implements Parcelable {
     private String userName;
     private String profileImageURL;
     private ArrayList<String> subscribedTo;
-
-
+    private String chosenCustomerKey;
     private ArrayList<String> conversationsKeys;
 
     public User() {
 
 
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(customerKey);
+        dest.writeString(userName);
+        dest.writeString(profileImageURL);
     }
 
     private User(Parcel in) {
@@ -37,6 +43,11 @@ public class User implements Parcelable {
         }
     };
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -44,7 +55,6 @@ public class User implements Parcelable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
 
     public String getCustomerKey() {
         return customerKey;
@@ -62,18 +72,6 @@ public class User implements Parcelable {
         this.profileImageURL = profileImageURL;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(customerKey);
-        dest.writeString(userName);
-        dest.writeString(profileImageURL);
-    }
-
     public ArrayList<String> getSubscribedTo() {
         return subscribedTo;
     }
@@ -89,5 +87,14 @@ public class User implements Parcelable {
     public void setConversationsKeys(ArrayList<String> conversationsKeys) {
         this.conversationsKeys = conversationsKeys;
     }
+
+    public String getChosenCustomerKey() {
+        return chosenCustomerKey;
+    }
+
+    public void setChosenCustomerKey(String chosenCustomerKey) {
+        this.chosenCustomerKey = chosenCustomerKey;
+    }
+
 
 }

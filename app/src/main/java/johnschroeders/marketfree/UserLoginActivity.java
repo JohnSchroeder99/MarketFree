@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class UserLoginActivity extends AppCompatActivity {
     GoogleSignInOptions googleSignInOptions;
     Intent intent;
     User user = new User();
-    private boolean found = false;
     ArrayList<String> tempList = new ArrayList<>();
     ArrayList<String> tempConverstaionList = new ArrayList<>();
 
@@ -115,15 +113,11 @@ public class UserLoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task =
                     GoogleSignIn.getSignedInAccountFromIntent(data);
-            if (task.isSuccessful()) {
-                // Sign in succeeded, proceed with account
-                GoogleSignInAccount acct = task.getResult();
-
-                signInCreds(Objects.requireNonNull(acct));
-                setupForNextPage(acct);
-                checkIfUserExistsAlready(acct.getId());
-
+            if ((task.isSuccessful() && task.isComplete())) {
+                setupForNextPage(Objects.requireNonNull(task.getResult()));
+                startActivity(intent);
             } else {
+                checkIfUserExistsAlready(Objects.requireNonNull(task.getResult()));
                 Log.d(TAG, "failed to login" + task.getException());
             }
         }
@@ -170,40 +164,38 @@ public class UserLoginActivity extends AppCompatActivity {
 
     // check if the user exists already. If they do then you already exist so do nothing but sign
     // in. else add them to the list with their associated user fields set to null
-    public void checkIfUserExistsAlready(final String custKey) {
+    public void checkIfUserExistsAlready(final GoogleSignInAccount acct) {
+        Log.d(TAG, "Seeing if accoutn " + acct.getId() + " exists");
         FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
         firestoreDatabase.collection("People")
-                .whereEqualTo("customerKey", custKey)
+                .whereEqualTo("customerKey", acct.getId())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()&&task.isComplete()&& !Objects.requireNonNull(task.getResult()).isEmpty()) {
-                            Log.d(TAG, "User was found");
-                            findOutIfFound(true);
-                        } else {
-                           findOutIfFound(false);
+                        if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
+                            Log.d(TAG, "User was found: " + acct.getId());
+                            setupForNextPage(acct);
+                            startActivity(intent);
+                        } else if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
+                            tempList.add("");
+                            tempConverstaionList.add("");
+                            user.setCustomerKey(acct.getId());
+                            user.setSubscribedTo(tempList);
+                            user.setConversationsKeys(tempConverstaionList);
+                            user.setProfileImageURL(Objects.requireNonNull(acct.getPhotoUrl()).toString());
+                            user.setUserName(acct.getDisplayName());
+                            user.setChosenCustomerKey(acct.getId());
+                            addPersonToFireStore(user, acct);
                         }
                     }
                 });
-        Log.d(TAG, "Current value of found is: "+this.found  );
-        if (!this.found) {
-            Log.d(TAG,
-                    "User was not found creating the user and adding to firestore for:  " + user.getUserName());
-            tempList.add("");
-            tempConverstaionList.add("");
-            user.setSubscribedTo(tempList);
-            user.setConversationsKeys(tempConverstaionList);
-            addPersonToFireStore(user);
-        } else {
-            Log.d(TAG, "User found for: " + user.getUserName());
-            startActivity(intent);
-        }
+
     }
 
     // adding the person to firestore in the people collection
-    public void addPersonToFireStore(User newUser) {
+    public void addPersonToFireStore(User newUser, final GoogleSignInAccount acct) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Log.d(TAG, "adding User to firestore collection");
         db.collection("People").add(newUser)
@@ -211,6 +203,7 @@ public class UserLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
+                            setupForNextPage(acct);
                             startActivity(intent);
                         } else {
                             Log.d(TAG, "could not add the user");
@@ -228,11 +221,6 @@ public class UserLoginActivity extends AppCompatActivity {
                         + "\n" + "ID TOKEN:  " + gsa.getIdToken() + "\n" + "Account:  " + Objects.requireNonNull(gsa.getAccount())
                         + "\n" + "PHOTO URL:  " + gsa.getPhotoUrl() + "\n" + "FamilyName:  " + gsa.getFamilyName() + "\n"
                         + "AUTH CODE:  " + gsa.getServerAuthCode() + "\n" + "ID:  " + gsa.getId());
-    }
-
-    public void findOutIfFound(boolean foundPassin) {
-        Log.d(TAG, "This.Found being set to "+ foundPassin);
-        this.found = foundPassin;
     }
 
     // set up the information for gliding in images and user information for the rest of the

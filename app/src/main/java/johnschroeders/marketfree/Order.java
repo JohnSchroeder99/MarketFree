@@ -27,6 +27,9 @@ public class Order implements Parcelable {
     static final String TAG = "OrderStatusActivity";
 
 
+    private Date dateAccepted;
+
+
     private Order(Parcel in) {
         orderID = in.readString();
         producerKey = in.readString();
@@ -70,6 +73,14 @@ public class Order implements Parcelable {
 
     public Order() {
 
+    }
+
+    public Date getDateAccepted() {
+        return dateAccepted;
+    }
+
+    public void setDateAccepted(Date dateAccepted) {
+        this.dateAccepted = dateAccepted;
     }
 
     public String getProductURI() {
