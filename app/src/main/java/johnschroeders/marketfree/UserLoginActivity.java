@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class UserLoginActivity extends AppCompatActivity {
     User user = new User();
     ArrayList<String> tempList = new ArrayList<>();
     ArrayList<String> tempConverstaionList = new ArrayList<>();
+    String customerKey = null;
 
 
     @Override
@@ -93,7 +95,6 @@ public class UserLoginActivity extends AppCompatActivity {
                     // if user has already signed in then just proceed
                     signInCreds(account);
                     setupForNextPage(account);
-                    startActivity(intent);
                 }
             }
         });
@@ -109,13 +110,11 @@ public class UserLoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task =
                     GoogleSignIn.getSignedInAccountFromIntent(data);
             if ((task.isSuccessful() && task.isComplete())) {
                 setupForNextPage(Objects.requireNonNull(task.getResult()));
-                startActivity(intent);
             } else {
                 checkIfUserExistsAlready(Objects.requireNonNull(task.getResult()));
                 Log.d(TAG, "failed to login" + task.getException());
@@ -168,7 +167,7 @@ public class UserLoginActivity extends AppCompatActivity {
         Log.d(TAG, "Seeing if accoutn " + acct.getId() + " exists");
         FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
         firestoreDatabase.collection("People")
-                .whereEqualTo("customerKey", acct.getId())
+                .whereEqualTo("googleID", acct.getId())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
@@ -177,7 +176,6 @@ public class UserLoginActivity extends AppCompatActivity {
                         if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
                             Log.d(TAG, "User was found: " + acct.getId());
                             setupForNextPage(acct);
-                            startActivity(intent);
                         } else if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
                             tempList.add("");
                             tempConverstaionList.add("");
@@ -186,7 +184,7 @@ public class UserLoginActivity extends AppCompatActivity {
                             user.setConversationsKeys(tempConverstaionList);
                             user.setProfileImageURL(Objects.requireNonNull(acct.getPhotoUrl()).toString());
                             user.setUserName(acct.getDisplayName());
-                            user.setChosenCustomerKey(acct.getId());
+                            user.setGoogleID(acct.getId());
                             addPersonToFireStore(user, acct);
                         }
                     }
@@ -204,7 +202,6 @@ public class UserLoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
                             setupForNextPage(acct);
-                            startActivity(intent);
                         } else {
                             Log.d(TAG, "could not add the user");
                         }
@@ -225,24 +222,43 @@ public class UserLoginActivity extends AppCompatActivity {
 
     // set up the information for gliding in images and user information for the rest of the
     // application
-    public void setupForNextPage(GoogleSignInAccount account) {
+    public void setupForNextPage(final GoogleSignInAccount account) {
 
         //pull down the information for the user
-        String customerKey = account.getId();
-        String userName = account.getDisplayName();
-        String photoURI = Objects.requireNonNull(account.getPhotoUrl()).toString();
 
-        //once pulled down then put in the extras
-        intent.putExtra("CustomerKey", customerKey);
-        intent.putExtra("UserName", userName);
-        intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("People").whereEqualTo("googleID", account.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                Log.d(TAG,
+                                        "User was found with data: " + document.toObject(User.class).getCustomerKey());
+                                customerKey = document.toObject(User.class).getCustomerKey();
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                        if (task.isComplete()) {
+                            intent = new Intent(getApplicationContext(),
+                                    UserMainPageManagePersonalsActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 
-        //setting up the information for the user. this will be done if the user has never logged
-        // in.
-        this.user.setCustomerKey(customerKey);
-        this.user.setUserName(userName);
-        this.user.setProfileImageURL(Objects.requireNonNull(photoURI));
+                            String userName = account.getDisplayName();
+                            String photoURI = Objects.requireNonNull(account.getPhotoUrl()).toString();
+                            //once pulled down then put in the extras
+                            intent.putExtra("CustomerKey", customerKey);
+                            intent.putExtra("UserName", userName);
+                            intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+                            startActivity(intent);
+                        }
+                    }
+                });
     }
+
 }
 
 

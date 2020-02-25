@@ -27,7 +27,6 @@ public class UserMainPageManagePersonalsActivity extends AppCompatActivity imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main_page);
 
-
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView userImage = findViewById(R.id.CardImageView);

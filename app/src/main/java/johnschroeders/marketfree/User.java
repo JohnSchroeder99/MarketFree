@@ -13,6 +13,9 @@ public class User implements Parcelable {
     private String chosenCustomerKey;
     private ArrayList<String> conversationsKeys;
 
+
+    private String googleID;
+
     public User() {
 
 
@@ -23,12 +26,14 @@ public class User implements Parcelable {
         dest.writeString(customerKey);
         dest.writeString(userName);
         dest.writeString(profileImageURL);
+        dest.writeString(googleID);
     }
 
     private User(Parcel in) {
         customerKey = in.readString();
         userName = in.readString();
         profileImageURL = in.readString();
+        googleID = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -94,6 +99,14 @@ public class User implements Parcelable {
 
     public void setChosenCustomerKey(String chosenCustomerKey) {
         this.chosenCustomerKey = chosenCustomerKey;
+    }
+
+    public String getGoogleID() {
+        return googleID;
+    }
+
+    public void setGoogleID(String googleID) {
+        this.googleID = googleID;
     }
 
 

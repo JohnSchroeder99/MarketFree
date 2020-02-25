@@ -14,17 +14,6 @@
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/manageProfileUpdateBankingButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/update_banking"
-            app:layout_constraintBottom_toTopOf="@+id/manageProfileBackButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manageProfileSaveButton" />
-
         <androidx.cardview.widget.CardView
             android:id="@+id/USERINFO"
             android:layout_width="0dp"
@@ -98,19 +87,6 @@
 
         </androidx.cardview.widget.CardView>
 
-        <ImageButton
-            android:id="@+id/manageProfileimageButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:contentDescription="@string/profileimage"
-            android:src="@drawable/bluebutton"
-            app:layout_constraintBottom_toTopOf="@+id/ManageProfileInputKeyField"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ManageProfilePictureImageLabel"
-            tools:srcCompat="@tools:sample/avatars[4]" />
-
         <Button
             android:id="@+id/manageProfileBackButton"
             android:layout_width="wrap_content"
@@ -120,22 +96,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manageProfileUpdateBankingButton" />
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileSaveButton" />
 
         <Button
             android:id="@+id/manageProfileSaveButton"
-            android:layout_width="0dp"
+            android:layout_width="731dp"
             android:layout_height="wrap_content"
             android:text="@string/save"
-            app:layout_constraintBottom_toTopOf="@+id/manageProfileUpdateBankingButton"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileBackButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ManageProfileInputKeyField" />
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileInputKeyField" />
 
         <EditText
-            android:id="@+id/ManageProfileInputKeyField"
-            android:layout_width="0dp"
+            android:id="@+id/manageProfileInputKeyField"
+            android:layout_width="731dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:ems="10"
@@ -146,19 +122,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/manageProfileimageButton"
+            app:layout_constraintTop_toBottomOf="@+id/USERINFO"
             tools:targetApi="o" />
 
-        <TextView
-            android:id="@+id/ManageProfilePictureImageLabel"
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/manageProfileProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/click_image_to_change"
-            app:layout_constraintBottom_toTopOf="@+id/manageProfileimageButton"
+            app:layout_constraintBottom_toTopOf="@+id/manageProfileSaveButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/USERINFO" />
+            app:layout_constraintTop_toBottomOf="@+id/manageProfileInputKeyField" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
