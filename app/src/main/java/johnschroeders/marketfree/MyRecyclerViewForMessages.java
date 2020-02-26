@@ -22,7 +22,7 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
     private LayoutInflater mInflator;
     private User you;
     private User them;
-    Context context;
+    private Context context;
 
     //Constructor that was updated to handle them and you in a message dialogue.
     MyRecyclerViewForMessages(Context context, ArrayList<Message> messageListpassedIn,
@@ -73,6 +73,10 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
                 holder.yourMessage.setVisibility(View.INVISIBLE);
 
             } else {
+                holder.theirImage.setVisibility(View.INVISIBLE);
+                holder.theirMessage.setVisibility(View.INVISIBLE);
+                holder.yourImage.setVisibility(View.INVISIBLE);
+                holder.yourMessage.setVisibility(View.INVISIBLE);
                 Log.d(TAG, "Nothing was in the message so it wasn't populated");
             }
         } catch (Exception e) {
@@ -94,7 +98,7 @@ public class MyRecyclerViewForMessages extends RecyclerView.Adapter<MyRecyclerVi
     }
 
     // getting references to all of the items in the recylcerview.
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView theirMessage;
         TextView yourMessage;
         ImageView yourImage;

@@ -31,13 +31,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-//TODO add functionality to accepting or denying the order. Move to the correct state and provide
-// the input for reasons that the order was canceled. (Force the reason why i.e. no null fields)
+//TODO add functionality for the user to move forward with payments after an order has been
+// accepted.
+//TODO see what to do about orders once they are accepted. One way might be to have no canceling
+// orders once they are accepted except by the owner of the product.
 public class OrderFragment extends Fragment{
-    static final String TAG = "OrderStatusActivity";
-    Bundle bundle;
+    private static final String TAG = "OrderStatusActivity";
+    private Bundle bundle;
     private Order tempOrder = new Order();
-    User user = new User();
+    private User user = new User();
     private OnFragmentInteractionListener mListener;
 
     public OrderFragment() {
@@ -176,7 +178,7 @@ public class OrderFragment extends Fragment{
     }
 
     // hide everything but the details for being canceled
-    public void hideEverything(View view) {
+    private void hideEverything(View view) {
         try {
             //TODO optimize this crap
             ArrayList<TextView> textViews = new ArrayList<>();
@@ -253,7 +255,7 @@ public class OrderFragment extends Fragment{
     }
 
     // show everything for the order since it has not been canceled yet
-    public void showEverything(View view) {
+    private void showEverything(View view) {
         try {
             TextView orderID = view.findViewById(R.id.orderIDResult);
             orderID.setText(tempOrder.getOrderID());
@@ -285,7 +287,7 @@ public class OrderFragment extends Fragment{
 
     }
 
-    public void removeSelf() {
+    private void removeSelf() {
         Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 

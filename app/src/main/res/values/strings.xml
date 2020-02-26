@@ -137,6 +137,12 @@
     <string name="orderstatusproductimage">orderStatusProductImage</string>
     <string name="accept_order">Accept Order</string>
     <string name="cancel_reason">Cancel Reason</string>
+    <string name="manage_orders_title">Orders</string>
+    <string name="messagingLabel">Messaging</string>
+    <string name="ordersLabel">Orders</string>
+    <string name="key_resetLabel">Key Reset</string>
+    <string name="subscriptionsLabel">Subscriptions</string>
+    <string name="publishingLabel">Publishing</string>
 
 
 </resources>

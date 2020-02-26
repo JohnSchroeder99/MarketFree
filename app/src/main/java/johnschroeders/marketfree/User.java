@@ -10,7 +10,6 @@ public class User implements Parcelable {
     private String userName;
     private String profileImageURL;
     private ArrayList<String> subscribedTo;
-    private String chosenCustomerKey;
     private ArrayList<String> conversationsKeys;
 
 
@@ -54,7 +53,7 @@ public class User implements Parcelable {
     }
 
     public String getUserName() {
-        return userName;
+        return this.userName;
     }
 
     public void setUserName(String userName) {
@@ -62,7 +61,7 @@ public class User implements Parcelable {
     }
 
     public String getCustomerKey() {
-        return customerKey;
+        return this.customerKey;
     }
 
     public void setCustomerKey(String customerKey) {
@@ -70,7 +69,7 @@ public class User implements Parcelable {
     }
 
     public String getProfileImageURL() {
-        return profileImageURL;
+        return this.profileImageURL;
     }
 
     public void setProfileImageURL(String profileImageURL) {
@@ -91,14 +90,6 @@ public class User implements Parcelable {
 
     public void setConversationsKeys(ArrayList<String> conversationsKeys) {
         this.conversationsKeys = conversationsKeys;
-    }
-
-    public String getChosenCustomerKey() {
-        return chosenCustomerKey;
-    }
-
-    public void setChosenCustomerKey(String chosenCustomerKey) {
-        this.chosenCustomerKey = chosenCustomerKey;
     }
 
     public String getGoogleID() {

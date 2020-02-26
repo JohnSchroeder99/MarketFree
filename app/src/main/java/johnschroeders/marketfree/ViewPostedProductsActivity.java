@@ -31,7 +31,7 @@ public class ViewPostedProductsActivity extends AppCompatActivity implements
         ViewPostedProductFragment.OnFragmentInteractionListener,
         SendMessageFragment.OnFragmentInteractionListener {
     private final static String TAG = "ViewPostedActivity";
-    public ArrayList<String> usersCustKeyPulledFromFireStore;
+    private ArrayList<String> usersCustKeyPulledFromFireStore;
     ArrayList<Product> productList;
 
     @Override
@@ -40,16 +40,16 @@ public class ViewPostedProductsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_view_posted_products);
 
         // main setup to get references to texts and to set up the info card for the activity.
-        TextView userName = findViewById(R.id.TitleTextView);
+        TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView cardImageView = findViewById(R.id.CardImageView);
-        Button backButton = findViewById(R.id.viewProductsActivityBackButton);
 
-        userName.setText(getIntent().getStringExtra("CustomerKey"));
-        customerKey.setText(getIntent().getStringExtra("UserName"));
+        customerKey.setText(getIntent().getStringExtra("CustomerKey"));
+        userName.setText(getIntent().getStringExtra("UserName"));
         Glide.with(getApplicationContext()).asBitmap().
                 load(getIntent().getStringExtra("Photo")).into(cardImageView);
 
+        Button backButton = findViewById(R.id.viewProductsActivityBackButton);
         //setting up the onclick listeners for each button in the view
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +109,7 @@ public class ViewPostedProductsActivity extends AppCompatActivity implements
                         }
                         if (!Objects.requireNonNull(task.getResult()).isEmpty()) {
                             getAllProdsFromSubedUsers(usersCustKeyPulledFromFireStore);
-                        } else {
+                        } else{
                             Toast toast = Toast.makeText(getApplicationContext(), "You are not " +
                                             "subscribed to anyone to see any products that they " +
                                             "have published yet",
@@ -141,6 +141,13 @@ public class ViewPostedProductsActivity extends AppCompatActivity implements
                             setupTheRecyclerView();
                         } else {
                             Log.d(TAG, "failed to retrieve data" + task.getException());
+                        }
+                        if(task.isComplete()&& productList.isEmpty()){
+                            Toast toast = Toast.makeText(getApplicationContext(), "No one has " +
+                                            "published any products yet",
+                                    Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                            toast.show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

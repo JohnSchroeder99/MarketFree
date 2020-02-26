@@ -29,10 +29,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-//TODO handle the constant button pushing fromt he user when ordering products.
 public class ViewPostedProductFragment extends Fragment {
     private static final String TAG = "ViewPostedActivty";
-    Bundle bundle;
+    private Bundle bundle;
     private Product tempProduct = new Product();
     private OnFragmentInteractionListener mListener;
     private ProgressBar progressBar;
@@ -192,7 +191,7 @@ public class ViewPostedProductFragment extends Fragment {
     }
 
 
-    public void setupProgressar(boolean status) {
+    private void setupProgressar(boolean status) {
         if (status) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setIndeterminate(true);
@@ -201,7 +200,7 @@ public class ViewPostedProductFragment extends Fragment {
         }
     }
 
-    public void createAndAssignValuesToOrder() {
+    private void createAndAssignValuesToOrder() {
         Locale current = getResources().getConfiguration().locale;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", current);
         Date date = new Date();
@@ -218,7 +217,7 @@ public class ViewPostedProductFragment extends Fragment {
         tempOrder.setProductURI(tempProduct.getUri());
     }
 
-    public void publishTheOrderToFirestore() {
+    private void publishTheOrderToFirestore() {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.collection("Orders").add(tempOrder).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
@@ -240,11 +239,7 @@ public class ViewPostedProductFragment extends Fragment {
         });
     }
 
-    public void updateCustomerAndProducersOrderLists() {
-
-    }
-
-    public void toastShow(String whatToSay) {
+    private void toastShow(String whatToSay) {
         Toast toast = Toast.makeText(getContext(),
                 whatToSay,
                 Toast.LENGTH_SHORT);

@@ -48,8 +48,8 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView userImage = findViewById(R.id.CardImageView);
-        userName.setText(getIntent().getStringExtra("CustomerKey"));
-        customerKey.setText(getIntent().getStringExtra("UserName"));
+        customerKey.setText(getIntent().getStringExtra("CustomerKey"));
+        userName.setText(getIntent().getStringExtra("UserName"));
         Glide.with(getApplicationContext()).asBitmap().
                 load(getIntent().getStringExtra("Photo")).into(userImage);
         final EditText editText = findViewById(R.id.manageSubscriptionskeyInsertTextView);
@@ -81,6 +81,7 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
                 intent.putExtra("CustomerKey", customerKey);
                 intent.putExtra("UserName", userName);
                 intent.putExtra("Photo", Objects.requireNonNull(photoURI));
+                intent.putExtra("SavedTab", 1);
                 startActivity(intent);
             }
         });

@@ -30,7 +30,7 @@ import java.util.Set;
 //TODO update conversations list to be able to be removed from the user. This will need to
 // be removed from the current users key so it doesnt populate for them. If it is removed then we
 // need a way to handle that in firestore if the user decides to go to that same product again
-// and ask about that product. One ssolution might be if the conversation still exists then it
+// and ask about that product. One solution might be if the conversation still exists then it
 // can just be readded to the users conversastion key list.
 
 public class MessagingActivity extends AppCompatActivity implements
@@ -51,13 +51,11 @@ public class MessagingActivity extends AppCompatActivity implements
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView userImage = findViewById(R.id.CardImageView);
-        userName.setText(getIntent().getStringExtra("CustomerKey"));
-        customerKey.setText(getIntent().getStringExtra("UserName"));
+        customerKey.setText(getIntent().getStringExtra("CustomerKey"));
+        userName.setText(getIntent().getStringExtra("UserName"));
         Glide.with(getApplicationContext()).asBitmap().
                 load(getIntent().getStringExtra("Photo")).into(userImage);
-
         getConversations(getIntent().getStringExtra("CustomerKey"));
-
     }
 
     // go out to firestore and grab the conversation that is stored with you.

@@ -48,8 +48,8 @@ public class ManageOrderStatusActivity extends AppCompatActivity implements Orde
         TextView userName = findViewById(R.id.UserName);
         TextView customerKey = findViewById(R.id.CustomerKey);
         ImageView userImage = findViewById(R.id.CardImageView);
-        userName.setText(getIntent().getStringExtra("CustomerKey"));
-        customerKey.setText(getIntent().getStringExtra("UserName"));
+        customerKey.setText(getIntent().getStringExtra("CustomerKey"));
+        userName.setText(getIntent().getStringExtra("UserName"));
         Glide.with(getApplicationContext()).asBitmap().
                 load(getIntent().getStringExtra("Photo")).into(userImage);
 
