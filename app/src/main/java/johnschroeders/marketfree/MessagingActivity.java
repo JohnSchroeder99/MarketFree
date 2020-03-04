@@ -20,12 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 
 //TODO update conversations list to be able to be removed from the user. This will need to
 // be removed from the current users key so it doesnt populate for them. If it is removed then we
@@ -71,19 +67,22 @@ public class MessagingActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                conversationKeys.addAll(document.toObject(User.class).getConversationsKeys());
-                            }
-                            if (task.isComplete()) {
-                                try {
-                                    getConversationReferences(conversationKeys);
-                                } catch (Exception e) {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "You do not" +
-                                                    " have any conversations started yet",
-                                            Toast.LENGTH_SHORT);
-                                    toast.show();
-                                    Log.d(TAG,
-                                            "failed to load messages " + e.getCause() + e.getMessage() + e.getLocalizedMessage());
+                                if(document.toObject(User.class).getConversationsKeys().size()>1){
+                                    conversationKeys.addAll(document.toObject(User.class).getConversationsKeys());
                                 }
+                            }
+                        }
+                        if (task.isComplete()&& conversationKeys.size()<1) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "You do not" +
+                                            " have any conversations started yet",
+                                    Toast.LENGTH_SHORT);
+                            toast.show();
+                        }else{
+                            try {
+                                getConversationReferences(conversationKeys);
+                            } catch (Exception e) {
+                                Log.d(TAG,
+                                        "failed to load messages " + e.getCause() + e.getMessage() + e.getLocalizedMessage());
                             }
                         }
                     }

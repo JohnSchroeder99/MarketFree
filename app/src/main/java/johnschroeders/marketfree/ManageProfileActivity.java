@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -63,9 +64,10 @@ public class ManageProfileActivity extends AppCompatActivity {
         });
 
 
-        // TODO manage the input to handle errors for if the key already exists
-        //TODO remove conversation references and cancel all associated orders with reason
+
+        //TODO cancel all associated orders with reason
         // ("User has migrated to new key").
+        //TODO remove who you are subscribed to
         manageProfileSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,26 +118,7 @@ public class ManageProfileActivity extends AppCompatActivity {
                     case DialogInterface.BUTTON_POSITIVE:
                         progressBar.setVisibility(View.VISIBLE);
                         progressBar.setIndeterminate(true);
-                        Log.d(TAG, "updating the user key");
-                        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-                        final CollectionReference collectionReference = rootRef.collection("People");
-                        collectionReference.whereEqualTo("customerKey", getIntent().getStringExtra("CustomerKey")).
-                                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                        collectionReference.document(document.getId()).update(
-                                                "customerKey", editText);
-                                    }
-                                }
-                                if (task.isComplete()) {
-                                    setCustomerKey(editText);
-                                    toastShow("Great! Your new key is ready!");
-                                    activitySetupAndStart();
-                                }
-                            }
-                        });
+                        checkForKeyExistingAlready(editText);
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -145,9 +128,86 @@ public class ManageProfileActivity extends AppCompatActivity {
         };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ManageProfileActivity.this);
-        builder.setMessage("Are you sure you want to change your key?").setPositiveButton("Yes",
+        builder.setMessage("WARNING!!! Are you sure you want to change your key? Your " +
+                "conversations will be removed and your orders will be automatically canceled").setPositiveButton(
+                "Yes",
                 dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
+    }
+
+
+    public void checkForKeyExistingAlready(final String editText) {
+        Log.d(TAG, "Checking if user exists already");
+        FirebaseFirestore firestoreDatabase = FirebaseFirestore.getInstance();
+        firestoreDatabase.collection("People")
+                .whereEqualTo("customerKey", editText)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
+                            Log.d(TAG, "This customer key is already in use by someone else");
+                            toastShow("This customer key is already in use. Please create a new " +
+                                    "key");
+                            progressBar.setVisibility(View.INVISIBLE);
+                        } else if ((task.isSuccessful() && task.isComplete()) && (Objects.requireNonNull(task.getResult()).isEmpty())) {
+                            Log.d(TAG, "Customer key was not found, ready to remove conversation " +
+                                    "lists");
+                            removeConversationReferences(editText);
+                        }
+                    }
+                });
+    }
+
+    public void removeConversationReferences(final String editText) {
+        Log.d(TAG, "Removing references to conversations");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("People");
+        collectionReference.whereEqualTo("customerKey", getIntent().getStringExtra(
+                "CustomerKey")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        Log.d(TAG, "Found user");
+                        for (String s : document.toObject(User.class).getConversationsKeys()) {
+                            Log.d(TAG, "Removing conversation key: "+ s);
+                            if(!s.equals("")){
+                                collectionReference.document(document.getId()).update(
+                                        "conversationsKeys", FieldValue.arrayRemove(s));                            }
+                        }
+                    }
+                }
+
+                if (task.isComplete()) {
+                    Log.d(TAG, "Conversation references were removed");
+                    updateUserKey(editText);
+                }
+            }
+        });
+    }
+
+    public void updateUserKey(final String editText) {
+        Log.d(TAG, "Updating the user key");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("People");
+        collectionReference.whereEqualTo("customerKey", getIntent().getStringExtra("CustomerKey")).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    collectionReference.document(document.getId()).update(
+                            "customerKey", editText);
+                }
+
+                if (task.isComplete() && task.isSuccessful()) {
+                    setCustomerKey(editText);
+                    toastShow("Great! Your new key is setup!");
+                    activitySetupAndStart();
+                }
+            }
+        });
     }
 
 }

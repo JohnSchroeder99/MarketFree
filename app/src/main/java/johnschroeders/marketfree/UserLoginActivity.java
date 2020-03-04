@@ -176,7 +176,8 @@ public class UserLoginActivity extends AppCompatActivity {
                         if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
                             Log.d(TAG, "User was found: " + acct.getId());
                             setupForNextPage(acct);
-                        } else if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
+                        } else if ((task.isSuccessful() && task.isComplete()) && (Objects.requireNonNull(task.getResult()).isEmpty())) {
+                            Log.d(TAG, "User was not found for: " + acct.getId());
                             tempList.add("");
                             tempConverstaionList.add("");
                             user.setCustomerKey(acct.getId());
