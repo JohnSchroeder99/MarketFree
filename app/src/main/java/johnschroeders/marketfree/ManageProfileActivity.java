@@ -26,13 +26,20 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class ManageProfileActivity extends AppCompatActivity {
     static final String TAG = "ProfileActivity";
     String newCustomerKey = null;
     ProgressBar progressBar;
+    boolean moveOn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +69,6 @@ public class ManageProfileActivity extends AppCompatActivity {
                 activitySetupAndStart();
             }
         });
-
 
 
         //TODO cancel all associated orders with reason
@@ -147,18 +153,149 @@ public class ManageProfileActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if ((task.isSuccessful() && task.isComplete()) && (!Objects.requireNonNull(task.getResult()).isEmpty())) {
-                            Log.d(TAG, "This customer key is already in use by someone else");
                             toastShow("This customer key is already in use. Please create a new " +
                                     "key");
                             progressBar.setVisibility(View.INVISIBLE);
                         } else if ((task.isSuccessful() && task.isComplete()) && (Objects.requireNonNull(task.getResult()).isEmpty())) {
-                            Log.d(TAG, "Customer key was not found, ready to remove conversation " +
-                                    "lists");
-                            removeConversationReferences(editText);
+                            checkYourOrders(editText);
                         }
                     }
                 });
     }
+
+    public void checkYourOrders(final String editText) {
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("Orders");
+        Locale current = getResources().getConfiguration().locale;
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", current);
+        final Date date = new Date();
+        dateFormat.format(date);
+        collectionReference.whereEqualTo("producerKey", getIntent().getStringExtra("CustomerKey")).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        if (document.toObject(Order.class).getOrderStatus().equals("Approved")) {
+                            setMoveOn(false);
+                        }
+                    }
+                }
+                if (task.isComplete() && moveOn) {
+                    checkOrdersMadeToYou(editText);
+                } else {
+                    toastShow("You still have orders made out to you are in an accepted state, " +
+                            "get them canceled");
+                }
+
+            }
+        });
+    }
+
+    public void checkOrdersMadeToYou(final String editText) {
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("Orders");
+        Locale current = getResources().getConfiguration().locale;
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", current);
+        final Date date = new Date();
+        dateFormat.format(date);
+        collectionReference.whereEqualTo("producerKey", getIntent().getStringExtra("CustomerKey")).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        if (document.toObject(Order.class).getOrderStatus().equals("Approved")) {
+                            setMoveOn(false);
+                        }
+                    }
+                }
+                if (task.isComplete() && moveOn) {
+                    cancelAllAssociatedOrdersMadeToYou(editText);
+                } else {
+                    toastShow("You still have orders that you have made that are in an " +
+                            "accepted state, cancel the order or contact the user to cancel the " +
+                            "order");
+
+                }
+            }
+        });
+    }
+
+    public void cancelAllAssociatedOrdersThatYouMade(final String editText) {
+        Log.d(TAG, "Canceling all associated orders that you made");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("Orders");
+        Locale current = getResources().getConfiguration().locale;
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", current);
+        final Date date = new Date();
+        dateFormat.format(date);
+        collectionReference.whereEqualTo("producerKey", getIntent().getStringExtra("CustomerKey")).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        if (!document.toObject(Order.class).getOrderStatus().equals("Approved") && !document.toObject(Order.class).getOrderStatus().equals("Completed")) {
+                            Map<Object, Object> map = new HashMap<>();
+                            map.put("orderStatus", "Canceled");
+                            map.put("dateCanceled", dateFormat.format(date));
+                            map.put("cancelReason", "User migrated to new key");
+                            collectionReference.document(document.getId()).set(map,
+                                    SetOptions.merge());
+                        } else {
+                            setMoveOn(false);
+                        }
+                    }
+                }
+                if (task.isComplete() && moveOn) {
+                    cancelAllAssociatedOrdersMadeToYou(editText);
+                } else if (task.isComplete() && !moveOn) {
+                    toastShow("You need to close out orders that you have made before you can " +
+                            "change your key!");
+                }
+            }
+        });
+    }
+
+    public void cancelAllAssociatedOrdersMadeToYou(final String editText) {
+        Log.d(TAG, "Canceling all associated orders that were made to you");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("Orders");
+        Locale current = getResources().getConfiguration().locale;
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", current);
+        final Date date = new Date();
+        dateFormat.format(date);
+        collectionReference.whereEqualTo("customerKey", getIntent().getStringExtra("CustomerKey")).
+                get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        if (!document.toObject(Order.class).getOrderStatus().equals("Approved") && !document.toObject(Order.class).getOrderStatus().equals("Completed")) {
+                            Map<Object, Object> map = new HashMap<>();
+                            map.put("orderStatus", "Canceled");
+                            map.put("dateCanceled", dateFormat.format(date));
+                            map.put("cancelReason", "User migrated to new key");
+                            collectionReference.document(document.getId()).set(map,
+                                    SetOptions.merge());
+
+                        } else {
+                            setMoveOn(false);
+                        }
+                    }
+                }
+                if (task.isComplete() && moveOn) {
+                    removeSubscriptions(editText);
+
+                } else if (task.isComplete() && !moveOn) {
+                    toastShow("You need to close out orders that have been made out to you before" +
+                            " you can change your key");
+                }
+            }
+        });
+    }
+
 
     public void removeConversationReferences(final String editText) {
         Log.d(TAG, "Removing references to conversations");
@@ -172,10 +309,11 @@ public class ManageProfileActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                         Log.d(TAG, "Found user");
                         for (String s : document.toObject(User.class).getConversationsKeys()) {
-                            Log.d(TAG, "Removing conversation key: "+ s);
-                            if(!s.equals("")){
+                            Log.d(TAG, "Removing conversation key: " + s);
+                            if (!s.equals("")) {
                                 collectionReference.document(document.getId()).update(
-                                        "conversationsKeys", FieldValue.arrayRemove(s));                            }
+                                        "conversationsKeys", FieldValue.arrayRemove(s));
+                            }
                         }
                     }
                 }
@@ -187,6 +325,35 @@ public class ManageProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public void removeSubscriptions(final String editText) {
+        Log.d(TAG, "Removing subscriptions");
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = rootRef.collection("People");
+        collectionReference.whereEqualTo("customerKey", getIntent().getStringExtra(
+                "CustomerKey")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                        Log.d(TAG, "Found user");
+                        for (String s : document.toObject(User.class).getSubscribedTo()) {
+                            if (!s.equals("")) {
+                                collectionReference.document(document.getId()).update(
+                                        "subscribedTo", FieldValue.arrayRemove(s));
+                            }
+                        }
+                    }
+                }
+                if (task.isComplete()) {
+                    Log.d(TAG, "Subscriptions references were removed");
+                    removeConversationReferences(editText);
+                }
+            }
+        });
+    }
+
 
     public void updateUserKey(final String editText) {
         Log.d(TAG, "Updating the user key");
@@ -210,6 +377,9 @@ public class ManageProfileActivity extends AppCompatActivity {
         });
     }
 
+    public void setMoveOn(boolean moveOn) {
+        this.moveOn = moveOn;
+    }
 }
 
 

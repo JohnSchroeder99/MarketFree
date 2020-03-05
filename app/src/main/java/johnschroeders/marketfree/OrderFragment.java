@@ -35,6 +35,8 @@ import java.util.Objects;
 // accepted.
 //TODO see what to do about orders once they are accepted. One way might be to have no canceling
 // orders once they are accepted except by the owner of the product.
+//TODO we need to handle canceling the order for the product owner after they have accepted the
+// order so new keys can be generated
 public class OrderFragment extends Fragment{
     private static final String TAG = "OrderStatusActivity";
     private Bundle bundle;
