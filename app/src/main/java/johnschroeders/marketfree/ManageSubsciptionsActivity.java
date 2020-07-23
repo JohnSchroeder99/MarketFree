@@ -57,6 +57,7 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
 
         Log.d(TAG, "Setting up the subscriptions");
         currentUser = new User();
+        //TODO this is null after a first time start up
         currentUser.setCustomerKey(Objects.requireNonNull(getIntent().getStringExtra(
                 "CustomerKey")));
         currentUser.setProfileImageURL(Objects.requireNonNull(getIntent().getStringExtra(
@@ -99,6 +100,7 @@ public class ManageSubsciptionsActivity extends AppCompatActivity {
                     toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                     toast.show();
                 } else {
+                    //TODO this is not working when passing to the subscriptions key
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("People")
                             .whereEqualTo("customerKey", getIntent().getStringExtra("CustomerKey"))
